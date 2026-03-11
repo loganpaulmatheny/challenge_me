@@ -11,7 +11,7 @@ import UserList from "../components/UserList.jsx"
 
 
 export default function IndexPage() {
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState(null);
   const [query, setQuery] = useState("");
 
   const reloadUsers = useCallback(async () => {
@@ -21,7 +21,7 @@ export default function IndexPage() {
       return;
     }
     const data = await res.json();
-    setUsers(data);
+    setUsers(data.users);
   }, [query]);
 
   useEffect(() => {
