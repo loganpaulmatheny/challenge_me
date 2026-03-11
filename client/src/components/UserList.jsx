@@ -23,8 +23,10 @@ export default function UserList({ users, query, setQuery }) {
         onChange={onQuery}
         placeholder="Filter users..."
       />
-      {!users?.length ? (
+      {users === null ? (
         <div>Loading users...</div>
+      ) : users.length === 0 ? (
+        <div>No users found.</div>
       ) : (
         users.map(renderUsers)
       )}
