@@ -4,8 +4,9 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node --watch --env-file=.env server/backend.js"
+    "dev": "vite",
+    "start": "node --env-file=.env server/backend.js",
+    "dev:server": "nodemon --env-file=.env server/backend.js"
   },
   "keywords": [],
   "author": "Logan Matheny and Pratyusha Jaitly",
@@ -31,6 +32,7 @@
     "eslint-plugin-react-refresh": "^0.4.24",
     "globals": "^16.5.0",
     "jest": "^30.3.0",
+    "nodemon": "^3.1.14",
     "prettier": "^3.8.1",
     "vite": "^7.3.1"
   }
