@@ -11,8 +11,20 @@ import UserList from "../components/UserList.jsx"
 import ProfileInfo from "../components/ProfileInfo.jsx"
 
 export default function IndexPage() {
+  const [user, setUser] = useState(null)
   const [users, setUsers] = useState(null);
   const [query, setQuery] = useState("");
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const res = await fetch('/api/auth/user', { credentials: 'include' });
+      if (res.ok) {
+        const data = await res.json();
+        setUser(data.user);
+      }
+    };
+    fetchUser();
+  }, []);
 
   const reloadUsers = useCallback(async () => {
     const res = await fetch(`/api/users?q=${query}`);
@@ -37,7 +49,7 @@ export default function IndexPage() {
   return (
     <>
       <h1>Index Page</h1>
-      <ProfileInfo />
+      <ProfileInfo user={user} />
       <section>
         <Row>
           <Col md={8} xs={12}>
