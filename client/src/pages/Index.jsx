@@ -1,19 +1,38 @@
 import { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 
 export default function Index() {
+  const navigate = useNavigate()
   const [activeTab, setActiveTab] = useState("login");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    // TODO: POST /api/users/login
-    console.log(email, password)
-  };
+
+    // TODO: POST /api/auth/login
+    const res = await fetch('/api/auth/login', {
+      method: 'POST',
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
+    });
+
+    if (res.ok) {
+      navigate('/dashboard');
+    } else {
+      const { message } = await res.json();
+      setError(message); // show inline error
+    }
+  }
+    ;
 
   const handleRegister = (e) => {
     e.preventDefault();
-    // TODO: GET /api/users
+
+    // TODO: POST /api/auth/register
+    console.log()
   };
 
   return (
@@ -67,6 +86,7 @@ export default function Index() {
                   required
                 />
               </div>
+              {error && <div className="alert alert-danger">{error}</div>}
               <button type="submit" className="btn btn-primary w-100">
                 Log in
               </button>

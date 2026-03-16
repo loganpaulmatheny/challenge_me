@@ -8,7 +8,7 @@ import Col from "react-bootstrap/Col";
 // import CreateListingForm from "../components/CreateListingForm.jsx";
 
 import UserList from "../components/UserList.jsx"
-
+import ProfileInfo from "../components/ProfileInfo.jsx"
 
 export default function IndexPage() {
   const [users, setUsers] = useState(null);
@@ -37,7 +37,7 @@ export default function IndexPage() {
   return (
     <>
       <h1>Index Page</h1>
-
+      <ProfileInfo />
       <section>
         <Row>
           <Col md={8} xs={12}>
