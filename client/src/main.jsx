@@ -6,9 +6,8 @@ import { BrowserRouter, Routes, Route } from "react-router";
 import "./index.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import IndexPage from "./pages/IndexPage.jsx";
-
-// import AboutPage from "./pages/AboutPage.jsx";
+import Index from "./pages/Index.jsx";
+import Dashboard from "./pages/Dashboard.jsx";
 // import BaseTemplate from "./pages/BaseTemplate.jsx";
 // import LoginPage from "./pages/LoginPage.jsx";
 // import RegisterPage from "./pages/RegisterPage.jsx";
@@ -20,8 +19,8 @@ root.render(
     {/* <BaseTemplate> */}
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<IndexPage />} />
-        {/* <Route path="/about" element={<AboutPage />} /> */}
+        <Route path="/" element={<Index />} />
+        <Route path="/dashboard" element={<Dashboard />} />
         {/* <Route path="/login" element={<LoginPage />} /> */}
         {/* <Route path="/register" element={<RegisterPage />} /> */}
       </Routes>
