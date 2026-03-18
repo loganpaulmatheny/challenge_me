@@ -50,23 +50,27 @@ export default function IndexPage() {
   }, [reloadUsers, query]);
 
   return (
-    <>
-      <h1>Your Challenge Dashboard</h1>
-      <ProfileInfo user={user} />
+    <div className="container py-4">
+      {/* Header */}
+      <div className="text-center mb-4">
+        <h1 className="display-5 fw-bold">Your Challenge Dashboard</h1>
+        <p className="text-muted">Track your challenges and connect with others</p>
+        <hr className="w-25 mx-auto" />
+      </div>
+
+      {/* Profile */}
+      <ProfileInfo user={user} onUserUpdate={setUser} />
+
+      {/* Main content */}
       <section>
         <Row>
           <Col md={8} xs={12}>
-            <UserList
-              users={users}
-              query={query}
-              setQuery={setQuery}
-            />
+            <UserList users={users} query={query} setQuery={setQuery} />
           </Col>
-          <Col md={4} xs={12}>
-          </Col>
+          <Col md={4} xs={12}></Col>
         </Row>
       </section>
-    </>
+    </div>
   );
 }
 
