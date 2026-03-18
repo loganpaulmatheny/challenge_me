@@ -65,7 +65,7 @@ export default function IndexPage() {
       <section>
         <Row>
           <Col md={8} xs={12}>
-            <UserList users={users} query={query} setQuery={setQuery} />
+            {/* <UserList users={users} query={query} setQuery={setQuery} /> */}
           </Col>
           <Col md={4} xs={12}></Col>
         </Row>

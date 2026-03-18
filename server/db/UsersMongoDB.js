@@ -44,6 +44,23 @@ function UsersMongoDB({
     }
   };
 
+  // UPDATE - Update User
+  me.updateUser = async (userId, updatedData) => {
+    const users = await connect();
+    try {
+      const result = await users.findOneAndUpdate(
+        { _id: new ObjectId(userId) },
+        { $set: { ...updatedData, modifiedAt: new Date() } },
+        { returnDocument: "after" }
+      );
+      return result; // returns the updated document
+    } catch (err) {
+      console.error("Error updating user in MongoDB", err);
+      throw err;
+    }
+  };
+
+  // TODO: Delete legacy starter code from apartment
   me.getUsers = async ({ query = {}, pageSize = 20, page = 1 } = {}) => {
     const users = await connect();
     try {

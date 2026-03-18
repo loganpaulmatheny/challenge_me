@@ -4,9 +4,12 @@ import { fileURLToPath } from "url";
 import { dirname, join } from "path";
 import { MongoClient } from "mongodb";
 import configurePassport from "./config/passport.js";
+import * as dotenv from "dotenv";
+
+// Routes
 import users from "./routes/users.js";
 import authRouter from "./routes/authentication.js";
-import * as dotenv from "dotenv";
+
 dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
@@ -33,10 +36,10 @@ const passport = configurePassport(db);
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use("/", express.static("./client/dist"));
-app.use("/api", users);
+app.use("/api/users", users);
 app.use("/api/auth", authRouter);
 
+app.use("/", express.static("./client/dist"));
 app.get("*splat", (req, res) => {
   res.sendFile("index.html", { root: join(__dirname, "./client/dist") });
 });

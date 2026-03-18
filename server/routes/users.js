@@ -1,29 +1,43 @@
 import express from "express";
 import usersDB from "../db/UsersMongoDB.js";
+
 const router = express.Router();
 
-// STARTER to connect the users to the dashboard and display something
-// TODO: Change this to challenges for a given user
-router.get("/users/", async (req, res) => {
+// GET /api/users
+router.get("/", async (req, res) => {
   const page = parseInt(req.query.page) || 1;
   const pageSize = parseInt(req.query.pageSize) || 20;
-
-  // Add query if the filter has been editted
   const query = {};
-  console.log("🏡 Received request for /api/issues", {
-    page,
-    pageSize,
-    query,
-  });
-
+  console.log("🏡 Received request for /api/users", { page, pageSize, query });
   try {
     const users = await usersDB.getUsers({ query, pageSize, page });
-    res.json({
-      users,
-    });
+    res.json({ users });
   } catch (error) {
-    console.error("Error fetching issues:", error);
+    console.error("Error fetching users:", error);
     res.status(500).json({ error: "Internal Server Error", users: [] });
+  }
+});
+
+// PUT /api/users/:id
+router.put("/:id", async (req, res) => {
+  if (!req.user || req.user._id.toString() !== req.params.id) {
+    return res.status(403).json({ message: "Forbidden" });
+  }
+  const { username, name, profileImageURL, bio, city, state } = req.body;
+  try {
+    const updated = await usersDB.updateUser(req.params.id, {
+      username,
+      name,
+      profileImageURL,
+      bio,
+      city,
+      state,
+    });
+    if (!updated) return res.status(404).json({ message: "User not found" });
+    const { passwordHash, ...safeUser } = updated;
+    res.json(safeUser);
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
   }
 });
 
