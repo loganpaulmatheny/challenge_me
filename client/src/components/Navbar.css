@@ -1,0 +1,25 @@
+.navbar {
+    background: var(--color-surface);
+    border-radius: var(--radius-lg);
+    padding: var(--space-md);
+    margin: var(--space-md);
+  
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .nav-links {
+    display: flex;
+    gap: var(--space-sm);
+  }
+  
+  .nav-item {
+    padding: 8px 14px;
+    border-radius: var(--radius-pill);
+  }
+  
+  .nav-item.active {
+    background: var(--color-primary);
+    color: white;
+  }

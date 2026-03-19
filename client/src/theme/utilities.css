@@ -1,0 +1,11 @@
+.flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .soft-card {
+    background: var(--color-surface);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-soft), var(--shadow-inner);
+  }

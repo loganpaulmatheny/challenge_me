@@ -6,6 +6,7 @@ function UsersMongoDB({
 } = {}) {
   const me = {};
   const URI = process.env.MONGODB_URI;
+  console.log("UsersMongoDB URI:", URI);
 
   const client = new MongoClient(URI);
   let collection = null;

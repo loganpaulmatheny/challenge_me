@@ -3,8 +3,8 @@ import session from "express-session";
 import { fileURLToPath } from "url";
 import { dirname, join } from "path";
 import { MongoClient } from "mongodb";
+import interactionsRouter from "./routes/interactions.js";
 import configurePassport from "./config/passport.js";
-import * as dotenv from "dotenv";
 
 // Routes
 import users from "./routes/users.js";
@@ -50,22 +50,22 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use("/api", users);
-app.use("/api/auth", authRouter);
 
 app.use("/api/challenges", challengesRouter);
 app.use("/api/profile", profileRouter);
 app.use("/api/seed", seedRouter);
 
-app.use("/", express.static("./client/dist"));
-
-app.use("/api/users", users);
 app.use("/api/auth", authRouter);
+app.use("/api/interactions", interactionsRouter);
 
-app.use("/", express.static("./client/dist"));
-app.get("*splat", (req, res) => {
-  res.sendFile("index.html", {
-    root: join(__dirname, "./client/dist"),
-  });
+// app.use("/", express.static("./client/dist"));
+// app.get("*splat", (req, res) => {
+//   res.sendFile("index.html", {
+//     root: join(__dirname, "./client/dist"),
+//   });
+// });
+app.get("/api/test", (req, res) => {
+  res.json({ message: "Backend is working!" });
 });
 
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
