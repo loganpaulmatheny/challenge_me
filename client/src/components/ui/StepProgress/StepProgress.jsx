@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./StepProgress.css";
-import Button from "../ui/Button/Button";
+import Button from "../Button/Button";
 
 export default function StepProgress({ steps, onComplete }) {
   const [activeStep, setActiveStep] = useState(null);

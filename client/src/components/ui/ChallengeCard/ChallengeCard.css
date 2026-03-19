@@ -1,21 +1,56 @@
+/* clickable area */
+.challenge-click {
+    cursor: pointer;
+}
+
+/* HEADER */
 .challenge-header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
+    gap: var(--space-md);
 }
 
+.challenge-title-block h3 {
+    margin: 0;
+}
+
+/* description */
+.challenge-desc {
+    margin-top: 4px;
+    color: var(--color-muted);
+    font-size: 14px;
+}
+
+/* TAGS */
 .challenge-tags {
     display: flex;
     gap: 6px;
+    margin-top: var(--space-sm);
+    flex-wrap: wrap;
 }
 
-.challenge-desc {
-    margin: 10px 0;
-    color: #666;
-}
-
+/* FOOTER */
 .challenge-footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-top: var(--space-md);
+}
+
+/* stats */
+.challenge-stats {
+    font-size: 14px;
+    color: var(--color-muted);
+}
+
+/* actions */
+.challenge-actions {
+    display: flex;
+    gap: var(--space-sm);
+}
+
+/* subtle hover feedback */
+.challenge-click:hover {
+    opacity: 0.95;
 }
