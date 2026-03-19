@@ -9,6 +9,8 @@ import ChallengeDetail from "./pages/ChallengeDetail/ChallengeDetail.jsx";
 import Admin from "./pages/Admin/Admin.jsx";
 import Index from "./pages/Index.jsx";
 import Dashboard from "./pages/Dashboard/Dashboard.jsx";
+import PublicLayout from "./components/layout/PublicLayout";
+import PrivateLayout from "./components/layout/PrivateLayout";
 
 import AppLayout from "./components/layout/AppLayout.jsx";
 
@@ -20,62 +22,59 @@ import "./theme/base.css";
 import "./theme/utilities.css";
 
 function AppRoutes() {
-  const { user } = useUser();
-  // const [user, setUser] = useState(null);
-
-  // useEffect(() => {
-  //   fetch("/api/auth/user", { credentials: "include" })
-  //     .then((r) => r.json())
-  //     .then((d) => setUser(d.user))
-  //     .catch(() => {});
-  // }, []);
-
   return (
     <Routes>
-      <Route path="/" element={<Index />} />
+      <Route
+        path="/"
+        element={
+          <PublicLayout>
+            <Index />
+          </PublicLayout>
+        }
+      />
 
       <Route
         path="/dashboard"
         element={
-          <AppLayout user={user}>
+          <PrivateLayout>
             <Dashboard />
-          </AppLayout>
+          </PrivateLayout>
         }
       />
 
       <Route
         path="/feed"
         element={
-          <AppLayout user={user}>
+          <PrivateLayout>
             <Feed />
-          </AppLayout>
+          </PrivateLayout>
         }
       />
 
       <Route
         path="/profile"
         element={
-          <AppLayout user={user}>
+          <PrivateLayout>
             <Profile />
-          </AppLayout>
+          </PrivateLayout>
         }
       />
 
       <Route
         path="/challenge/:id"
         element={
-          <AppLayout user={user}>
+          <PrivateLayout>
             <ChallengeDetail />
-          </AppLayout>
+          </PrivateLayout>
         }
       />
 
       <Route
         path="/admin"
         element={
-          <AppLayout user={user}>
+          <PrivateLayout>
             <Admin />
-          </AppLayout>
+          </PrivateLayout>
         }
       />
     </Routes>
@@ -89,7 +88,7 @@ root.render(
     <BrowserRouter>
     <UserProvider>
       <AppRoutes />
-      </UserProvider>
+    </UserProvider>
     </BrowserRouter>
   </StrictMode>
 );

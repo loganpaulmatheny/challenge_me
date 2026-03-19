@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
+import { useUser } from "../context/UserContext";
 
 export default function Index() {
   const navigate = useNavigate()
@@ -16,6 +17,7 @@ export default function Index() {
     city: "",
     state: "",
   });
+  const { refreshUser } = useUser();
 
   // Change the registered user data
   const handleChange = (e) => {
@@ -31,7 +33,8 @@ export default function Index() {
       body: JSON.stringify({ email, password }),
     });
     if (res.ok) {
-      navigate('/dashboard');
+      await refreshUser();
+      navigate('/feed');
     } else {
       const { message } = await res.json();
       setError(message);

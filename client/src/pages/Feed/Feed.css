@@ -1,21 +1,41 @@
 .feed-container {
-    max-width: 800px;
-    margin: auto;
-  }
-  
-  .filter-bar {
-    display: flex;
-    gap: var(--space-sm);
-    margin-bottom: var(--space-md);
-  }
-  
-  .filter-chip {
-    padding: 6px 12px;
-    border-radius: var(--radius-pill);
-    background: var(--color-surface-soft);
-  }
-  
-  .filter-chip.active {
-    background: var(--color-primary);
-    color: white;
-  }
+  max-width: 800px;
+  margin: auto;
+}
+
+.filter-bar {
+  display: flex;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-md);
+}
+
+.filter-chip {
+  padding: 6px 12px;
+  border-radius: var(--radius-pill);
+  background: var(--color-surface-soft);
+}
+
+.filter-chip.active {
+  background: var(--color-primary);
+  color: white;
+}
+
+.feed-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+/* Pinterest style grid */
+.feed-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--space-lg);
+}
+
+/* filter bar spacing */
+.filter-bar {
+  display: flex;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+}

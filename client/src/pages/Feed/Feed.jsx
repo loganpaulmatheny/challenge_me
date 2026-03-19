@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import ChallengeCard from "../../components/ui/ChallengeCard/ChallengeCard";
 import Chip from "../../components/ui/Chip/Chip";
+import CreateChallengeModal from "../../components/CreateChallengeModal";
 
 import { useUser } from "../../context/UserContext";
 
 export default function Feed() {
   const [challenges, setChallenges] = useState([]);
   const [filter, setFilter] = useState("All");
+  const [showCreate, setShowCreate] = useState(false);
 
   const { profile, likedIds, setProfile } = useUser();
 
@@ -51,33 +53,46 @@ export default function Feed() {
   }
 
   return (
-    <div className="feed-container">
-      <div className="filter-bar">
-        {["All", "food", "movies", "explore"].map((f) => (
-          <Chip
-            key={f}
-            label={f}
-            active={filter === f}
-            onClick={() => setFilter(f)}
-          />
-        ))}
+    <div className="feed-page">
+     <div className="filter-bar">
+  {["All", "food", "movies", "explore"].map((f) => (
+    <Chip
+      key={f}
+      label={f}
+      active={filter === f}
+      onClick={() => setFilter(f)}
+    />
+  ))}
+
+  <button
+    className="btn btn-sm btn-outline-primary"
+    onClick={() => setShowCreate(true)}
+  >
+    Create
+  </button>
+</div>
+
+{showCreate && (
+  <CreateChallengeModal onClose={() => setShowCreate(false)} />
+)}
+  
+      <div className="feed-grid">
+        {filtered.map((c) => {
+          const saved = profile?.savedChallenges?.some(
+            (sc) => sc.challengeId.toString() === c._id
+          );
+  
+          const liked = likedIds.includes(c._id);
+  
+          return (
+            <ChallengeCard
+              key={c._id}
+              challenge={{ ...c, saved, liked }}
+              onImport={importChallenge}
+            />
+          );
+        })}
       </div>
-
-      {filtered.map((c) => {
-        const saved = profile?.savedChallenges?.some(
-          (sc) => sc.challengeId.toString() === c._id
-        );
-
-        const liked = likedIds.includes(c._id);
-
-        return (
-          <ChallengeCard
-            key={c._id}
-            challenge={{ ...c, saved, liked }}
-            onImport={importChallenge}
-          />
-        );
-      })}
     </div>
   );
 }

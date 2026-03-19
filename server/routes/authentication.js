@@ -103,7 +103,21 @@ router.post("/logout", (req, res) => {
         .status(500)
         .json({ message: "Logout failed", error: err.message });
     }
-    res.json({ message: "Logout successful" });
+
+    // destroy session completely
+    req.session.destroy((err) => {
+      if (err) {
+        return res.status(500).json({
+          message: "Session destruction failed",
+          error: err.message,
+        });
+      }
+
+      // clear cookie from browser
+      res.clearCookie("connect.sid");
+
+      res.json({ message: "Logout successful" });
+    });
   });
 });
 

@@ -1,9 +1,11 @@
 import { useNavigate } from "react-router-dom";
+import { useUser } from "../../../context/UserContext";
 import Button from "../Button/Button";
 import "./Navbar.css";
 
 export default function Navbar({ user }) {
   const navigate = useNavigate();
+  const { logout } = useUser();
 
   return (
     <div className="navbar soft-card">
@@ -25,10 +27,20 @@ export default function Navbar({ user }) {
         </Button>
 
         {/* {user?.role === "admin" && ( */}
-          <Button variant="ghost" onClick={() => navigate("/admin")}>
-            Admin
-          </Button>
+        <Button variant="ghost" onClick={() => navigate("/admin")}>
+          Admin
+        </Button>
         {/* )} */}
+
+        <Button
+          variant="ghost"
+          onClick={async () => {
+            await logout();
+            navigate("/");
+          }}
+        >
+          Logout
+        </Button>
       </div>
     </div>
   );
