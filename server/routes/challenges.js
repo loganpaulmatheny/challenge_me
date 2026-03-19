@@ -91,6 +91,10 @@ router.get("/:id", async (req, res) => {
 router.post("/", async (req, res) => {
   const db = req.app.locals.db;
 
+  if (!req.user) {
+    return res.status(401).json({ message: "Not logged in" });
+  }
+
   const challenge = {
     title: req.body.title,
     description: req.body.description,
@@ -98,7 +102,7 @@ router.post("/", async (req, res) => {
     neighborhood: req.body.neighborhood,
     timeWindow: req.body.timeWindow,
     steps: req.body.steps,
-    createdBy: "user",
+    createdBy: req.user._id,
     createdAt: new Date(),
     stats: {
       saves: 0,

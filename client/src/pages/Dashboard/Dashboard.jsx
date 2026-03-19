@@ -1,98 +1,110 @@
-import { useState, useEffect, useCallback } from "react";
-
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-
-import UserList from "../../components/UserList.jsx";
+import { useEffect, useState } from "react";
 import { useUser } from "../../context/UserContext";
-import ChallengeCard from "../../components/ui/ChallengeCard/ChallengeCard";
+
 import ProfileInfo from "../../components/ProfileInfo/ProfileInfo.jsx";
+import ChallengeCard from "../../components/ui/ChallengeCard/ChallengeCard";
+import Card from "../../components/ui/Card/Card";
+
+import "./Dashboard.css";
 
 export default function Dashboard() {
-  const { user, profile } = useUser();
-  const [users, setUsers] = useState(null);
-  const [query, setQuery] = useState("");
+  const { user } = useUser();
 
+  const [savedChallenges, setSavedChallenges] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // // FETCH CURRENT USER
-  // useEffect(() => {
-  //   const fetchUser = async () => {
-  //     const res = await fetch("/api/auth/user", {
-  //       credentials: "include",
-  //     });
-
-  //     if (res.ok) {
-  //       const data = await res.json();
-  //       setUser(data.user);
-  //     }
-  //   };
-
-  //   fetchUser();
-  // }, []);
-
-  // // FETCH USERS (optional / can remove later)
-  // const reloadUsers = useCallback(async () => {
-  //   try {
-  //     const res = await fetch(`/api/users?q=${query}`);
-  //     if (!res.ok) return;
-
-  //     const data = await res.json();
-  //     setUsers(data.users);
-  //   } catch (err) {
-  //     console.error("Failed to fetch users", err);
-  //   }
-  // }, [query]);
-
+  // FETCH SAVED CHALLENGES (from backend join)
   useEffect(() => {
-    const timeout = setTimeout(reloadUsers, 300);
-    return () => clearTimeout(timeout);
-  }, [reloadUsers]);
+    const fetchSaved = async () => {
+      try {
+        const res = await fetch("/api/profile/challenges", {
+          credentials: "include",
+        });
+
+        if (!res.ok) {
+          setSavedChallenges([]);
+          setLoading(false);
+          return;
+        }
+
+        const data = await res.json();
+        setSavedChallenges(data);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSaved();
+  }, []);
 
   return (
-    <div className="container py-4">
+    <div className="dashboard-page">
+
       {/* HEADER */}
-      <div className="text-center mb-4">
-        <h1 className="display-5 fw-bold">
-          Your Challenge Dashboard
-        </h1>
-        <p className="text-muted">
-          Track your challenges and connect with others
+      <div className="dashboard-header">
+        <h1>Your Dashboard</h1>
+        <p className="muted">
+          Track your progress and continue your challenges
         </p>
-        <hr className="w-25 mx-auto" />
       </div>
 
       {/* PROFILE */}
       <ProfileInfo user={user} onUserUpdate={() => {}} />
 
-      {/* MAIN CONTENT */}
-      <section>
-  <Row>
-    <Col md={12}>
-      <h4 style={{ marginBottom: 12 }}>Your Challenges</h4>
+      {/* GAME STATS */}
+      <div className="stats-grid">
+        <Card>
+          <h3>Challenges</h3>
+          <p>{savedChallenges.length}</p>
+        </Card>
 
-      <div className="feed-grid">
-        {profile?.savedChallenges?.map((c, i) => (
-          <ChallengeCard
-            key={i}
-            challenge={{
-              _id: c.challengeId,
-              title: "Saved Challenge",
-              description: "Continue your progress",
-              category: "",
-              neighborhood: "",
-              timeWindow: "",
-              stats: {},
-              creator: {},
-              saved: true,
-              liked: false,
-            }}
-            onImport={() => {}}
-          />
-        ))}
+        <Card>
+          <h3>Completed</h3>
+          <p>
+            {
+              savedChallenges.filter(
+                (c) => c.status === "Completed"
+              ).length
+            }
+          </p>
+        </Card>
+
+        <Card>
+          <h3>In Progress</h3>
+          <p>
+            {
+              savedChallenges.filter(
+                (c) => c.status === "In Progress"
+              ).length
+            }
+          </p>
+        </Card>
       </div>
-    </Col>
-  </Row>
-</section>
+
+      {/* CHALLENGES GRID */}
+      <section>
+        <h2>Your Challenges</h2>
+
+        {loading ? (
+          <div className="empty-state">Loading...</div>
+        ) : savedChallenges.length === 0 ? (
+          <div className="empty-state">
+            No challenges yet. Go explore the feed.
+          </div>
+        ) : (
+          <div className="feed-grid">
+            {savedChallenges.map((c) => (
+              <ChallengeCard
+                key={c._id}
+                challenge={c}
+                onImport={() => {}}
+              />
+            ))}
+          </div>
+        )}
+      </section>
     </div>
   );
 }

@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import Card from "../../components/ui/Card/Card";
 import Badge from "../../components/ui/Badge/Badge";
 import Button from "../../components/ui/Button/Button";
+import Avatar from "../../components/ui/Avatar/Avatar";
 
 import StepProgress from "../../components/ui/StepProgress/StepProgress";
 
@@ -12,12 +13,30 @@ export default function ChallengeDetail() {
   const [challenge, setChallenge] = useState(null);
 
   useEffect(() => {
-    fetch(`/api/challenges/${id}`, { credentials: "include" })
-      .then((r) => r.json())
-      .then(setChallenge);
+    const fetchChallenge = async () => {
+      try {
+        const res = await fetch(`/api/challenges/${id}`, {
+          credentials: "include",
+        });
+  
+        if (!res.ok) {
+          setChallenge(null);
+          return;
+        }
+  
+        const data = await res.json();
+        setChallenge(data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+  
+    fetchChallenge();
   }, [id]);
 
-  if (!challenge) return <div>Loading...</div>;
+if (!challenge) {
+  return <div style={{ padding: 20 }}>Loading challenge...</div>;
+}
 
   return (
     <div style={{ maxWidth: 800, margin: "auto" }}>

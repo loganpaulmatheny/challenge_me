@@ -1,13 +1,13 @@
-import "./Card.css";
-
 export default function Card({
   children,
   interactive = false,
   selected = false,
-  variant = "default", // default | soft | ghost
+  variant = "default",
+  onClick,
 }) {
   return (
     <div
+      onClick={onClick}
       className={`
         card 
         card-${variant}
