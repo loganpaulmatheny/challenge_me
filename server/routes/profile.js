@@ -7,7 +7,7 @@ const router = express.Router();
 // IMPORT challenge
 router.post("/import/:challengeId", async (req, res) => {
   const db = req.app.locals.db;
-  const { userId } = req.body;
+  const userId = req.user._id;
 
   const challenge = await db.collection("challenges").findOne({
     _id: new ObjectId(req.params.challengeId),
@@ -39,7 +39,8 @@ router.post("/import/:challengeId", async (req, res) => {
 // COMPLETE STEP
 router.put("/complete-step/:challengeId", async (req, res) => {
   const db = req.app.locals.db;
-  const { userId, stepId, proofUrl } = req.body;
+  const { stepId, proofUrl } = req.body;
+  const userId = req.user._id;
 
   const challenge = await db.collection("challenges").findOne({
     _id: new ObjectId(req.params.challengeId),
@@ -69,12 +70,46 @@ router.put("/complete-step/:challengeId", async (req, res) => {
   const level = calculateLevel(profile.xp);
   const badges = checkBadges(profile);
 
+  await db
+    .collection("profiles")
+    .updateOne({ userId }, { $set: { level, badges } });
+
+  const updatedProfile = await db.collection("profiles").findOne({ userId });
+
+  const currentChallenge = updatedProfile.savedChallenges.find((c) =>
+    c.challengeId.equals(challenge._id)
+  );
+
+  const allDone = currentChallenge?.progress.every((p) => p.completed);
+
   await db.collection("profiles").updateOne(
-    { userId },
-    { $set: { level, badges } }
+    {
+      userId,
+      "savedChallenges.challengeId": challenge._id,
+    },
+    {
+      $set: {
+        "savedChallenges.$.status": allDone ? "Completed" : "In Progress",
+      },
+    }
   );
 
   res.sendStatus(200);
+});
+
+// GET PROFILE
+router.get("/", async (req, res) => {
+  const db = req.app.locals.db;
+
+  if (!req.user) {
+    return res.status(401).json({ message: "Not logged in" });
+  }
+
+  const profile = await db.collection("profiles").findOne({
+    userId: req.user._id,
+  });
+
+  res.json(profile || { xp: 0, level: 1, savedChallenges: [] });
 });
 
 export default router;

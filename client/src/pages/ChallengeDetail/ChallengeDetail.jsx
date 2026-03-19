@@ -5,7 +5,7 @@ import Card from "../../components/ui/Card/Card";
 import Badge from "../../components/ui/Badge/Badge";
 import Button from "../../components/ui/Button/Button";
 
-import StepProgress from "../../components/StepProgress/StepProgress";
+import StepProgress from "../../components/ui/StepProgress/StepProgress";
 
 export default function ChallengeDetail() {
   const { id } = useParams();
@@ -24,6 +24,14 @@ export default function ChallengeDetail() {
       <Card>
 
         <h2>{challenge.title}</h2>
+        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+  <Avatar
+    src={challenge.creator?.profileImageURL}
+    username={challenge.creator?.username}
+    size={40}
+  />
+  <div>{challenge.creator?.username}</div>
+</div>
 
         <p>{challenge.description}</p>
 

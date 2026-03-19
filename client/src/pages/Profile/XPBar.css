@@ -1,0 +1,25 @@
+.xp-container {
+    margin-top: 12px;
+}
+
+.xp-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    margin-bottom: 6px;
+}
+
+.xp-bar {
+    height: 10px;
+    border-radius: var(--radius-pill);
+    background: var(--color-surface-soft);
+    box-shadow: var(--shadow-inner);
+    overflow: hidden;
+}
+
+.xp-fill {
+    height: 100%;
+    background: var(--color-primary);
+    border-radius: var(--radius-pill);
+    transition: width 0.4s ease;
+}

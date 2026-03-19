@@ -1,8 +1,10 @@
 import { useState } from "react";
-import "./CreateChallengeModal.css";
+import Modal from ".//Modal/Modal";
+import Button from ".//Button/Button";
 
 export default function CreateChallengeModal({ onClose }) {
   const [title, setTitle] = useState("");
+  const [category, setCategory] = useState("");
   const [steps, setSteps] = useState([{ title: "" }]);
 
   const addStep = () => {
@@ -13,12 +15,13 @@ export default function CreateChallengeModal({ onClose }) {
     await fetch("/api/challenges", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
+      credentials: "include",
       body: JSON.stringify({
         title,
-        category: "food",
-        neighborhood: "Back Bay",
+        category,
+        neighborhood: "Boston",
         timeWindow: "weekend",
-        steps: steps.map(s => ({
+        steps: steps.map((s) => ({
           id: crypto.randomUUID(),
           title: s.title,
           type: "visit",
@@ -31,30 +34,46 @@ export default function CreateChallengeModal({ onClose }) {
   };
 
   return (
-    <div className="modal">
-      <h2>Create Challenge</h2>
-
+    <Modal
+      title="Create Challenge"
+      onClose={onClose}
+      footer={
+        <Button onClick={submit}>
+          Create
+        </Button>
+      }
+    >
       <input
+        className="input"
+        placeholder="Title"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
-        placeholder="Title"
+      />
+
+      <input
         className="input"
+        placeholder="Category"
+        value={category}
+        onChange={(e) => setCategory(e.target.value)}
       />
 
       {steps.map((s, i) => (
         <input
           key={i}
+          className="input"
+          placeholder={`Step ${i + 1}`}
           value={s.title}
           onChange={(e) => {
-            const updated = [...steps];
-            updated[i].title = e.target.value;
-            setSteps(updated);
+            const copy = [...steps];
+            copy[i].title = e.target.value;
+            setSteps(copy);
           }}
         />
       ))}
 
-      <button className="btn btn-soft" onClick={addStep}>Add Step</button>
-      <button className="btn btn-primary" onClick={submit}>Create</button>
-    </div>
+      <Button variant="soft" onClick={addStep}>
+        Add Step
+      </Button>
+    </Modal>
   );
 }

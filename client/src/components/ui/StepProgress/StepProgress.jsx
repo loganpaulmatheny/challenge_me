@@ -1,67 +1,117 @@
-import { useState } from "react";
-import "./StepProgress.css";
+import { useEffect, useState } from "react";
 import Button from "../Button/Button";
+import "./StepProgress.css";
 
-export default function StepProgress({ steps, onComplete }) {
-  const [activeStep, setActiveStep] = useState(null);
+export default function StepProgress({ steps, challengeId }) {
+  const [expanded, setExpanded] = useState(null);
+  const [progress, setProgress] = useState([]);
+  const [proof, setProof] = useState({});
+  const [animating, setAnimating] = useState(null);
+
+  useEffect(() => {
+    const loadProfile = async () => {
+      const res = await fetch("/api/profile", {
+        credentials: "include",
+      });
+
+      const data = await res.json();
+
+      const saved = data.savedChallenges?.find(
+        (c) => c.challengeId === challengeId
+      );
+
+      if (saved) {
+        setProgress(saved.progress);
+      }
+    };
+
+    loadProfile();
+  }, [challengeId]);
+
+  const isCompleted = (stepId) => {
+    return progress.find((p) => p.stepId === stepId)?.completed;
+  };
+
+  const toggle = (id) => {
+    setExpanded(expanded === id ? null : id);
+  };
+
+  const completeStep = async (stepId) => {
+    setAnimating(stepId);
+
+    await fetch(`/api/profile/complete-step/${challengeId}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({
+        stepId,
+        proofUrl: proof[stepId] || "",
+      }),
+    });
+
+    setProgress((prev) =>
+      prev.map((p) =>
+        p.stepId === stepId
+          ? { ...p, completed: true }
+          : p
+      )
+    );
+
+    setTimeout(() => setAnimating(null), 400);
+  };
 
   return (
-    <div className="step-progress-vertical">
-      {steps.map((step, index) => {
-        const isActive = activeStep === index;
+    <div className="steps">
+      {steps.map((step, i) => {
+        const done = isCompleted(step.id);
 
         return (
-          <div key={step.id} className="step-item">
-
-            {/* LEFT SIDE (circle + line) */}
-            <div className="step-indicator">
+          <div key={step.id} className="step-row">
+            <div className="step-left">
               <div
-                className={`step-circle ${step.completed ? "done" : ""}`}
-                onClick={() => setActiveStep(isActive ? null : index)}
+                className={`step-dot ${done ? "done" : ""} ${animating === step.id ? "pulse" : ""
+                  }`}
               >
-                {step.completed ? "✓" : index + 1}
+                {done ? "✓" : i + 1}
               </div>
 
-              {index !== steps.length - 1 && (
-                <div className={`step-line ${step.completed ? "done" : ""}`} />
+              {i < steps.length - 1 && (
+                <div
+                  className={`step-connector ${isCompleted(steps[i].id) ? "done" : ""
+                    }`}
+                />
               )}
             </div>
 
-            {/* RIGHT SIDE (content) */}
-            <div className="step-content">
-
+            <div style={{ flex: 1 }}>
               <div
                 className="step-title"
-                onClick={() => setActiveStep(isActive ? null : index)}
+                onClick={() => toggle(step.id)}
               >
-                {step.title}
+                {step.title} (+{step.points} XP)
               </div>
 
-              {isActive && (
-                <div className="step-expanded">
+              {expanded === step.id && (
+                <div className="step-expand">
+                  <input
+                    placeholder="Proof link"
+                    value={proof[step.id] || ""}
+                    onChange={(e) =>
+                      setProof({
+                        ...proof,
+                        [step.id]: e.target.value,
+                      })
+                    }
+                    className="input"
+                  />
 
-                  {step.link && (
-                    <a href={step.link} target="_blank">
-                      Open Link
-                    </a>
-                  )}
-
-                  {step.image && (
-                    <img src={step.image} className="step-image" />
-                  )}
-
-                  <div className="step-actions">
-                    <Button
-                      variant="primary"
-                      onClick={() => onComplete(step.id)}
-                    >
-                      Mark Complete
+                  <div style={{ marginTop: 10 }}>
+                    <Button onClick={() => completeStep(step.id)}>
+                      Complete Step
                     </Button>
                   </div>
-
                 </div>
               )}
-
             </div>
           </div>
         );

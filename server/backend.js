@@ -5,6 +5,7 @@ import { dirname, join } from "path";
 import { MongoClient } from "mongodb";
 import interactionsRouter from "./routes/interactions.js";
 import configurePassport from "./config/passport.js";
+import seedUsersRouter from "./routes/seedUsers.js";
 
 // Routes
 import users from "./routes/users.js";
@@ -57,6 +58,7 @@ app.use("/api/seed", seedRouter);
 
 app.use("/api/auth", authRouter);
 app.use("/api/interactions", interactionsRouter);
+app.use("/api/seed-users", seedUsersRouter);
 
 // app.use("/", express.static("./client/dist"));
 // app.get("*splat", (req, res) => {

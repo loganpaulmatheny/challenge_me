@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import Button from "../ui/Button/Button";
+import Button from "../Button/Button";
 import "./Navbar.css";
 
 export default function Navbar({ user }) {
@@ -24,11 +24,11 @@ export default function Navbar({ user }) {
           Profile
         </Button>
 
-        {user?.role === "admin" && (
+        {/* {user?.role === "admin" && ( */}
           <Button variant="ghost" onClick={() => navigate("/admin")}>
             Admin
           </Button>
-        )}
+        {/* )} */}
       </div>
     </div>
   );

@@ -6,7 +6,45 @@ const router = express.Router();
 // GET all
 router.get("/", async (req, res) => {
   const db = req.app.locals.db;
-  const challenges = await db.collection("challenges").find().toArray();
+
+  const challenges = await db
+    .collection("challenges")
+    .aggregate([
+      {
+        $lookup: {
+          from: "Users", // collection name
+          localField: "createdBy",
+          foreignField: "_id",
+          as: "creator",
+        },
+      },
+      {
+        $unwind: {
+          path: "$creator",
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
+        $project: {
+          title: 1,
+          description: 1,
+          category: 1,
+          neighborhood: 1,
+          timeWindow: 1,
+          steps: 1,
+          stats: 1,
+          createdAt: 1,
+
+          creator: {
+            _id: "$creator._id",
+            username: "$creator.username",
+            profileImageURL: "$creator.profileImageURL",
+          },
+        },
+      },
+    ])
+    .toArray();
+
   res.json(challenges);
 });
 
@@ -14,15 +52,39 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
   const db = req.app.locals.db;
 
-  const challenge = await db.collection("challenges").findOne({
-    _id: new ObjectId(req.params.id),
-  });
+  const result = await db
+    .collection("challenges")
+    .aggregate([
+      { $match: { _id: new ObjectId(req.params.id) } },
+      {
+        $lookup: {
+          from: "Users",
+          localField: "createdBy",
+          foreignField: "_id",
+          as: "creator",
+        },
+      },
+      { $unwind: { path: "$creator", preserveNullAndEmptyArrays: true } },
+      {
+        $project: {
+          title: 1,
+          description: 1,
+          category: 1,
+          neighborhood: 1,
+          timeWindow: 1,
+          steps: 1,
+          stats: 1,
 
-  if (!challenge) {
-    return res.status(404).json({ message: "Not found" });
-  }
+          creator: {
+            username: "$creator.username",
+            profileImageURL: "$creator.profileImageURL",
+          },
+        },
+      },
+    ])
+    .toArray();
 
-  res.json(challenge);
+  res.json(result[0]);
 });
 
 // CREATE
@@ -47,20 +109,6 @@ router.post("/", async (req, res) => {
 
   const result = await db.collection("challenges").insertOne(challenge);
   res.json(result);
-});
-
-// LIKE
-router.post("/like/:id", async (req, res) => {
-  const db = req.app.locals.db;
-
-  await db
-    .collection("challenges")
-    .updateOne(
-      { _id: new ObjectId(req.params.id) },
-      { $inc: { "stats.likes": 1 } }
-    );
-
-  res.sendStatus(200);
 });
 
 router.post("/like/:id", async (req, res) => {

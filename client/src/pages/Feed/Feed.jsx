@@ -1,58 +1,52 @@
 import { useEffect, useState } from "react";
 import ChallengeCard from "../../components/ui/ChallengeCard/ChallengeCard";
-import { personalizeChallenges } from "../../utils/personalization";
+import Chip from "../../components/ui/Chip/Chip";
 
 export default function Feed() {
-    const [challenges, setChallenges] = useState([]);
-    const [profile, setProfile] = useState(null);
+  const [challenges, setChallenges] = useState([]);
+  const [filter, setFilter] = useState("All");
 
-    const userId = "user1";
+  useEffect(() => {
+    fetch("/api/challenges", { credentials: "include" })
+      .then((r) => r.json())
+      .then(setChallenges);
+  }, []);
 
-    useEffect(() => {
-        const load = async () => {
-            const challengesData = await fetch("/api/challenges", { credentials: "include" }).then(r => r.json());
+  const filtered =
+    filter === "All"
+      ? challenges
+      : challenges.filter((c) => c.category === filter);
 
-            const likedIds = await fetch("/api/interactions/likes", {
-                credentials: "include"
-            }).then(r => r.json());
+  const importChallenge = async (id) => {
+    await fetch(`/api/profile/import/${id}`, {
+      method: "POST",
+      credentials: "include",
+    });
 
-            const enriched = challengesData.map(c => ({
-                ...c,
-                liked: likedIds.includes(c._id),
-            }));
+    setChallenges((prev) =>
+      prev.map((c) => (c._id === id ? { ...c, saved: true } : c))
+    );
+  };
 
-            setChallenges(enriched);
-        };
+  if (filtered.length===0)
+    return <div>No Challenges found.</div>
 
-        load();
-    }, []);
-
-    const importChallenge = async (id) => {
-        await fetch(`/api/profile/import/${id}`, {
-            method: "POST",
-            credentials: "include",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ userId }),
-          });
-    };
-
-    return (
-        <div className="feed-container">
-
-        <div className="filter-bar">
-          <div className="filter-chip active">All</div>
-          <div className="filter-chip">Food</div>
-          <div className="filter-chip">Movies</div>
-        </div>
-      
-        {challenges.map(c => (
-          <ChallengeCard
-            key={c._id}
-            challenge={c}
-            onImport={importChallenge}
+  return (
+    <div className="feed-container">
+      <div className="filter-bar">
+        {["All", "food", "movies"].map((f) => (
+          <Chip
+            key={f}
+            label={f}
+            active={filter === f}
+            onClick={() => setFilter(f)}
           />
         ))}
       </div>
 
-    );
+      {filtered.map((c) => (
+        <ChallengeCard key={c._id} challenge={c} onImport={importChallenge} />
+      ))}
+    </div>
+  );
 }

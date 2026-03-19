@@ -9,7 +9,6 @@ import Col from "react-bootstrap/Col";
 
 import UserList from "../../components/UserList.jsx"
 import ProfileInfo from "../../components/ProfileInfo/ProfileInfo.jsx"
-import Navbar from "../../components/ui/Navbar/Navbar.jsx";
 
 export default function IndexPage() {
   const [user, setUser] = useState(null)
@@ -53,7 +52,6 @@ export default function IndexPage() {
 
   return (
     <>
-    <Navbar user={user} />
     <div className="container py-4">
       {/* Header */}
       <div className="text-center mb-4">
