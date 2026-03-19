@@ -1,5 +1,6 @@
 import { useState } from "react";
 import EditProfileModal from "./EditProfileModal";
+import "./ProfileInfo.css";
 
 export default function ProfileInfo({ user, onUserUpdate }) {
   const [showModal, setShowModal] = useState(false);
@@ -9,7 +10,7 @@ export default function ProfileInfo({ user, onUserUpdate }) {
   const initials = user.username?.slice(0, 2).toUpperCase() ?? "??";
 
   return (
-    <>
+    <div className="profile-header">
       <div className="d-flex flex-column align-items-center mb-4">
         {user.profileImageURL ? (
           <img
@@ -46,6 +47,7 @@ export default function ProfileInfo({ user, onUserUpdate }) {
           }}
         />
       )}
-    </>
+    
+    </div>
   );
 }

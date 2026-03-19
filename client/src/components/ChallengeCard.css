@@ -1,0 +1,21 @@
+.challenge-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.challenge-tags {
+    display: flex;
+    gap: 6px;
+}
+
+.challenge-desc {
+    margin: 10px 0;
+    color: #666;
+}
+
+.challenge-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}

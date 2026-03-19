@@ -1,0 +1,76 @@
+.step-progress-vertical {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* ITEM */
+.step-item {
+    display: flex;
+    gap: 16px;
+}
+
+/* LEFT SIDE */
+.step-indicator {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.step-circle {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--color-surface-soft);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+.step-circle.done {
+    background: var(--color-primary);
+    color: white;
+}
+
+.step-line {
+    width: 4px;
+    height: 50px;
+    background: var(--color-surface-soft);
+    margin-top: 4px;
+}
+
+.step-line.done {
+    background: var(--color-primary);
+}
+
+/* RIGHT SIDE */
+.step-content {
+    flex: 1;
+}
+
+.step-title {
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* EXPAND */
+.step-expanded {
+    margin-top: 10px;
+    padding: 12px;
+    background: var(--color-surface);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-soft);
+}
+
+.step-image {
+    width: 100%;
+    border-radius: var(--radius-md);
+    margin-top: 8px;
+}
+
+.step-actions {
+    margin-top: 10px;
+}

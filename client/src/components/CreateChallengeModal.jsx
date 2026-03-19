@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "./CreateChallengeModal.css";
 
 export default function CreateChallengeModal({ onClose }) {
   const [title, setTitle] = useState("");
@@ -37,6 +38,7 @@ export default function CreateChallengeModal({ onClose }) {
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         placeholder="Title"
+        className="input"
       />
 
       {steps.map((s, i) => (
@@ -51,8 +53,8 @@ export default function CreateChallengeModal({ onClose }) {
         />
       ))}
 
-      <button onClick={addStep}>Add Step</button>
-      <button onClick={submit}>Create</button>
+      <button className="btn btn-soft" onClick={addStep}>Add Step</button>
+      <button className="btn btn-primary" onClick={submit}>Create</button>
     </div>
   );
 }

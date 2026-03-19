@@ -1,0 +1,33 @@
+:root {
+    /* COLORS */
+    --color-bg: #F4F1EA;
+    --color-surface: #E6F0E8;
+    --color-surface-soft: #EAF3EC;
+    --color-primary: #6BAA8E;
+    --color-primary-dark: #4F7A68;
+    --color-accent: #F2C6A0;
+  
+    --color-text: #3A3A3A;
+    --color-muted: #7A7A7A;
+  
+    --color-danger: #E57373;
+  
+    /* RADIUS SYSTEM */
+    --radius-lg: 20px;
+    --radius-md: 16px;
+    --radius-sm: 12px;
+    --radius-pill: 999px;
+  
+    /* SHADOW SYSTEM */
+    --shadow-soft: 0 4px 10px rgba(0,0,0,0.06);
+    --shadow-inner: inset 0 2px 4px rgba(255,255,255,0.5);
+  
+    /* SPACING */
+    --space-xs: 6px;
+    --space-sm: 10px;
+    --space-md: 16px;
+    --space-lg: 24px;
+  
+    /* FONT */
+    --font-main: 'Nunito', sans-serif;
+  }

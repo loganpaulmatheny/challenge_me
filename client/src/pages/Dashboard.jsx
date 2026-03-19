@@ -9,6 +9,7 @@ import Col from "react-bootstrap/Col";
 
 import UserList from "../components/UserList.jsx"
 import ProfileInfo from "../components/ProfileInfo.jsx"
+import Navbar from "../components/Navbar";
 
 export default function IndexPage() {
   const [user, setUser] = useState(null)
@@ -28,6 +29,7 @@ export default function IndexPage() {
     fetchUser();
   }, []); // The empty dependency means that this should fetch the user ONLY ONCE on page load
 
+  console.log("does this work");
   // TODO: This is all boilerplate from class, consider removal
   const reloadUsers = useCallback(async () => {
     const res = await fetch(`/api/users?q=${query}`);
@@ -50,6 +52,8 @@ export default function IndexPage() {
   }, [reloadUsers, query]);
 
   return (
+    <>
+    <Navbar user={user} />
     <div className="container py-4">
       {/* Header */}
       <div className="text-center mb-4">
@@ -71,6 +75,7 @@ export default function IndexPage() {
         </Row>
       </section>
     </div>
+    </>
   );
 }
 

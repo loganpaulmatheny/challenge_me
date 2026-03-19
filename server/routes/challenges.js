@@ -38,12 +38,60 @@ router.post("/", async (req, res) => {
 router.post("/like/:id", async (req, res) => {
   const db = req.app.locals.db;
 
-  await db.collection("challenges").updateOne(
-    { _id: new ObjectId(req.params.id) },
-    { $inc: { "stats.likes": 1 } }
-  );
+  await db
+    .collection("challenges")
+    .updateOne(
+      { _id: new ObjectId(req.params.id) },
+      { $inc: { "stats.likes": 1 } }
+    );
 
   res.sendStatus(200);
+});
+
+router.post("/like/:id", async (req, res) => {
+  const db = req.app.locals.db;
+
+  if (!req.user) {
+    return res.status(401).json({ message: "Not logged in" });
+  }
+
+  const userId = req.user._id;
+  const challengeId = new ObjectId(req.params.id);
+
+  const existing = await db.collection("interactions").findOne({
+    userId,
+    challengeId,
+    type: "like",
+  });
+
+  if (existing) {
+    // UNLIKE
+    await db.collection("interactions").deleteOne({
+      userId,
+      challengeId,
+      type: "like",
+    });
+
+    await db
+      .collection("challenges")
+      .updateOne({ _id: challengeId }, { $inc: { "stats.likes": -1 } });
+
+    return res.json({ liked: false });
+  } else {
+    // LIKE
+    await db.collection("interactions").insertOne({
+      userId,
+      challengeId,
+      type: "like",
+      createdAt: new Date(),
+    });
+
+    await db
+      .collection("challenges")
+      .updateOne({ _id: challengeId }, { $inc: { "stats.likes": 1 } });
+
+    return res.json({ liked: true });
+  }
 });
 
 export default router;

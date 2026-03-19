@@ -1,0 +1,42 @@
+.btn {
+    padding: 8px 16px;
+    border-radius: var(--radius-pill);
+    font-size: 14px;
+    transition: 0.2s ease;
+}
+
+.btn-primary {
+    background: var(--color-primary);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: var(--color-primary-dark);
+}
+
+.btn-soft {
+    background: var(--color-surface-soft);
+    color: var(--color-primary-dark);
+}
+
+/* SECONDARY */
+.btn-secondary {
+    background: var(--color-surface-soft);
+    color: var(--color-primary-dark);
+}
+
+.btn-secondary:hover {
+    background: var(--color-surface);
+}
+
+/* DANGER */
+.btn-danger {
+    background: var(--color-danger);
+    color: white;
+}
+
+/* GHOST */
+.btn-ghost {
+    background: transparent;
+    color: var(--color-primary-dark);
+}
