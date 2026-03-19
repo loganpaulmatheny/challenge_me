@@ -1,0 +1,51 @@
+.create-layout {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: var(--space-lg);
+    min-width: 700px;
+}
+
+/* LEFT */
+.builder {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+}
+
+/* ROW */
+.row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-sm);
+}
+
+/* STEPS */
+.steps-builder {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+
+.step-row {
+    display: grid;
+    grid-template-columns: 1fr 70px 40px;
+    gap: var(--space-sm);
+    align-items: center;
+}
+
+/* XP */
+.xp {
+    text-align: center;
+}
+
+/* PREVIEW */
+.preview {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+/* textarea */
+textarea.input {
+    min-height: 80px;
+}

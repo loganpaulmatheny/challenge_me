@@ -13,6 +13,15 @@ router.post("/import/:challengeId", async (req, res) => {
     _id: new ObjectId(req.params.challengeId),
   });
 
+  const existing = await db.collection("profiles").findOne({
+    userId,
+    "savedChallenges.challengeId": challenge._id,
+  });
+
+  if (existing) {
+    return res.status(400).json({ message: "Already saved" });
+  }
+
   const progress = challenge.steps.map((s) => ({
     stepId: s.id,
     completed: false,
@@ -167,6 +176,42 @@ router.get("/challenges", async (req, res) => {
   });
 
   res.json(enriched);
+});
+
+// REMOVE (UNSAVE) challenge
+router.delete("/challenge/:challengeId", async (req, res) => {
+  const db = req.app.locals.db;
+
+  if (!req.user) {
+    return res.status(401).json({ message: "Not logged in" });
+  }
+
+  const userId = req.user._id;
+  const challengeId = new ObjectId(req.params.challengeId);
+
+  // remove from profile
+  await db.collection("profiles").updateOne(
+    { userId },
+    {
+      $pull: {
+        savedChallenges: { challengeId },
+      },
+    }
+  );
+
+  // remove interaction (save)
+  await db.collection("interactions").deleteOne({
+    userId,
+    challengeId,
+    type: "save",
+  });
+
+  // decrement stats.saves
+  await db
+    .collection("challenges")
+    .updateOne({ _id: challengeId }, { $inc: { "stats.saves": -1 } });
+
+  res.json({ success: true });
 });
 
 export default router;

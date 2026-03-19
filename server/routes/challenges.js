@@ -34,6 +34,7 @@ router.get("/", async (req, res) => {
           steps: 1,
           stats: 1,
           createdAt: 1,
+          createdBy: 1,
 
           creator: {
             _id: "$creator._id",
@@ -159,6 +160,50 @@ router.post("/like/:id", async (req, res) => {
 
     return res.json({ liked: true });
   }
+});
+
+// DELETE challenge (owner only)
+router.delete("/:id", async (req, res) => {
+  const db = req.app.locals.db;
+
+  if (!req.user) {
+    return res.status(401).json({ message: "Not logged in" });
+  }
+
+  const challengeId = new ObjectId(req.params.id);
+
+  const challenge = await db.collection("challenges").findOne({
+    _id: challengeId,
+  });
+
+  if (!challenge) {
+    return res.status(404).json({ message: "Not found" });
+  }
+
+  // check ownership
+  if (!challenge.createdBy.equals(req.user._id)) {
+    return res.status(403).json({ message: "Not authorized" });
+  }
+
+  // delete challenge
+  await db.collection("challenges").deleteOne({ _id: challengeId });
+
+  // remove from ALL profiles
+  await db.collection("profiles").updateMany(
+    {},
+    {
+      $pull: {
+        savedChallenges: { challengeId },
+      },
+    }
+  );
+
+  // remove all interactions
+  await db.collection("interactions").deleteMany({
+    challengeId,
+  });
+
+  res.json({ success: true });
 });
 
 export default router;

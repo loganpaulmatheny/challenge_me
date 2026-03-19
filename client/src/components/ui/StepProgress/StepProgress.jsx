@@ -66,24 +66,6 @@ export default function StepProgress({ steps, challengeId, isEditable }) {
     setTimeout(() => setXpGain(null), 1000);
   };
 
-  useEffect(() => {
-    const checkEditable = async () => {
-      const res = await fetch("/api/profile", {
-        credentials: "include",
-      });
-
-      const data = await res.json();
-
-      const saved = data.savedChallenges?.find(
-        (c) => c.challengeId.toString() === id
-      );
-
-      setIsEditable(!!saved);
-    };
-
-    checkEditable();
-  }, [id]);
-
   return (
     <div className="steps">
       {!isEditable && (

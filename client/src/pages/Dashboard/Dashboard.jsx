@@ -9,7 +9,7 @@ import Badge from "../../components/ui/Badge/Badge";
 import "./Dashboard.css";
 
 export default function Dashboard() {
-  const { user } = useUser();
+  const { user, setProfile, profile } = useUser();
 
   const [savedChallenges, setSavedChallenges] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -47,16 +47,32 @@ export default function Dashboard() {
       })
         .then((r) => r.json())
         .then((p) => {
-          // assuming you have setProfile in context
           if (p) {
-            // optional: if using context setter
+            setProfile(p);
           }
-        });
+        })
+        .catch(console.error);
     };
 
     window.addEventListener("xpUpdated", handler);
     return () => window.removeEventListener("xpUpdated", handler);
-  }, []);
+  }, [setProfile]);
+
+  const handleRemove = async (challengeId) => {
+    try {
+      await fetch(`/api/profile/challenge/${challengeId}`, {
+        method: "DELETE",
+        credentials: "include",
+      });
+
+      // update UI instantly
+      setSavedChallenges((prev) =>
+        prev.filter((c) => c._id.toString() !== challengeId)
+      );
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   const getLevelProgress = (xp = 0, level = 1) => {
     const currentLevelXP = (level - 1) * 100;
@@ -152,7 +168,13 @@ export default function Dashboard() {
         ) : (
           <div className="feed-grid">
             {savedChallenges.map((c) => (
-              <ChallengeCard key={c._id} challenge={c} onImport={() => {}} />
+              <ChallengeCard
+                key={c._id}
+                challenge={c}
+                editableMode={true}
+                onImport={() => {}}
+                onRemove={handleRemove}
+              />
             ))}
           </div>
         )}
