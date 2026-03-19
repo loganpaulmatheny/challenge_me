@@ -23,7 +23,6 @@ A full-stack social web application that lets users challenge their friends, tra
 - [Design, Mockups, and Demo](#design-mockups-and-demo)
 - [Attributions and AI](#attributions)
 - [Authors and Course Information](#authors-and-course-information)
-- [Class Link](#class-link)
 
 ---
 
@@ -206,7 +205,7 @@ AI was used as a **development accelerator**, not a shortcut. All generated code
 - **Course**: CS5610 Web Development
 - **Semester**: Spring 2026
 - **Instructor**: John Guerra Gomez
-- **Course Website — <h3 name="class-link">Class Link**: [CS5610 Online Spring 2026](https://johnguerra.co/classes/webDevelopment_online_spring_2026/)
+- **Course Website** — [CS5610 Online Spring 2026](https://johnguerra.co/classes/webDevelopment_online_spring_2026/)
 
 ---
 
