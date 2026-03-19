@@ -10,6 +10,21 @@ router.get("/", async (req, res) => {
   res.json(challenges);
 });
 
+// GET one challenge
+router.get("/:id", async (req, res) => {
+  const db = req.app.locals.db;
+
+  const challenge = await db.collection("challenges").findOne({
+    _id: new ObjectId(req.params.id),
+  });
+
+  if (!challenge) {
+    return res.status(404).json({ message: "Not found" });
+  }
+
+  res.json(challenge);
+});
+
 // CREATE
 router.post("/", async (req, res) => {
   const db = req.app.locals.db;
