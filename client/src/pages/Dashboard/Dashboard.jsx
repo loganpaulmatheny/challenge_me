@@ -4,6 +4,7 @@ import { useUser } from "../../context/UserContext";
 import ProfileInfo from "../../components/ProfileInfo/ProfileInfo.jsx";
 import ChallengeCard from "../../components/ui/ChallengeCard/ChallengeCard";
 import Card from "../../components/ui/Card/Card";
+import Badge from "../../components/ui/Badge/Badge";
 
 import "./Dashboard.css";
 
@@ -39,9 +40,45 @@ export default function Dashboard() {
     fetchSaved();
   }, []);
 
+  useEffect(() => {
+    const handler = () => {
+      fetch("/api/profile", {
+        credentials: "include",
+      })
+        .then((r) => r.json())
+        .then((p) => {
+          // assuming you have setProfile in context
+          if (p) {
+            // optional: if using context setter
+          }
+        });
+    };
+
+    window.addEventListener("xpUpdated", handler);
+    return () => window.removeEventListener("xpUpdated", handler);
+  }, []);
+
+  const getLevelProgress = (xp = 0, level = 1) => {
+    const currentLevelXP = (level - 1) * 100;
+    const nextLevelXP = level * 100;
+
+    const progress =
+      ((xp - currentLevelXP) / (nextLevelXP - currentLevelXP)) * 100;
+
+    return {
+      progress: Math.min(Math.max(progress, 0), 100),
+      currentLevelXP,
+      nextLevelXP,
+    };
+  };
+
+  const { progress, currentLevelXP, nextLevelXP } = getLevelProgress(
+    profile?.xp || 0,
+    profile?.level || 1
+  );
+
   return (
     <div className="dashboard-page">
-
       {/* HEADER */}
       <div className="dashboard-header">
         <h1>Your Dashboard</h1>
@@ -63,25 +100,44 @@ export default function Dashboard() {
         <Card>
           <h3>Completed</h3>
           <p>
-            {
-              savedChallenges.filter(
-                (c) => c.status === "Completed"
-              ).length
-            }
+            {savedChallenges.filter((c) => c.status === "Completed").length}
           </p>
         </Card>
 
         <Card>
           <h3>In Progress</h3>
           <p>
-            {
-              savedChallenges.filter(
-                (c) => c.status === "In Progress"
-              ).length
-            }
+            {savedChallenges.filter((c) => c.status === "In Progress").length}
           </p>
         </Card>
       </div>
+
+      <section className="level-section">
+        <div className="level-header">
+          <h2>Level {profile?.level || 1}</h2>
+          <span className="xp-text">
+            {profile?.xp || 0} / {nextLevelXP} XP
+          </span>
+        </div>
+
+        <div className="progress-bar">
+          <div className="progress-fill" style={{ width: `${progress}%` }} />
+        </div>
+      </section>
+
+      {profile?.badges?.length > 0 && (
+        <section>
+          <h2>Your Badges</h2>
+
+          <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+            {profile.badges.map((b, i) => (
+              <Badge key={i} variant="primary">
+                {b}
+              </Badge>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* CHALLENGES GRID */}
       <section>
@@ -96,11 +152,7 @@ export default function Dashboard() {
         ) : (
           <div className="feed-grid">
             {savedChallenges.map((c) => (
-              <ChallengeCard
-                key={c._id}
-                challenge={c}
-                onImport={() => {}}
-              />
+              <ChallengeCard key={c._id} challenge={c} onImport={() => {}} />
             ))}
           </div>
         )}

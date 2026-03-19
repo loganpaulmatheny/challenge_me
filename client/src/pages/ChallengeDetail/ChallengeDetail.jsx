@@ -63,7 +63,11 @@ if (!challenge) {
         <div style={{ marginTop: 20 }}>
           <h4>Steps</h4>
 
-          <StepProgress steps={challenge.steps} challengeId={id} />
+          <StepProgress
+  steps={challenge.steps}
+  challengeId={id}
+  isEditable={isEditable}
+/>
         </div>
 
       </Card>

@@ -2,12 +2,12 @@ import { useEffect, useState } from "react";
 import Button from "../Button/Button";
 import "./StepProgress.css";
 
-export default function StepProgress({ steps, challengeId }) {
+export default function StepProgress({ steps, challengeId, isEditable }) {
   const [expanded, setExpanded] = useState(null);
   const [progress, setProgress] = useState([]);
   const [proof, setProof] = useState({});
   const [animating, setAnimating] = useState(null);
-  const [isEditable, setIsEditable] = useState(false);
+  const [xpGain, setXpGain] = useState(null);
 
   useEffect(() => {
     const loadProfile = async () => {
@@ -23,9 +23,6 @@ export default function StepProgress({ steps, challengeId }) {
 
       if (saved) {
         setProgress(saved.progress);
-        setIsEditable(true);
-      } else {
-        setIsEditable(false);
       }
     };
 
@@ -46,6 +43,8 @@ export default function StepProgress({ steps, challengeId }) {
 
     setAnimating(stepId);
 
+    const step = steps.find((s) => s.id === stepId);
+
     await fetch(`/api/profile/complete-step/${challengeId}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
@@ -57,19 +56,36 @@ export default function StepProgress({ steps, challengeId }) {
     });
 
     setProgress((prev) =>
-      prev.map((p) =>
-        p.stepId === stepId
-          ? { ...p, completed: true }
-          : p
-      )
+      prev.map((p) => (p.stepId === stepId ? { ...p, completed: true } : p))
     );
 
+    setXpGain({ stepId, points: step.points });
+    window.dispatchEvent(new Event("xpUpdated"));
+
     setTimeout(() => setAnimating(null), 400);
+    setTimeout(() => setXpGain(null), 1000);
   };
+
+  useEffect(() => {
+    const checkEditable = async () => {
+      const res = await fetch("/api/profile", {
+        credentials: "include",
+      });
+
+      const data = await res.json();
+
+      const saved = data.savedChallenges?.find(
+        (c) => c.challengeId.toString() === id
+      );
+
+      setIsEditable(!!saved);
+    };
+
+    checkEditable();
+  }, [id]);
 
   return (
     <div className="steps">
-
       {!isEditable && (
         <div className="steps-locked">
           Import this challenge to start tracking progress
@@ -81,7 +97,6 @@ export default function StepProgress({ steps, challengeId }) {
 
         return (
           <div key={step.id} className="step-row">
-
             {/* LEFT TIMELINE */}
             <div className="step-left">
               <div
@@ -91,6 +106,10 @@ export default function StepProgress({ steps, challengeId }) {
               >
                 {done ? "✓" : i + 1}
               </div>
+
+              {xpGain?.stepId === step.id && (
+                <div className="xp-float">+{xpGain.points} XP</div>
+              )}
 
               {i < steps.length - 1 && (
                 <div
@@ -103,11 +122,8 @@ export default function StepProgress({ steps, challengeId }) {
 
             {/* CONTENT */}
             <div className="step-content">
-
               <div
-                className={`step-title ${
-                  !isEditable ? "disabled" : ""
-                }`}
+                className={`step-title ${!isEditable ? "disabled" : ""}`}
                 onClick={() => toggle(step.id)}
               >
                 {step.title}
@@ -116,7 +132,6 @@ export default function StepProgress({ steps, challengeId }) {
 
               {expanded === step.id && isEditable && (
                 <div className="step-expand">
-
                   <input
                     placeholder="Add proof link (optional)"
                     value={proof[step.id] || ""}
@@ -137,10 +152,8 @@ export default function StepProgress({ steps, challengeId }) {
                       Complete Step
                     </Button>
                   </div>
-
                 </div>
               )}
-
             </div>
           </div>
         );
