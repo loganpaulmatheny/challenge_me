@@ -3,77 +3,77 @@ import { useState, useEffect, useCallback } from "react";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
-// import VotingList from "../components/VotingList.jsx";
-// import ApartmentListingsList from "../components/ApartmentListingsList.jsx";
-// import CreateListingForm from "../components/CreateListingForm.jsx";
+import UserList from "../../components/UserList.jsx";
+import ProfileInfo from "../../components/ProfileInfo/ProfileInfo.jsx";
 
-import UserList from "../../components/UserList.jsx"
-import ProfileInfo from "../../components/ProfileInfo/ProfileInfo.jsx"
-
-export default function IndexPage() {
-  const [user, setUser] = useState(null)
+export default function Dashboard() {
+  const [user, setUser] = useState(null);
   const [users, setUsers] = useState(null);
   const [query, setQuery] = useState("");
 
+  // FETCH CURRENT USER
   useEffect(() => {
     const fetchUser = async () => {
-      // Send a get request for the current user
-      // We send the credentials becuase it'll send the cookie
-      const res = await fetch('/api/auth/user', { credentials: 'include' });
+      const res = await fetch("/api/auth/user", {
+        credentials: "include",
+      });
+
       if (res.ok) {
         const data = await res.json();
         setUser(data.user);
       }
     };
-    fetchUser();
-  }, []); // The empty dependency means that this should fetch the user ONLY ONCE on page load
 
-  console.log("does this work");
-  // TODO: This is all boilerplate from class, consider removal
+    fetchUser();
+  }, []);
+
+  // FETCH USERS (optional / can remove later)
   const reloadUsers = useCallback(async () => {
-    const res = await fetch(`/api/users?q=${query}`);
-    if (!res.ok) {
-      console.error("Failed to fetch users:", res.statusText);
-      return;
+    try {
+      const res = await fetch(`/api/users?q=${query}`);
+      if (!res.ok) return;
+
+      const data = await res.json();
+      setUsers(data.users);
+    } catch (err) {
+      console.error("Failed to fetch users", err);
     }
-    const data = await res.json();
-    setUsers(data.users);
   }, [query]);
 
   useEffect(() => {
-    const timeout = setTimeout(reloadUsers, 300); // Debounce for 300ms
-
-    // Cleanup function to clear the timeout if query changes before timeout completes
-    return () => {
-      console.log("Fetching effect cleanup");
-      clearTimeout(timeout);
-    };
-  }, [reloadUsers, query]);
+    const timeout = setTimeout(reloadUsers, 300);
+    return () => clearTimeout(timeout);
+  }, [reloadUsers]);
 
   return (
-    <>
     <div className="container py-4">
-      {/* Header */}
+      {/* HEADER */}
       <div className="text-center mb-4">
-        <h1 className="display-5 fw-bold">Your Challenge Dashboard</h1>
-        <p className="text-muted">Track your challenges and connect with others</p>
+        <h1 className="display-5 fw-bold">
+          Your Challenge Dashboard
+        </h1>
+        <p className="text-muted">
+          Track your challenges and connect with others
+        </p>
         <hr className="w-25 mx-auto" />
       </div>
 
-      {/* Profile */}
+      {/* PROFILE */}
       <ProfileInfo user={user} onUserUpdate={setUser} />
 
-      {/* Main content */}
+      {/* MAIN CONTENT */}
       <section>
         <Row>
           <Col md={8} xs={12}>
+            {/* Optional - can remove if unused */}
             {/* <UserList users={users} query={query} setQuery={setQuery} /> */}
           </Col>
-          <Col md={4} xs={12}></Col>
+
+          <Col md={4} xs={12}>
+            {/* Future: stats / streak / activity */}
+          </Col>
         </Row>
       </section>
     </div>
-    </>
   );
 }
-

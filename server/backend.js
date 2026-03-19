@@ -14,6 +14,7 @@ import authRouter from "./routes/authentication.js";
 import challengesRouter from "./routes/challenges.js";
 import profileRouter from "./routes/profile.js";
 import seedRouter from "./routes/seed.js";
+import * as dotenv from "dotenv";
 
 dotenv.config();
 
