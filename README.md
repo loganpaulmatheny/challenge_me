@@ -190,7 +190,7 @@ AI was used as a **development accelerator**, not a shortcut. All generated code
 ---
 
 <h2 name="authors-and-course-information"> 👨‍💻 Authors and Course Information
-## 
+## Authors 
 **Logan Matheny**
 - 🎓 Graduate Student, M.S. Computer Science — Northeastern University
 - 🪖 West Point Graduate and U.S. Army Veteran
@@ -201,7 +201,7 @@ AI was used as a **development accelerator**, not a shortcut. All generated code
 - 🎓 Graduate Student, M.S. Computer Science — Northeastern University
 - 🐙 [GitHub](https://github.com/pratyushajaitly)
 
-**Course Information**
+## Course Info
 - **Course**: CS5610 Web Development
 - **Semester**: Spring 2026
 - **Instructor**: John Guerra Gomez
