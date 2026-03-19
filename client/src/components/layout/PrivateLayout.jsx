@@ -10,7 +10,6 @@ export default function PrivateLayout({ children }) {
     return <div>Loading...</div>;
   }
 
-  // AFTER loading → decide
   if (!user) {
     return <Navigate to="/" replace />;
   }
@@ -18,9 +17,7 @@ export default function PrivateLayout({ children }) {
   return (
     <>
       <Navbar user={user} />
-      <div className="container py-4">
-        {children}
-      </div>
+      <div className="container py-4">{children}</div>
     </>
   );
 }
