@@ -1,6 +1,7 @@
 import { StrictMode, useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { UserProvider } from "./context/UserContext";
 
 import Feed from "./pages/Feed/Feed.jsx";
 import Profile from "./pages/Profile/Profile.jsx";
@@ -19,14 +20,15 @@ import "./theme/base.css";
 import "./theme/utilities.css";
 
 function AppRoutes() {
-  const [user, setUser] = useState(null);
+  const { user } = useUser();
+  // const [user, setUser] = useState(null);
 
-  useEffect(() => {
-    fetch("/api/auth/user", { credentials: "include" })
-      .then((r) => r.json())
-      .then((d) => setUser(d.user))
-      .catch(() => {});
-  }, []);
+  // useEffect(() => {
+  //   fetch("/api/auth/user", { credentials: "include" })
+  //     .then((r) => r.json())
+  //     .then((d) => setUser(d.user))
+  //     .catch(() => {});
+  // }, []);
 
   return (
     <Routes>
@@ -85,7 +87,9 @@ const root = createRoot(document.getElementById("root"));
 root.render(
   <StrictMode>
     <BrowserRouter>
+    <UserProvider>
       <AppRoutes />
+      </UserProvider>
     </BrowserRouter>
   </StrictMode>
 );

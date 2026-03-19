@@ -31,6 +31,7 @@ export default function EditProfileModal({ user, onClose, onUserUpdate }) {
     setLoading(true);
     setError(null);
     try {
+      console.log({form}, JSON.stringify(form))
       const res = await fetch(`/api/users/${user._id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },

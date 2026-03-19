@@ -17,7 +17,6 @@ export default function Index() {
     state: "",
   });
 
-  console.log("does this work");
   // Change the registered user data
   const handleChange = (e) => {
     setRegisterUser({ ...registerUser, [e.target.name]: e.target.value });

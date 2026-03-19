@@ -10,11 +10,10 @@ export default function UserList({ users, query, setQuery }) {
   }
 
   const onQuery = (evt) => {
-    console.log("🏓 onQuery", evt.target.value);
+    console.log(" onQuery", evt.target.value);
     setQuery(evt.target.value);
   };
 
-  console.log("👩🏼‍🎨 Render UserList", users);
   return (
     <div>
       <h2>Users</h2>
