@@ -190,7 +190,9 @@ AI was used as a **development accelerator**, not a shortcut. All generated code
 ---
 
 <h2 name="authors-and-course-information"> 👨‍💻 Authors and Course Information
+   
 ## Authors 
+
 **Logan Matheny**
 - 🎓 Graduate Student, M.S. Computer Science — Northeastern University
 - 🪖 West Point Graduate and U.S. Army Veteran
