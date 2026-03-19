@@ -51,7 +51,7 @@ const passport = configurePassport(db);
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use("/api", users);
+app.use("/api/users", users);
 
 app.use("/api/challenges", challengesRouter);
 app.use("/api/profile", profileRouter);

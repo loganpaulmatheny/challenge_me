@@ -2,9 +2,13 @@ import { useEffect, useState } from "react";
 import ChallengeCard from "../../components/ui/ChallengeCard/ChallengeCard";
 import Chip from "../../components/ui/Chip/Chip";
 
+import { useUser } from "../../context/UserContext";
+
 export default function Feed() {
   const [challenges, setChallenges] = useState([]);
   const [filter, setFilter] = useState("All");
+
+  const { profile, likedIds, setProfile } = useUser();
 
   useEffect(() => {
     fetch("/api/challenges", { credentials: "include" })
@@ -18,23 +22,38 @@ export default function Feed() {
       : challenges.filter((c) => c.category === filter);
 
   const importChallenge = async (id) => {
+    const alreadySaved = profile?.savedChallenges?.some(
+      (c) => c.challengeId.toString() === id
+    );
+
+    if (alreadySaved) return;
+
     await fetch(`/api/profile/import/${id}`, {
       method: "POST",
       credentials: "include",
     });
 
-    setChallenges((prev) =>
-      prev.map((c) => (c._id === id ? { ...c, saved: true } : c))
-    );
+    // update local profile state
+    const newEntry = {
+      challengeId: id,
+      status: "Not Started",
+      progress: [],
+    };
+
+    setProfile((prev) => ({
+      ...prev,
+      savedChallenges: [...(prev.savedChallenges || []), newEntry],
+    }));
   };
 
-  if (filtered.length===0)
-    return <div>No Challenges found.</div>
+  if (filtered.length === 0) {
+    return <div>No Challenges found.</div>;
+  }
 
   return (
     <div className="feed-container">
       <div className="filter-bar">
-        {["All", "food", "movies"].map((f) => (
+        {["All", "food", "movies", "explore"].map((f) => (
           <Chip
             key={f}
             label={f}
@@ -44,9 +63,21 @@ export default function Feed() {
         ))}
       </div>
 
-      {filtered.map((c) => (
-        <ChallengeCard key={c._id} challenge={c} onImport={importChallenge} />
-      ))}
+      {filtered.map((c) => {
+        const saved = profile?.savedChallenges?.some(
+          (sc) => sc.challengeId.toString() === c._id
+        );
+
+        const liked = likedIds.includes(c._id);
+
+        return (
+          <ChallengeCard
+            key={c._id}
+            challenge={{ ...c, saved, liked }}
+            onImport={importChallenge}
+          />
+        );
+      })}
     </div>
   );
 }

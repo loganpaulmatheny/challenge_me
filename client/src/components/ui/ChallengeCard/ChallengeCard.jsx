@@ -1,16 +1,20 @@
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 import Card from "../Card/Card";
 import Badge from "../Badge/Badge";
 import Button from "../Button/Button";
 import Avatar from "../Avatar/Avatar";
-import { useState } from "react";
 
 import "./ChallengeCard.css";
 
 export default function ChallengeCard({ challenge, onImport }) {
   const navigate = useNavigate();
-  const [liked, setLiked] = useState(challenge.liked);
+
+  const [liked, setLiked] = useState(challenge.liked || false);
+  const [likesCount, setLikesCount] = useState(
+    challenge.stats?.likes || 0
+  );
 
   const goToDetail = () => {
     navigate(`/challenge/${challenge._id}`);
@@ -18,52 +22,47 @@ export default function ChallengeCard({ challenge, onImport }) {
 
   return (
     <Card interactive>
-      {/* CLICKABLE CONTENT */}
       <div className="challenge-click" onClick={goToDetail}>
-        {/* HEADER */}
         <div className="challenge-header">
           <div className="challenge-title-block">
             <h3>{challenge.title}</h3>
-            <div style={{ fontSize: 12, color: "var(--color-muted)" }}>
-  {challenge.creator?.username || "Anonymous"}
-</div>
-            <p className="challenge-desc">{challenge.description}</p>
-          </div>
 
-          {/* CREATOR */}
-          <Avatar
-  src={challenge.creator?.profileImageURL}
-  username={challenge.creator?.username || "??"}
-/>
+            <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+              <Avatar
+                src={challenge.creator?.profileImageURL}
+                username={challenge.creator?.username || "??"}
+                size={28}
+              />
+              <span style={{ fontSize: 12 }}>
+                {challenge.creator?.username || "Anonymous"}
+              </span>
+            </div>
+
+            <p className="challenge-desc">
+              {challenge.description}
+            </p>
+          </div>
         </div>
 
-        {/* TAGS */}
         <div className="challenge-tags">
           <Badge variant="primary">{challenge.category}</Badge>
+          <Badge variant="soft">{challenge.neighborhood}</Badge>
+          <Badge variant="soft">{challenge.timeWindow}</Badge>
 
-          {challenge.tags?.map((t) => (
-            <Badge key={t} variant="soft">
-              {t}
-            </Badge>
-          ))}
+          {challenge.saved && (
+            <Badge variant="success">Saved</Badge>
+          )}
 
-          {challenge.tags?.map((t) => (
-            <Badge key={t} variant="soft">
-              {t}
-            </Badge>
-          ))}
-
-          {challenge.saved && <Badge variant="success">Saved</Badge>}
-
-          {challenge.stats?.likes > 20 && (
+          {likesCount > 20 && (
             <Badge variant="success">Trending</Badge>
           )}
         </div>
       </div>
 
-      {/* FOOTER */}
       <div className="challenge-footer">
-        <div className="challenge-stats">❤️ {challenge.stats?.likes || 0}</div>
+        <div className="challenge-stats">
+          {likesCount} likes
+        </div>
 
         <div className="challenge-actions">
           <Button
@@ -71,23 +70,27 @@ export default function ChallengeCard({ challenge, onImport }) {
             onClick={async (e) => {
               e.stopPropagation();
 
-              const res = await fetch(`/api/challenges/like/${challenge._id}`, {
-                method: "POST",
-                credentials: "include",
-              });
+              const next = !liked;
+              setLiked(next);
+              setLikesCount((c) => (next ? c + 1 : c - 1));
 
-              const data = await res.json();
-
-              setLiked(data.liked);
+              try {
+                await fetch(`/api/challenges/like/${challenge._id}`, {
+                  method: "POST",
+                  credentials: "include",
+                });
+              } catch (err) {
+                console.error(err);
+              }
             }}
           >
-            ❤️
+            Like
           </Button>
 
           <Button
             variant="soft"
             onClick={(e) => {
-              e.stopPropagation(); // prevent card click
+              e.stopPropagation();
               onImport(challenge._id);
             }}
           >
