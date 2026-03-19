@@ -4,7 +4,7 @@ import { createRoot } from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router";
 
 import Feed from "./pages/Feed/Feed.jsx";
-import Profile from "./pages/Profile";
+import Profile from "./pages/Profile/Profile.jsx";
 import ChallengeDetail from "./pages/ChallengeDetail";
 import Admin from "./pages/Admin";
 
