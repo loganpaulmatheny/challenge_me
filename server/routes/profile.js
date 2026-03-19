@@ -112,4 +112,61 @@ router.get("/", async (req, res) => {
   res.json(profile || { xp: 0, level: 1, savedChallenges: [] });
 });
 
+router.get("/challenges", async (req, res) => {
+  const db = req.app.locals.db;
+
+  if (!req.user) {
+    return res.status(401).json({ message: "Not logged in" });
+  }
+
+  const userId = req.user._id;
+
+  const profile = await db.collection("profiles").findOne({ userId });
+
+  if (!profile || !profile.savedChallenges?.length) {
+    return res.json([]);
+  }
+
+  const challengeIds = profile.savedChallenges.map((c) => c.challengeId);
+
+  const challenges = await db
+    .collection("challenges")
+    .aggregate([
+      {
+        $match: {
+          _id: { $in: challengeIds },
+        },
+      },
+      {
+        $lookup: {
+          from: "Users",
+          localField: "createdBy",
+          foreignField: "_id",
+          as: "creator",
+        },
+      },
+      {
+        $unwind: {
+          path: "$creator",
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+    ])
+    .toArray();
+
+  const enriched = challenges.map((ch) => {
+    const saved = profile.savedChallenges.find((c) =>
+      c.challengeId.equals(ch._id)
+    );
+
+    return {
+      ...ch,
+      status: saved.status,
+      progress: saved.progress,
+    };
+  });
+
+  res.json(enriched);
+});
+
 export default router;
