@@ -163,13 +163,11 @@ Each user has a profile that tracks their challenge history, wins, and standing 
 | `POST` | `/api/challenges` | Create a new challenge |
 | `POST` | `/api/challenges/like/:id` | Like or unlike a challenge |
 | `DELETE` | `/api/challenges/:id` | Delete a challenge (owner only) |
-
 | `GET` | `/api/profile` | Get current user profile |
 | `GET` | `/api/profile/challenges` | Get saved challenges with progress |
 | `POST` | `/api/profile/import/:challengeId` | Save/import a challenge |
 | `PUT` | `/api/profile/complete-step/:challengeId` | Complete a step and update progress |
 | `DELETE` | `/api/profile/challenge/:challengeId` | Remove (unsave) a challenge from profile |
-
 | `GET` | `/api/interactions/likes` | Get liked challenge IDs for current user |
 
 ---
