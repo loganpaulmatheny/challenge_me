@@ -61,12 +61,12 @@ app.use("/api/auth", authRouter);
 app.use("/api/interactions", interactionsRouter);
 app.use("/api/seed-users", seedUsersRouter);
 
-// app.use("/", express.static("./client/dist"));
-// app.get("*splat", (req, res) => {
-//   res.sendFile("index.html", {
-//     root: join(__dirname, "./client/dist"),
-//   });
-// });
+app.use("/", express.static("./client/dist"));
+app.get("*splat", (req, res) => {
+  res.sendFile("index.html", {
+    root: join(__dirname, "./client/dist"),
+  });
+});
 app.get("/api/test", (req, res) => {
   res.json({ message: "Backend is working!" });
 });
