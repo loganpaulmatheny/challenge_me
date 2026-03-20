@@ -48,8 +48,8 @@ const DangerZoneModal = ({ user, onClose }) => {
 };
 
 DangerZoneModal.propTypes = {
-  user: PropTypes.shape.any.isRequired,
-  onClose: PropTypes.func.isRequired,
+  user: PropTypes.shape.any,
+  onClose: PropTypes.func,
 };
 
 export default DangerZoneModal;

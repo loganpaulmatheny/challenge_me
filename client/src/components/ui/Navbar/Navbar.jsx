@@ -46,9 +46,3 @@ export default function Navbar({ user }) {
     </div>
   );
 }
-
-StepProgress.propTypes = {
-  steps: PropTypes.array,
-  challengeId: PropTypes.any,
-  isEditable: PropTypes.bool,
-};

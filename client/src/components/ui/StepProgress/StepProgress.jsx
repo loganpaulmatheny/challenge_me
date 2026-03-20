@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Button from "../Button/Button";
 import "./StepProgress.css";
+import PropTypes from "prop-types";
 
 export default function StepProgress({ steps, challengeId, isEditable }) {
   const [expanded, setExpanded] = useState(null);
