@@ -9,7 +9,7 @@ import Badge from "../../components/ui/Badge/Badge";
 import "./Dashboard.css";
 
 export default function Dashboard() {
-  const { user, setProfile, profile } = useUser();
+  const { user, setProfile, profile, refreshUser } = useUser();
 
   const [savedChallenges, setSavedChallenges] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -104,7 +104,7 @@ export default function Dashboard() {
       </div>
 
       {/* PROFILE */}
-      <ProfileInfo user={user} onUserUpdate={() => {}} />
+      <ProfileInfo user={user} onUserUpdate={refreshUser} />
 
       {/* GAME STATS */}
       <div className="stats-grid">

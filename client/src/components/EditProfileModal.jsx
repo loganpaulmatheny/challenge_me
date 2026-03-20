@@ -21,7 +21,7 @@ export default function EditProfileModal({ user, onClose, onUserUpdate }) {
   });
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [showDangerZone, setShowDangerZone] = useState(false)
+  const [showDangerZone, setShowDangerZone] = useState(false);
 
   const handleChange = (e) =>
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -31,7 +31,7 @@ export default function EditProfileModal({ user, onClose, onUserUpdate }) {
     setLoading(true);
     setError(null);
     try {
-      console.log({form}, JSON.stringify(form))
+      console.log({ form }, JSON.stringify(form));
       const res = await fetch(`/api/users/${user._id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
@@ -43,7 +43,7 @@ export default function EditProfileModal({ user, onClose, onUserUpdate }) {
         throw new Error(data.message ?? "Failed to update profile");
       }
       const updatedUser = await res.json();
-      onUserUpdate(updatedUser);
+      onUserUpdate(updatedUser) && onUserUpdate();
     } catch (err) {
       setError(err.message);
     } finally {
@@ -104,7 +104,7 @@ export default function EditProfileModal({ user, onClose, onUserUpdate }) {
                   type="button"
                   className="btn btn-link text-danger p-0"
                   onClick={() => {
-                    setShowDangerZone(true)
+                    setShowDangerZone(true);
                   }}
                 >
                   Delete Account
@@ -133,14 +133,10 @@ export default function EditProfileModal({ user, onClose, onUserUpdate }) {
             </form>
           </div>
         </div>
-      </div >
+      </div>
       {showDangerZone && (
-        <DangerZoneModal
-          user={user}
-          onClose={() => setShowDangerZone(false)}
-        />
-      )
-      }
-    </div >
+        <DangerZoneModal user={user} onClose={() => setShowDangerZone(false)} />
+      )}
+    </div>
   );
 }

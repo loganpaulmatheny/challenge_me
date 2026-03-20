@@ -42,12 +42,11 @@ export default function ProfileInfo({ user, onUserUpdate }) {
           user={user}
           onClose={() => setShowModal(false)}
           onUserUpdate={(updatedUser) => {
-            onUserUpdate(updatedUser);
+            onUserUpdate && onUserUpdate();
             setShowModal(false);
           }}
         />
       )}
-    
     </div>
   );
 }
