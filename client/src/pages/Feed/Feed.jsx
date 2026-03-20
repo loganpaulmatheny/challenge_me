@@ -59,6 +59,19 @@ export default function Feed() {
     }));
   };
 
+  const handleDelete = async (id) => {
+    try {
+      await fetch(`/api/challenges/${id}`, {
+        method: "DELETE",
+        credentials: "include",
+      });
+
+      setChallenges((prev) => prev.filter((c) => c._id !== id));
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <div className="feed-page">
       <input
@@ -109,6 +122,7 @@ export default function Feed() {
                 key={c._id}
                 challenge={{ ...c, saved, liked }}
                 onImport={importChallenge}
+                onRemove={handleDelete}
               />
             );
           })

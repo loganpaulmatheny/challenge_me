@@ -47,3 +47,13 @@
     display: flex;
     gap: 6px;
 }
+
+
+.clickable-title {
+    cursor: pointer;
+    transition: 0.15s;
+}
+
+.clickable-title:hover {
+    color: var(--color-primary);
+}

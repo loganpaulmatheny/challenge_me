@@ -29,10 +29,13 @@ export default function ChallengeCard({
   };
 
   return (
-    <Card interactive onClick={goToDetail}>
+    <Card interactive>
       <div className="challenge-card">
         <div className="challenge-header">
-          <h3 className="challenge-title">{challenge.title}</h3>
+          <h3 className="challenge-title clickable-title" onClick={goToDetail}>
+            {challenge.title}
+          </h3>
+
           <div className="challenge-creator">
             <Avatar
               src={challenge.creator?.profileImageURL}
@@ -56,10 +59,41 @@ export default function ChallengeCard({
         </div>
 
         <div className="challenge-footer">
-          <span>{challenge.stats?.likes || 0} likes</span>
+          <span>{likesCount} likes</span>
+
           <div className="challenge-actions">
-            <Button variant="soft">Like</Button>
-            <Button variant="soft">Save</Button>
+            <Button
+              variant="soft"
+              onClick={(e) => {
+                e.stopPropagation();
+                setLiked((prev) => !prev);
+                setLikesCount((prev) => (liked ? prev - 1 : prev + 1));
+              }}
+            >
+              Like
+            </Button>
+
+            <Button
+              variant="soft"
+              onClick={(e) => {
+                e.stopPropagation();
+                onImport && onImport(challenge._id);
+              }}
+            >
+              Save
+            </Button>
+
+            {isOwner && (
+              <Button
+                variant="danger"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onRemove && onRemove(challenge._id);
+                }}
+              >
+                Delete
+              </Button>
+            )}
           </div>
         </div>
       </div>
