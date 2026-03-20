@@ -7,7 +7,7 @@
     "dev": "vite",
     "start": "node server/backend.js",
     "dev:server": "nodemon --env-file=server/.env server/backend.js",
-    "build": "npm install cd client && npm install && npm run build"
+    "build": "npm install && cd client && npm install && npm run build"
   },
   "keywords": [],
   "author": "Logan Matheny and Pratyusha Jaitly",
