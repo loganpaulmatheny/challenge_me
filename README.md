@@ -246,3 +246,4 @@ Thanks to [Freekpik](https://www.flaticon.com/free-icons/goal) for allowing us t
 **Made with 🤝 by Logan Matheny & Pratyusha Jaitly**
 
 _Last Updated: March 2026_
+
