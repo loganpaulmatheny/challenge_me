@@ -1,7 +1,5 @@
 # 🏆 Challenge Me
 
-[Deployed Link](https://challenge-me-fwme.onrender.com/)
-
 ![Status](https://img.shields.io/badge/Status-In%20Development-orange)
 ![React](https://img.shields.io/badge/React-61DAFB?style=flat&logo=react&logoColor=black)
 ![Vite](https://img.shields.io/badge/Vite-646CFF?style=flat&logo=vite&logoColor=white)
@@ -12,12 +10,13 @@
 ![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=flat&logo=mongodb&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=black)
 
-A full-stack social web application that lets users challenge their friends, track scores, and compete across custom challenges. Built for CS5610 Web Development at Northeastern University.
+A full-stack social web application that lets users challenge their friends, track scores, and compete across custom challenges. Built for CS5610 Web Development at Northeastern University. 
 
 ---
 
 ## 📋 Table of Contents
 
+- [Deployed Link](https://challenge-me-fwme.onrender.com/)
 - [Objective](#objective)
 - [Features](#features)
 - [Tech Stack](#tech-stack)
