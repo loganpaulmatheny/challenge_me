@@ -1,3 +1,5 @@
+// server/backend.js and server/routes/users.js - The users.js route file appears to be the default boilerplate route that comes with an Express app. It is being imported and registered in backend.js but doesn't seem to serve any real purpose in the app. You should remove the import statement and the app.use("/api/users", users) line from backend.js, and delete the users.js file from the routes folder altogether.
+
 import express from "express";
 import session from "express-session";
 import { fileURLToPath } from "url";

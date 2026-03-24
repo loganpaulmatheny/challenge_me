@@ -1,0 +1,3 @@
+//<!-- client/src/index.css
+//The index.css file is completely empty, which suggests global styles were never set up. The rubric requires each component that needs styling to have its own dedicated CSS file with the same name, loaded directly inside that component's JS file. For example, if you have a Feed.jsx component, there should be a Feed.css file that gets imported inside it. Consider either removing this empty file and organizing styles per component, or actually putting it to use.
+//-->
