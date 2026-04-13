@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import PropTypes from "prop-types";
 
 import Card from "../Card/Card";
@@ -30,13 +30,25 @@ export default function ChallengeCard({
     });
   };
 
-  const handleCardKeyDown = (e) => { if (e.key === "Enter") goToDetail(); }
+  // REPLACE handleCardKeyDown with:
+  const handleCardKeyDown = (e) => {
+    if (e.key === "Enter") {
+      goToDetail();
+    }
+    if (e.key === "Tab") {
+      e.preventDefault();
+      const cards = Array.from(document.querySelectorAll(".challenge-card-wrapper"));
+      const currentIndex = cards.indexOf(e.currentTarget);
+      const nextIndex = e.shiftKey ? currentIndex - 1 : currentIndex + 1;
+      if (cards[nextIndex]) cards[nextIndex].focus();
+    }
+  };
 
   return (
     <Card interactive
       tabIndex={0}
       onKeyDown={handleCardKeyDown}
-      className="challenge-card-wrapper"
+      className={"challenge-card-wrapper"}
     >
 
       <div className="challenge-card">
@@ -125,7 +137,7 @@ export default function ChallengeCard({
           </div>
         </div>
       </div>
-    </Card>
+    </Card >
   );
 }
 
