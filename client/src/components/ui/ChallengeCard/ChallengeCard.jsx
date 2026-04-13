@@ -30,24 +30,9 @@ export default function ChallengeCard({
     });
   };
 
-  // REPLACE handleCardKeyDown with:
-  const handleCardKeyDown = (e) => {
-    if (e.key === "Enter") {
-      goToDetail();
-    }
-    if (e.key === "Tab") {
-      e.preventDefault();
-      const cards = Array.from(document.querySelectorAll(".challenge-card-wrapper"));
-      const currentIndex = cards.indexOf(e.currentTarget);
-      const nextIndex = e.shiftKey ? currentIndex - 1 : currentIndex + 1;
-      if (cards[nextIndex]) cards[nextIndex].focus();
-    }
-  };
-
   return (
     <Card interactive
       tabIndex={0}
-      onKeyDown={handleCardKeyDown}
       className={"challenge-card-wrapper"}
     >
 
