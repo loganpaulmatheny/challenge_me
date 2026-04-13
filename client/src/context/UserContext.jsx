@@ -15,6 +15,7 @@ export function UserProvider({ children }) {
       const userRes = await fetch("/api/auth/user", {
         credentials: "include",
       });
+      console.log('got response:', userRes.status)
 
       if (!userRes.ok) {
         setUser(null);
@@ -57,8 +58,11 @@ export function UserProvider({ children }) {
   // INITIAL LOAD (delayed to avoid early 401 spam)
   useEffect(() => {
     const init = async () => {
+      console.log('init started')
       await refreshUser();
+      console.log('refreshUser done')
       setLoading(false);
+      console.log('loading set to false')
     };
 
     // small delay avoids race with login/navigation

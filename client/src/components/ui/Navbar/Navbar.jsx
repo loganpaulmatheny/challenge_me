@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useUser } from "../../../context/UserContext";
 import Button from "../Button/Button";
 import "./Navbar.css";
+import { Link } from 'react-router'
 import PropTypes from "prop-types";
 
 export default function Navbar({ user }) {
@@ -10,9 +11,9 @@ export default function Navbar({ user }) {
 
   return (
     <div className="local-navbar soft-card">
-      <div className="nav-logo" onClick={() => navigate("/feed")}>
+      <Link className="nav-logo" onClick={() => navigate("/feed")}>
         ChallengeMe
-      </div>
+      </Link>
 
       <div className="nav-links">
         <Button variant="ghost" onClick={() => navigate("/feed")}>
