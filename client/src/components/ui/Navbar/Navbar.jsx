@@ -10,7 +10,7 @@ export default function Navbar({ user }) {
   const { logout } = useUser();
 
   return (
-    <div className="local-navbar soft-card">
+    <nav className="local-navbar soft-card">
       <Link className="nav-logo" onClick={() => navigate("/feed")}>
         ChallengeMe
       </Link>
@@ -44,6 +44,6 @@ export default function Navbar({ user }) {
           Logout
         </Button>
       </div>
-    </div>
+    </nav>
   );
 }

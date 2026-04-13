@@ -30,18 +30,27 @@ export default function ChallengeCard({
     });
   };
 
+  const handleCardKeyDown = (e) => { if (e.key === "Enter") goToDetail(); }
+
   return (
-    <Card interactive>
+    <Card interactive
+      tabIndex={0}
+      onKeyDown={handleCardKeyDown}
+      className="challenge-card-wrapper"
+    >
+
       <div className="challenge-card">
         <div className="challenge-header">
           <h3
-            className="challenge-title clickable-title"
+            className="challenge-title"
+          ><span className="clickable-title"
             title={challenge.title}
             onClick={goToDetail}
           >
-            {challenge.title?.length > 30
-              ? challenge.title.slice(0, 30) + "..."
-              : challenge.title}
+              {challenge.title?.length > 30
+                ? challenge.title.slice(0, 30) + "..."
+                : challenge.title}
+            </span>
           </h3>
 
           <div className="challenge-creator">

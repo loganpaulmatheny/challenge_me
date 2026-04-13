@@ -6,6 +6,7 @@ export default function Card({
   selected = false,
   variant = "default",
   onClick,
+  ...props
 }) {
   return (
     <div
@@ -16,6 +17,7 @@ export default function Card({
         ${interactive ? "card-hover" : ""}
         ${selected ? "card-selected" : ""}
       `}
+      {...props}
     >
       {children}
     </div>
