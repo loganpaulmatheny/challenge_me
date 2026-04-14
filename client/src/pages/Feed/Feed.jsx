@@ -12,6 +12,9 @@ export default function Feed() {
   const [filter, setFilter] = useState("All");
   const [showCreate, setShowCreate] = useState(false);
   const [search, setSearch] = useState("");
+  const [category, setCategory] = useState("All");
+  const [neighborhood, setNeighborhood] = useState("All");
+  const [time, setTime] = useState("All");
 
   const [page, setPage] = useState(1);
   const PAGE_SIZE = 9;
@@ -25,9 +28,11 @@ export default function Feed() {
   }, []);
 
   const filtered = challenges.filter((c) => {
-    const matchCategory = filter === "All" || c.category === filter;
+    const matchCategory = category === "All" || c.category === category;
+    const matchNeighborhood = neighborhood === "All" || c.neighborhood === neighborhood;
+    const matchTime = time === "All" || c.timeWindow === time;
     const matchSearch = c.title.toLowerCase().includes(search.toLowerCase());
-    return matchCategory && matchSearch;
+    return matchCategory && matchNeighborhood && matchTime && matchSearch;
   });
 
   const totalPages = Math.ceil(filtered.length / PAGE_SIZE);
@@ -74,7 +79,7 @@ export default function Feed() {
     <div className="feed-page">
       <input
         className="search-input"
-        placeholder="Search challenges..."
+        placeholder="Search challenges by title"
         value={search}
         onChange={(e) => {
           setSearch(e.target.value);
