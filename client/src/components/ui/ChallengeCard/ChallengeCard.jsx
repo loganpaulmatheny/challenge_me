@@ -30,6 +30,12 @@ export default function ChallengeCard({
     });
   };
 
+  const handleDelete = () => {
+    if (window.confirm("Are you sure you want to unsave challenge?")) {
+      onRemove && onRemove(challenge._id);
+    }
+  }
+
   return (
     <Card interactive
       tabIndex={0}
@@ -113,10 +119,10 @@ export default function ChallengeCard({
                   size="sm"
                   onClick={(e) => {
                     e.stopPropagation();
-                    onRemove && onRemove(challenge._id);
+                    handleDelete();
                   }}
                 >
-                  Delete
+                  Unsave
                 </Button>
               ))}
           </div>
