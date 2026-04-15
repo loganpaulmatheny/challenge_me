@@ -3,9 +3,15 @@ import ChallengeCard from "../../components/ui/ChallengeCard/ChallengeCard";
 import Chip from "../../components/ui/Chip/Chip";
 import Button from "../../components/ui/Button/Button";
 import CreateChallengeModal from "../../components/CreateChallengeModal";
-
+import DropdownFilter from "../../components/DropdownFilter";
 import { useUser } from "../../context/UserContext";
 import "./Feed.css";
+
+import {
+  categories,
+  neighborhoods,
+  timeWindows,
+} from "../../constants/challengeOptions";
 
 export default function Feed() {
   const [challenges, setChallenges] = useState([]);
@@ -87,6 +93,7 @@ export default function Feed() {
         }}
       />
 
+
       <div className="filter-bar-container">
         <div className="filter-bar">
           {["All", "food", "movies", "explore"].map((f) => (
@@ -101,6 +108,30 @@ export default function Feed() {
             />
           ))}
         </div>
+
+        {/* I need to put in some logic to make thest things affect the filter 
+            I need to make it such that I can pass down state props? 
+        */}
+        <DropdownFilter
+          label="Category"
+          options={categories}
+          value={category}
+          onChange={setCategory}
+        />
+
+        <DropdownFilter
+          label="Neighborhood"
+          options={neighborhoods}
+          value={neighborhood}
+          onChange={setNeighborhood}
+        />
+
+        <DropdownFilter
+          label="Timeframe"
+          options={timeWindows}
+          value={time}
+          onChange={setTime}
+        />
 
         <Button size="sm" variant="primary" onClick={() => setShowCreate(true)}>
           Create
