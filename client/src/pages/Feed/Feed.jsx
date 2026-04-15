@@ -3,7 +3,7 @@ import ChallengeCard from "../../components/ui/ChallengeCard/ChallengeCard";
 import Chip from "../../components/ui/Chip/Chip";
 import Button from "../../components/ui/Button/Button";
 import CreateChallengeModal from "../../components/CreateChallengeModal";
-import DropdownFilter from "../../components/DropdownFilter";
+import DropdownFilter from "../../components/ui/DropdownFilter/DropdownFilter";
 import { useUser } from "../../context/UserContext";
 import "./Feed.css";
 
@@ -15,7 +15,7 @@ import {
 
 export default function Feed() {
   const [challenges, setChallenges] = useState([]);
-  const [filter, setFilter] = useState("All");
+  // const [filter, setFilter] = useState("All");
   const [showCreate, setShowCreate] = useState(false);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All");
@@ -95,23 +95,6 @@ export default function Feed() {
 
 
       <div className="filter-bar-container">
-        <div className="filter-bar">
-          {["All", "food", "movies", "explore"].map((f) => (
-            <Chip
-              key={f}
-              label={f}
-              active={filter === f}
-              onClick={() => {
-                setFilter(f);
-                setPage(1);
-              }}
-            />
-          ))}
-        </div>
-
-        {/* I need to put in some logic to make thest things affect the filter 
-            I need to make it such that I can pass down state props? 
-        */}
         <DropdownFilter
           label="Category"
           options={categories}

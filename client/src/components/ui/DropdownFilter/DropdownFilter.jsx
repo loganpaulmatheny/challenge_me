@@ -1,13 +1,13 @@
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
-
+import "./DropdownFilter.css"
 
 function DropdownFilter({ label, options, value, onChange }) {
   return (
     <div className="dropdown-filter">
       <label>{label}</label>
-
       <DropdownButton
+        className='dropdown-filter'
         id={`dropdown-${label}`}
         // Shows either the current value or the associated label
         title={value || label}
