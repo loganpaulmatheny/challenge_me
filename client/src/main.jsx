@@ -86,9 +86,9 @@ const root = createRoot(document.getElementById("root"));
 root.render(
   <StrictMode>
     <BrowserRouter>
-    <UserProvider>
-      <AppRoutes />
-    </UserProvider>
+      <UserProvider>
+        <AppRoutes />
+      </UserProvider>
     </BrowserRouter>
   </StrictMode>
 );

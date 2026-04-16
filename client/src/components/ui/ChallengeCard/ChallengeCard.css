@@ -112,6 +112,7 @@
   width: 100px;
   text-align: center;
   font-weight: bold;
+  /* Align the pill to the right*/
   margin-left: auto;
 }
 
