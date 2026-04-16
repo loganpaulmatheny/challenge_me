@@ -104,3 +104,28 @@
   outline-offset: 2px;
   border-radius: 4px;
 }
+
+.status-pill {
+  border-radius: 999px;
+  padding: 2px 10px;
+  font-size: 0.75rem;
+  width: 100px;
+  text-align: center;
+  font-weight: bold;
+  margin-left: auto;
+}
+
+.status-pill.not-started {
+  background: var(--color-danger);
+  color: black
+}
+
+.status-pill.in-progress {
+  background: var(--color-accent);
+  color: black
+}
+
+.status-pill.completed {
+  background: var(--color-primary);
+  color: black
+}

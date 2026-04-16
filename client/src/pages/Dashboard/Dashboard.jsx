@@ -29,6 +29,7 @@ export default function Dashboard() {
 
         const data = await res.json();
         setSavedChallenges(data);
+        console.log(data)
       } catch (err) {
         console.error(err);
       } finally {

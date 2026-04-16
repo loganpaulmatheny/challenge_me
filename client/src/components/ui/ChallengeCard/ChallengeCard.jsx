@@ -23,6 +23,7 @@ export default function ChallengeCard({
   const [likesCount, setLikesCount] = useState(challenge.stats?.likes || 0);
   const { user } = useUser();
   const isOwner = user && challenge.createdBy === user._id;
+  const [status, setStatus] = useState(challenge.completed)
 
   const goToDetail = () => {
     navigate(`/challenge/${challenge._id}`, {
@@ -55,6 +56,11 @@ export default function ChallengeCard({
                 : challenge.title}
             </span>
           </h3>
+          {challenge.status && (
+            <span className={`status-pill ${challenge.status.toLowerCase().replace(" ", "-")}`}>
+              {challenge.status}
+            </span>
+          )}
 
           <div className="challenge-creator">
             <Avatar
@@ -82,6 +88,7 @@ export default function ChallengeCard({
           <span>{likesCount} likes</span>
 
           <div className="challenge-actions">
+
             <Button
               variant={liked ? "primary" : "soft"}
               size="sm"
