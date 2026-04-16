@@ -24,9 +24,9 @@ export default function Navbar({ user }) {
           Dashboard
         </Button>
 
-        {/* <Button variant="ghost" onClick={() => navigate("/profile")}> */}
-        {/*   Profile */}
-        {/* </Button> */}
+        <Button variant="ghost" onClick={() => navigate("/profile")}>
+          Profile
+        </Button>
 
         {/* {user?.role === "admin" && ( */}
         <Button variant="ghost" onClick={() => navigate("/admin")}>
