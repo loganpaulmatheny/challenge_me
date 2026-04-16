@@ -2,7 +2,7 @@ import { MongoClient, ObjectId } from "mongodb";
 
 function UsersMongoDB({
   // Change these back to challenge_me and Users resepectively
-  dbName = "challenge_me_dev",
+  dbName = "challenge_me",
   collectionName = "Users",
 } = {}) {
   const me = {};

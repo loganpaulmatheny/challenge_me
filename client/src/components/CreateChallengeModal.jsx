@@ -141,7 +141,10 @@ export default function CreateChallengeModal({ onClose, onCreated }) {
           </div>
 
           <div className="steps-builder">
-            <h4>Steps</h4>
+            <div className="d-flex justify-content-around">
+              <h4>Steps</h4>
+              <h4>Experience</h4>
+            </div>
 
             {steps.map((s, i) => (
               <div key={i} className="step-row">
