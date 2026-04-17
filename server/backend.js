@@ -10,6 +10,7 @@ import seedUsersRouter from "./routes/seedUsers.js";
 // Routes
 import users from "./routes/users.js";
 import authRouter from "./routes/authentication.js";
+import createAuthRouter from "./routes/authentication.js";
 
 import challengesRouter from "./routes/challenges.js";
 import profileRouter from "./routes/profile.js";
@@ -61,6 +62,7 @@ app.locals.db = db;
 const passport = configurePassport(db);
 app.use(passport.initialize());
 app.use(passport.session());
+app.use("/api/auth", createAuthRouter(passport));
 
 app.use("/api/users", users);
 
