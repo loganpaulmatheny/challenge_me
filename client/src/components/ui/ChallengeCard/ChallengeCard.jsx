@@ -23,7 +23,7 @@ export default function ChallengeCard({
   const [likesCount, setLikesCount] = useState(challenge.stats?.likes || 0);
   const { user } = useUser();
   const isOwner = user && challenge.createdBy === user._id;
-  const [status, setStatus] = useState(challenge.completed)
+  const [status, setStatus] = useState(challenge.completed);
 
   const goToDetail = () => {
     navigate(`/challenge/${challenge._id}`, {
@@ -35,29 +35,42 @@ export default function ChallengeCard({
     if (window.confirm("Are you sure you want to unsave challenge?")) {
       onRemove && onRemove(challenge._id);
     }
-  }
+  };
+
+  const handleLike = async (e) => {
+    e.stopPropagation();
+    try {
+      const res = await fetch(`/api/challenges/like/${challenge._id}`, {
+        method: "POST",
+        credentials: "include",
+      });
+      const data = await res.json();
+      setLiked(data.liked);
+      setLikesCount((prev) => (data.liked ? prev + 1 : prev - 1));
+    } catch (err) {
+      console.error("Failed to toggle like:", err);
+    }
+  };
 
   return (
-    <Card interactive
-      tabIndex={0}
-      className={"challenge-card-wrapper"}
-    >
-
+    <Card interactive tabIndex={0} className={"challenge-card-wrapper"}>
       <div className="challenge-card">
         <div className="challenge-header">
-          <h3
-            className="challenge-title"
-          ><span className="clickable-title"
-            title={challenge.title}
-            onClick={goToDetail}
-          >
+          <h3 className="challenge-title">
+            <span
+              className="clickable-title"
+              title={challenge.title}
+              onClick={goToDetail}
+            >
               {challenge.title?.length > 30
                 ? challenge.title.slice(0, 30) + "..."
                 : challenge.title}
             </span>
           </h3>
           {challenge.status && (
-            <span className={`status-pill ${challenge.status.toLowerCase().replace(" ", "-")}`}>
+            <span
+              className={`status-pill ${challenge.status.toLowerCase().replace(" ", "-")}`}
+            >
               {challenge.status}
             </span>
           )}
@@ -88,15 +101,10 @@ export default function ChallengeCard({
           <span>{likesCount} likes</span>
 
           <div className="challenge-actions">
-
             <Button
               variant={liked ? "primary" : "soft"}
               size="sm"
-              onClick={(e) => {
-                e.stopPropagation();
-                setLiked((prev) => !prev);
-                setLikesCount((prev) => (liked ? prev - 1 : prev + 1));
-              }}
+              onClick={handleLike}
             >
               {liked ? "Liked" : "Like"}
             </Button>
@@ -135,7 +143,7 @@ export default function ChallengeCard({
           </div>
         </div>
       </div>
-    </Card >
+    </Card>
   );
 }
 
