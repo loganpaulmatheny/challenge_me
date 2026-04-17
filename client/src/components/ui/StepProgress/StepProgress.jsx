@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useUser } from "../../../context/UserContext"
 import Button from "../Button/Button";
 import "./StepProgress.css";
 import PropTypes from "prop-types";
@@ -9,6 +10,8 @@ export default function StepProgress({ steps, challengeId, isEditable }) {
   const [proof, setProof] = useState({});
   const [animating, setAnimating] = useState(null);
   const [xpGain, setXpGain] = useState(null);
+  // This is the key line that makes experience update in profile and dashboard
+  const { refreshUser } = useUser()
 
   useEffect(() => {
     const loadProfile = async () => {
@@ -61,7 +64,8 @@ export default function StepProgress({ steps, challengeId, isEditable }) {
     );
 
     setXpGain({ stepId, points: step.points });
-    window.dispatchEvent(new Event("xpUpdated"));
+    // Here the profile is updated with fresh data
+    await refreshUser()
 
     setTimeout(() => setAnimating(null), 400);
     setTimeout(() => setXpGain(null), 1000);
@@ -96,9 +100,8 @@ export default function StepProgress({ steps, challengeId, isEditable }) {
 
               {i < steps.length - 1 && (
                 <div
-                  className={`step-connector ${
-                    isCompleted(step.id) ? "done" : ""
-                  }`}
+                  className={`step-connector ${isCompleted(step.id) ? "done" : ""
+                    }`}
                 />
               )}
             </div>

@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import PropTypes from "prop-types";
 
 import Card from "../Card/Card";
@@ -23,6 +23,7 @@ export default function ChallengeCard({
   const [likesCount, setLikesCount] = useState(challenge.stats?.likes || 0);
   const { user } = useUser();
   const isOwner = user && challenge.createdBy === user._id;
+  const [status, setStatus] = useState(challenge.completed)
 
   const goToDetail = () => {
     navigate(`/challenge/${challenge._id}`, {
@@ -30,19 +31,36 @@ export default function ChallengeCard({
     });
   };
 
+  const handleDelete = () => {
+    if (window.confirm("Are you sure you want to unsave challenge?")) {
+      onRemove && onRemove(challenge._id);
+    }
+  }
+
   return (
-    <Card interactive>
+    <Card interactive
+      tabIndex={0}
+      className={"challenge-card-wrapper"}
+    >
+
       <div className="challenge-card">
         <div className="challenge-header">
           <h3
-            className="challenge-title clickable-title"
+            className="challenge-title"
+          ><span className="clickable-title"
             title={challenge.title}
             onClick={goToDetail}
           >
-            {challenge.title?.length > 30
-              ? challenge.title.slice(0, 30) + "..."
-              : challenge.title}
+              {challenge.title?.length > 30
+                ? challenge.title.slice(0, 30) + "..."
+                : challenge.title}
+            </span>
           </h3>
+          {challenge.status && (
+            <span className={`status-pill ${challenge.status.toLowerCase().replace(" ", "-")}`}>
+              {challenge.status}
+            </span>
+          )}
 
           <div className="challenge-creator">
             <Avatar
@@ -70,6 +88,7 @@ export default function ChallengeCard({
           <span>{likesCount} likes</span>
 
           <div className="challenge-actions">
+
             <Button
               variant={liked ? "primary" : "soft"}
               size="sm"
@@ -107,16 +126,16 @@ export default function ChallengeCard({
                   size="sm"
                   onClick={(e) => {
                     e.stopPropagation();
-                    onRemove && onRemove(challenge._id);
+                    handleDelete();
                   }}
                 >
-                  Delete
+                  Unsave
                 </Button>
               ))}
           </div>
         </div>
       </div>
-    </Card>
+    </Card >
   );
 }
 

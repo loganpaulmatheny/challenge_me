@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 
 import Card from "../../components/ui/Card/Card";
 import Badge from "../../components/ui/Badge/Badge";
@@ -12,6 +12,7 @@ export default function ChallengeDetail() {
   const { id } = useParams();
   const [challenge, setChallenge] = useState(null);
   const location = useLocation();
+  const navigate = useNavigate();
   const isEditable = location.state?.editable || false;
 
   useEffect(() => {
@@ -35,6 +36,17 @@ export default function ChallengeDetail() {
 
     fetchChallenge();
   }, [id]);
+
+  // This handles going back using the escape key after clicking on one
+  // Can be used as an example for other portions of the app
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") navigate(-1);
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [navigate]);
+
 
   if (!challenge) {
     return <div style={{ padding: 20 }}>Loading challenge...</div>;

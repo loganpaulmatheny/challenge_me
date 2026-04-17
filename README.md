@@ -10,12 +10,13 @@
 ![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=flat&logo=mongodb&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=black)
 
-A full-stack social web application that lets users challenge their friends, track scores, and compete across custom challenges. Built for CS5610 Web Development at Northeastern University.
+A full-stack social web application that lets users challenge their friends, track scores, and compete across custom challenges. Built for CS5610 Web Development at Northeastern University. 
 
 ---
 
 ## 📋 Table of Contents
 
+- [Deployed Link](https://challenge-me-fwme.onrender.com/)
 - [Objective](#objective)
 - [Features](#features)
 - [Tech Stack](#tech-stack)
@@ -58,6 +59,8 @@ Full user registration and login flow using Passport.js local strategy. Password
 ### Challenges
 
 Users can create challenges, send them to other users, and track whether they've been accepted, completed, or declined.
+Update feature for Challenges works by editing the Steps in the Challenge, in the Feed page, 
+Go to Feed-> Click on a Challenge -> and then expand the steps -> and click complete
 
 ### User Profiles
 
@@ -183,7 +186,7 @@ Each user has a profile that tracks their challenge history, wins, and standing 
 
 #### [Presentation](https://docs.google.com/presentation/d/1AM67vtAuLJtoZfiFd_NoQXPYV75k2VGY3fLCp5zUSgA/edit?usp=sharing)
 
-#### [Demo](#)
+#### [Demo](https://drive.google.com/file/d/1MBGVpu46Opq3qm3dbDpSdtCC7UuOp7Pp/view?usp=sharing)
 
 ---
 
@@ -235,7 +238,8 @@ AI was used as a **development accelerator**, not a shortcut. All generated code
 ## 📝 License
 
 MIT License — see [LICENSE](./LICENSE) for details.
-Thanks to [Freekpik](https://www.flaticon.com/free-icons/goal) for the logo
+
+Thanks to [Freekpik](https://www.flaticon.com/free-icons/goal) for allowing us to use their logo for our thumbnail
 
 ---
 

@@ -1,35 +1,35 @@
 .chip {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 
-    padding: 6px 14px;
-    border-radius: var(--radius-pill);
+  padding: 6px 14px;
+  border-radius: var(--radius-pill);
 
-    background: var(--color-surface-soft);
+  background: var(--color-surface-soft);
 
-    cursor: pointer;
-    transition: all 0.18s ease;
+  cursor: pointer;
+  transition: all 0.18s ease;
 
-    white-space: nowrap;
+  white-space: nowrap;
 
-    width: fit-content;
-    flex: 0 0 auto;
+  width: fit-content;
+  flex: 0 0 auto;
 }
 
 /* active */
 .chip-active {
-    background: var(--color-primary);
-    color: white;
-    box-shadow: var(--shadow-soft);
+  background: var(--color-primary);
+  color: black;
+  box-shadow: var(--soft);
 }
 
 /* hover */
 .chip:hover {
-    transform: translateY(-1px);
+  transform: translateY(-1px);
 }
 
 /* pressed effect */
 .chip:active {
-    transform: scale(0.97);
+  transform: scale(0.97);
 }

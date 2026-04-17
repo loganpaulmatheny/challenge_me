@@ -24,6 +24,12 @@ const __dirname = dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// ADD THIS FIRST, before anything else
+app.use((req, res, next) => {
+  console.log("incoming request:", req.method, req.url);
+  next();
+});
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -41,9 +47,14 @@ app.use(
 );
 
 const client = new MongoClient(process.env.MONGODB_URI);
-await client.connect();
-
-const db = client.db("challenge_me");
+try {
+  await client.connect();
+  console.log("Connected to MongoDB");
+} catch (err) {
+  console.error("MongoDB connection failed:", err.message);
+  process.exit(1);
+}
+const db = client.db();
 
 app.locals.db = db;
 
@@ -60,15 +71,15 @@ app.use("/api/seed", seedRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/interactions", interactionsRouter);
 app.use("/api/seed-users", seedUsersRouter);
+app.get("/api/test", (req, res) => {
+  res.json({ message: "Backend is working!" });
+});
 
 app.use("/", express.static("./client/dist"));
 app.get("*splat", (req, res) => {
   res.sendFile("index.html", {
     root: join(__dirname, "./client/dist"),
   });
-});
-app.get("/api/test", (req, res) => {
-  res.json({ message: "Backend is working!" });
 });
 
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));

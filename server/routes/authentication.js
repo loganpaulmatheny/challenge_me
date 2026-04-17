@@ -5,7 +5,7 @@ import passport from "passport";
 import userDB from "../db/UsersMongoDB.js";
 
 // used in class
-import { isAuthenticated } from "../middleware/auth.js";
+// import { isAuthenticated } from "../middleware/auth.js";
 
 const router = express.Router();
 

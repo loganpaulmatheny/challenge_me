@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Modal from "./ui/Modal/Modal";
 import Button from "./ui/Button/Button";
 import ChallengeCard from "./ui/ChallengeCard/ChallengeCard";
@@ -13,6 +13,7 @@ import {
 import "./CreateChallengeModal.css";
 
 export default function CreateChallengeModal({ onClose, onCreated }) {
+
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
 
@@ -21,6 +22,7 @@ export default function CreateChallengeModal({ onClose, onCreated }) {
   const [timeWindow, setTimeWindow] = useState(timeWindows[0]);
 
   const [steps, setSteps] = useState([{ title: "", points: 10 }]);
+
 
   const addStep = () => {
     setSteps([...steps, { title: "", points: 10 }]);
@@ -74,6 +76,14 @@ export default function CreateChallengeModal({ onClose, onCreated }) {
       username: "You",
     },
   };
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [onClose]);
 
   return (
     <Modal
@@ -131,7 +141,10 @@ export default function CreateChallengeModal({ onClose, onCreated }) {
           </div>
 
           <div className="steps-builder">
-            <h4>Steps</h4>
+            <div className="d-flex justify-content-around">
+              <h4>Steps</h4>
+              <h4>Experience</h4>
+            </div>
 
             {steps.map((s, i) => (
               <div key={i} className="step-row">
@@ -163,7 +176,7 @@ export default function CreateChallengeModal({ onClose, onCreated }) {
 
         {/* RIGHT PREVIEW */}
         <div className="preview">
-          <ChallengeCard challenge={preview} onImport={() => {}} />
+          <ChallengeCard challenge={preview} onImport={() => { }} />
         </div>
       </div>
     </Modal>

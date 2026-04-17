@@ -12,7 +12,7 @@ const db = client.db("challenge_me");
 const hash = await bcrypt.hash("password123", 10);
 
 const result = await db
-  .collection("Users")
+  .collection("users")
   .updateMany(
     { passwordHash: { $exists: false } },
     { $set: { passwordHash: hash } }

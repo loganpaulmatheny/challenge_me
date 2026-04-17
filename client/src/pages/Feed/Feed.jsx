@@ -3,15 +3,24 @@ import ChallengeCard from "../../components/ui/ChallengeCard/ChallengeCard";
 import Chip from "../../components/ui/Chip/Chip";
 import Button from "../../components/ui/Button/Button";
 import CreateChallengeModal from "../../components/CreateChallengeModal";
-
+import DropdownFilter from "../../components/ui/DropdownFilter/DropdownFilter";
 import { useUser } from "../../context/UserContext";
 import "./Feed.css";
 
+import {
+  categories,
+  neighborhoods,
+  timeWindows,
+} from "../../constants/challengeOptions";
+
 export default function Feed() {
   const [challenges, setChallenges] = useState([]);
-  const [filter, setFilter] = useState("All");
+  // const [filter, setFilter] = useState("All");
   const [showCreate, setShowCreate] = useState(false);
   const [search, setSearch] = useState("");
+  const [category, setCategory] = useState("All");
+  const [neighborhood, setNeighborhood] = useState("All");
+  const [time, setTime] = useState("All");
 
   const [page, setPage] = useState(1);
   const PAGE_SIZE = 9;
@@ -25,9 +34,11 @@ export default function Feed() {
   }, []);
 
   const filtered = challenges.filter((c) => {
-    const matchCategory = filter === "All" || c.category === filter;
+    const matchCategory = category === "All" || c.category === category;
+    const matchNeighborhood = neighborhood === "All" || c.neighborhood === neighborhood;
+    const matchTime = time === "All" || c.timeWindow === time;
     const matchSearch = c.title.toLowerCase().includes(search.toLowerCase());
-    return matchCategory && matchSearch;
+    return matchCategory && matchNeighborhood && matchTime && matchSearch;
   });
 
   const totalPages = Math.ceil(filtered.length / PAGE_SIZE);
@@ -74,7 +85,7 @@ export default function Feed() {
     <div className="feed-page">
       <input
         className="search-input"
-        placeholder="Search challenges..."
+        placeholder="Search challenges by title"
         value={search}
         onChange={(e) => {
           setSearch(e.target.value);
@@ -82,20 +93,28 @@ export default function Feed() {
         }}
       />
 
+
       <div className="filter-bar-container">
-        <div className="filter-bar">
-          {["All", "food", "movies", "explore"].map((f) => (
-            <Chip
-              key={f}
-              label={f}
-              active={filter === f}
-              onClick={() => {
-                setFilter(f);
-                setPage(1);
-              }}
-            />
-          ))}
-        </div>
+        <DropdownFilter
+          label="Category"
+          options={categories}
+          value={category}
+          onChange={setCategory}
+        />
+
+        <DropdownFilter
+          label="Neighborhood"
+          options={neighborhoods}
+          value={neighborhood}
+          onChange={setNeighborhood}
+        />
+
+        <DropdownFilter
+          label="Timeframe"
+          options={timeWindows}
+          value={time}
+          onChange={setTime}
+        />
 
         <Button size="sm" variant="primary" onClick={() => setShowCreate(true)}>
           Create

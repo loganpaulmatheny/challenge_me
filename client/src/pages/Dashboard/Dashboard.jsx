@@ -10,7 +10,6 @@ import "./Dashboard.css";
 
 export default function Dashboard() {
   const { user, profile, refreshUser, setProfile } = useUser();
-
   const [savedChallenges, setSavedChallenges] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -29,6 +28,7 @@ export default function Dashboard() {
 
         const data = await res.json();
         setSavedChallenges(data);
+        console.log(data)
       } catch (err) {
         console.error(err);
       } finally {

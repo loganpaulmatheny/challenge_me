@@ -121,6 +121,7 @@ router.get("/", async (req, res) => {
   res.json(profile || { xp: 0, level: 1, savedChallenges: [] });
 });
 
+// GET CHALLENGES
 router.get("/challenges", async (req, res) => {
   const db = req.app.locals.db;
 

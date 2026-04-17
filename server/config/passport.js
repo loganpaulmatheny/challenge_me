@@ -10,6 +10,7 @@ export default function configurePassport(db) {
       async (email, password, done) => {
         try {
           // Try to find the user in MongoDB based on their email
+          // CHANGE THIS BACK FOR THE MAIN BRANCH to Users
           const user = await db.collection("Users").findOne({ email });
           if (!user)
             return done(null, false, { message: "User or password incorrect" });

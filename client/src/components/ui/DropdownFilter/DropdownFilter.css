@@ -1,0 +1,19 @@
+.dropdown-filter {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 6px 14px;
+  border-radius: var(--radius-pill);
+
+  background: var(--color-surface-soft);
+
+
+}
+
+.dropdown-filter .btn {
+  background-color: var(--color-accent);
+  border-color: var(--color-accent);
+  color: var(--color-text);
+  border-radius: var(--radius-pill);
+}

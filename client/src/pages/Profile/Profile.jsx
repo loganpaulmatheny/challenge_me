@@ -8,8 +8,12 @@ export default function Profile() {
 
   useEffect(() => {
     fetch("/api/profile", { credentials: "include" })
-      .then((r) => r.json())
-      .then(setProfile);
+      .then((r) => {
+        if (!r.ok) throw new Error(r.status);
+        return r.json()
+      })
+      .then(setProfile)
+      .catch((err) => console.error("Profile fetch failed:", err))
   }, []);
 
   if (!profile) return <div>Loading...</div>;
