@@ -2,11 +2,14 @@ import "./Avatar.css";
 import PropTypes from "prop-types";
 
 export default function Avatar({ src, username = "", size = 48 }) {
+  const initials = username.slice(0, 2).toUpperCase() || "?";
+  const fontSize = Math.max(10, Math.round(size * 0.38));
+
   if (src) {
     return (
       <img
         src={src}
-        alt={username}
+        alt={`${username}'s avatar`}
         className="avatar"
         style={{ width: size, height: size }}
       />
@@ -16,9 +19,11 @@ export default function Avatar({ src, username = "", size = 48 }) {
   return (
     <div
       className="avatar avatar-fallback"
-      style={{ width: size, height: size }}
+      role="img"
+      aria-label={`${username}'s avatar`}
+      style={{ width: size, height: size, fontSize }}
     >
-      {username.slice(0, 2).toUpperCase()}
+      {initials}
     </div>
   );
 }
