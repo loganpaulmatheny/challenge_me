@@ -1,29 +1,34 @@
-import Dropdown from 'react-bootstrap/Dropdown';
-import DropdownButton from 'react-bootstrap/DropdownButton';
-import "./DropdownFilter.css"
+import "./DropdownFilter.css";
+import PropTypes from "prop-types";
 
-function DropdownFilter({ label, options, value, onChange }) {
+export default function DropdownFilter({ label, options, value, onChange }) {
+  const id = `filter-${label.toLowerCase().replace(/\s+/g, "-")}`;
+
   return (
     <div className="dropdown-filter">
-      <label>{label}</label>
-      <DropdownButton
-        className='dropdown-filter'
-        id={`dropdown-${label}`}
-        // Shows either the current value or the associated label
-        title={value || label}
-        onSelect={(val) => onChange(val)}
+      <label className="dropdown-label" htmlFor={id}>
+        {label}
+      </label>
+      <select
+        id={id}
+        className="dropdown-select"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
       >
-        <Dropdown.Item eventKey="All">All</Dropdown.Item>
+        <option value="All">All</option>
         {options.map((item) => (
-          // Key is for react rendering and eventKey will be the value flowing 
-          // through onChange setter
-          <Dropdown.Item key={item} eventKey={item}>{item}</Dropdown.Item>
+          <option key={item} value={item}>
+            {item}
+          </option>
         ))}
-      </DropdownButton>
+      </select>
     </div>
-
-
   );
 }
 
-export default DropdownFilter;
+DropdownFilter.propTypes = {
+  label: PropTypes.string.isRequired,
+  options: PropTypes.arrayOf(PropTypes.string).isRequired,
+  value: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+};

@@ -1,19 +1,55 @@
 .dropdown-filter {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  padding: 6px 14px;
-  border-radius: var(--radius-pill);
-
-  background: var(--color-surface-soft);
-
-
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 130px;
 }
 
-.dropdown-filter .btn {
-  background-color: var(--color-accent);
-  border-color: var(--color-accent);
-  color: var(--color-text);
-  border-radius: var(--radius-pill);
+.dropdown-label {
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink-600);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.55), 0 -1px 0 rgba(30, 46, 42, 0.08);
+}
+
+.dropdown-select {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 100%;
+  padding: 7px 32px 7px 12px;
+  background-color: var(--fi-surface);
+  background-image: var(--grain-subtle),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%234A6860'/%3E%3C/svg%3E");
+  background-repeat: no-repeat, no-repeat;
+  background-position: center, right 10px center;
+  border-radius: var(--radius-md);
+  border-top: 1.5px solid rgba(30, 46, 42, 0.22);
+  border-left: 1.5px solid rgba(30, 46, 42, 0.14);
+  border-bottom: 1.5px solid rgba(255, 255, 255, 0.60);
+  border-right: 1.5px solid rgba(255, 255, 255, 0.50);
+  box-shadow: var(--shadow-inset);
+  font-family: var(--font-ui);
+  font-size: 13px;
+  color: var(--ink-800);
+  cursor: pointer;
+  transition: box-shadow 0.14s ease, border-color 0.14s ease;
+}
+
+.dropdown-select:focus {
+  outline: none;
+  box-shadow: var(--shadow-inset), var(--shadow-focus);
+  border-top-color: rgba(67, 129, 115, 0.40);
+  border-left-color: rgba(67, 129, 115, 0.28);
+}
+
+.dropdown-select:hover {
+  border-top-color: rgba(67, 129, 115, 0.30);
+}
+
+.dark .dropdown-select {
+  border-top-color: rgba(0, 0, 0, 0.36);
+  border-left-color: rgba(0, 0, 0, 0.24);
+  border-bottom-color: rgba(255, 255, 255, 0.06);
+  border-right-color: rgba(255, 255, 255, 0.04);
 }
