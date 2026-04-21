@@ -183,13 +183,9 @@ Each user has a profile that tracks their challenge history, wins, and standing 
 
 <h2 name="screenshots"> 📸 Screenshots
 
-| Dashboard | Profile |
-|-----------|---------|
-| ![Dashboard](.assets/Screenshot 2026-04-21 at 7.05.11 PM.png) | ![Profile](./assets/Screenshot%202026-04-21%20at%207.12.42%20PM.png) |
+| ![Dashboard](.assets/dashboard.png) | ![Profile](.homepage.png) |
 
-| Create Challenge — Intro | Create Challenge — Form Validation |
-|--------------------------|------------------------------------|
-| ![Create Challenge Intro](./assets/Screenshot%202026-04-21%20at%207.05.11%20PM.png) | ![Create Challenge Form](./assets/Screenshot%202026-04-21%20at%207.12.23%20PM.png) |
+| ![Create Challenge Intro](./assets/profile.png) | ![Create Challenge Form](./assets/form.png) |
 
 ---
 
