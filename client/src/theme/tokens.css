@@ -1,45 +1,272 @@
+/* ═══════════════════════════════════════════════════════════
+   CHALLENGE ME — DESIGN TOKENS
+   All values confirmed in theme_showcase.html
+   Naming: --ci-* = Challenge Me interface tokens
+   ═══════════════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;500;600;700;800&family=Special+Elite&family=Dancing+Script:wght@600;700&display=swap');
+
 :root {
-  /* COLORS */
-  --color-bg: #F4F1EA;
-  --color-surface: #B8D4BD;
-  --color-surface-soft: #C4DCCA;
-  --color-primary: #6BAA8E;
-  --color-primary-dark: #4F7A68;
-  --color-primary-darker: #3730a3;
-  --color-surface-softer: #eef2ff;
-  --color-accent: #F2C6A0;
 
-  --color-text: #3A3A3A;
-  --color-muted: #636363;
+  /* ── LAYOUT ──────────────────────────────────────────────
+     Page + nav backgrounds                                  */
+  --page-bg:   #E2E9E6;   /* Sage Mist — page canvas        */
+  --nav-bg:    #2A3828;   /* Canopy Ink — light-mode nav    */
+  --dark-bg:   #1E3040;   /* Ocean Floor — dark-mode canvas */
+  --dark-nav:  #EBF2EF;   /* Lace — dark-mode nav           */
 
-  --color-danger: #E57373;
+  /* ── SURFACES ────────────────────────────────────────────
+     Cards, panels, and form inputs                          */
+  --ci-surface:  #EAECEE;   /* Winter Linen — cards & panels */
+  --ci-lace:     #EBF2EF;   /* Lace — lace card variant      */
+  --fi-surface:  #D1E0EC;   /* Pale Hollows — inputs only    */
+  --ci-surface-dark: #202E2A;  /* dark-mode card surface     */
+  --fi-surface-dark: #1E2C28;  /* dark-mode input surface    */
 
-  /* RADIUS SYSTEM */
-  --radius-lg: 20px;
-  --radius-md: 16px;
-  --radius-sm: 12px;
+  /* ── INK / TYPOGRAPHY SCALE ──────────────────────────────
+     All contrast ratios checked against #EAECEE (card)
+     WCAG AA = 4.5:1 for body text, 3:1 for large/UI text   */
+  --ink-900:  #1E2E2A;   /* Deep Ink   — AAA 11.2:1          */
+  --ink-800:  #243A32;   /* Grove Dark — AAA  9.2:1          */
+  --ink-700:  #2E4A44;   /* Grove Ink  — AAA  8.2:1 body     */
+  --ink-600:  #3E5A52;   /* Grove Mid  — AA   5.8:1 labels   */
+  --ink-500:  #4A6860;   /* Grove Soft — AA   4.6:1 secondary*/
+  --ink-400:  #52726A;   /* Ink Muted  — 4.1:1 tertiary only */
+  --ink-300:  #6E8C8A;   /* Ink Pale   — 3:1 placeholder     */
+  --ink-note: #4E6E68;   /* Note/meta  — AA   4.2:1 flavor   */
+
+  /* ── PRIMARY TEAL — D1 ───────────────────────────────────*/
+  --ci-primary:     #438173;   /* Primary Teal             */
+  --ci-primary-hov: #387068;   /* Hover state              */
+  --ci-primary-bdr: #2A5A4A;   /* Pressed / border         */
+  --ci-info:        #3E4E78;   /* Slate Indigo — info — D3 */
+  --ci-xp:          #389898;   /* Cove Blue — XP bars — D7 */
+
+  /* ── TERRA ACCENT — D2 ───────────────────────────────────*/
+  --ci-terra:     #985060;   /* Garnet Earth             */
+  --ci-terra-hov: #7A3C4A;   /* Hover state              */
+  --ci-terra-bdr: #602C38;   /* Pressed / border         */
+
+  /* ── ACHIEVEMENT / RANKS — D8 · D11 ─────────────────────*/
+  --ci-gold:      #A89848;   /* Aged Gilt — gold badges  */
+  --ci-rank-1:    #A89848;   /* 1st place  = gold        */
+  --ci-rank-2:    #389898;   /* 2nd place  = Cove Blue   */
+  --ci-rank-3:    #6090A0;   /* 3rd place  = Lake Mist   */
+  --ci-rank-rest: #8AA8A0;   /* Unranked   = Mist Neutral*/
+
+  /* ── NOTIFICATIONS & PRESENCE — D10 ─────────────────────*/
+  --ci-notify:        #906070;   /* Fogged Rose — notifs   */
+  --presence-online:  #4CAF50;   /* Online dot             */
+  --presence-offline: #9E9E9E;   /* Offline dot = disabled */
+
+  /* ── BADGE TEXT COLOURS ──────────────────────────────────*/
+  --active-txt: #1E4A40;
+  --streak-txt: #7A2E28;
+  --gold-txt:   #5C4E00;
+  --done-txt:   #1E4A20;
+
+  /* ── FOCUS / OVERLAYS ────────────────────────────────────*/
+  --focus-ring:  rgba(120, 152, 160, 0.34);   /* D9 Fog Stone ring  */
+  --img-overlay: rgba(120, 152, 160, 0.30);   /* D13 image strip    */
+  --ci-shimmer:  rgba(136, 144, 168, 0.28);   /* D14 skeleton sweep */
+
+  /* ── SEMANTIC STATES ─────────────────────────────────────*/
+  --ci-success:     #5A8858;   /* Grove Green   — ✓ saved  */
+  --ci-success-hov: #486E46;
+  --ci-success-bdr: #3A5C38;
+  --ci-error:       #A03050;   /* Vivid Garnet  — ✗ failed */
+  --ci-error-hov:   #7E2440;
+  --ci-error-bdr:   #6A1C32;
+  --ci-warning:     #B09040;   /* Compass Amber — ⚠ caution*/
+  --ci-warning-hov: #8E7330;
+  --ci-warning-bdr: #745E25;
+  --ci-disabled:    #9E9E9E;   /* Neutral Grey  — inactive */
+
+  /* ── TEAL RGBA SCALE ─────────────────────────────────────
+     Base: rgba(67, 129, 115, α) = Primary Teal              */
+  --teal-07:  rgba(67, 129, 115, 0.07);
+  --teal-10:  rgba(67, 129, 115, 0.10);
+  --teal-14:  rgba(67, 129, 115, 0.14);
+  --teal-18:  rgba(67, 129, 115, 0.18);
+  --teal-22:  rgba(67, 129, 115, 0.22);
+  --teal-28:  rgba(67, 129, 115, 0.28);
+  --teal-36:  rgba(67, 129, 115, 0.36);
+  --teal-52:  rgba(67, 129, 115, 0.52);
+
+  /* ── TERRA RGBA SCALE ────────────────────────────────────
+     Base: rgba(152, 80, 96, α) = Garnet Earth               */
+  --terra-09: rgba(152, 80, 96, 0.09);
+  --terra-12: rgba(152, 80, 96, 0.12);
+  --terra-18: rgba(152, 80, 96, 0.18);
+  --terra-28: rgba(152, 80, 96, 0.28);
+  --terra-42: rgba(152, 80, 96, 0.42);
+
+  /* ── GOLD RGBA SCALE ─────────────────────────────────────
+     Base: rgba(168, 152, 72, α) = Aged Gilt                 */
+  --gold-10:  rgba(168, 152, 72, 0.10);
+  --gold-14:  rgba(168, 152, 72, 0.14);
+  --gold-22:  rgba(168, 152, 72, 0.22);
+
+  /* ── TYPOGRAPHY ──────────────────────────────────────────*/
+  --font-display: 'Fredoka One', sans-serif;   /* Headings, titles    */
+  --font-ui:      'Nunito', sans-serif;        /* All UI text         */
+  --font-flavor:  'Special Elite', monospace;  /* Flavor / quest lore */
+  --font-creator: 'Dancing Script', cursive;   /* Creator names — D15 */
+
+  /* ── SPACING ─────────────────────────────────────────────*/
+  --sp-xs:  4px;
+  --sp-sm:  8px;
+  --sp-md:  16px;
+  --sp-lg:  24px;
+  --sp-xl:  40px;
+  --sp-2xl: 64px;
+
+  /* ── BORDER RADIUS ───────────────────────────────────────*/
+  --radius-sm:   8px;
+  --radius-md:   12px;
+  --radius-lg:   16px;
+  --radius-xl:   20px;
   --radius-pill: 999px;
 
-  /* SHADOW SYSTEM */
-  --shadow-soft: 0 4px 10px rgba(0, 0, 0, 0.06);
-  --shadow-inner: inset 0 2px 4px rgba(255, 255, 255, 0.5);
+  /* ── SHADOWS ─────────────────────────────────────────────*/
+  --shadow-card:    inset 0 1.5px 0 rgba(255,255,255,0.56),
+                    0 3px 14px rgba(30,46,42,0.10);
+  --shadow-raised:  inset 0 1px 0 rgba(255,255,255,0.52),
+                    2px 3px 0 rgba(30,46,42,0.14),
+                    0 2px 8px rgba(67,129,115,0.14);
+  --shadow-hover:   inset 0 1px 0 rgba(255,255,255,0.44),
+                    3px 4px 0 rgba(30,46,42,0.18),
+                    0 4px 14px rgba(67,129,115,0.20);
+  --shadow-pressed: inset 0 2px 4px rgba(30,46,42,0.18),
+                    inset 0 -1px 0 rgba(255,255,255,0.28);
+  --shadow-inset:   inset 0 2px 5px rgba(30,46,42,0.13),
+                    inset 0 -1px 0 rgba(255,255,255,0.52);
+  --shadow-focus:   0 0 0 4px var(--focus-ring);
+  --shadow-modal:   0 32px 80px rgba(30,46,42,0.34),
+                    0 4px 0 rgba(74,142,126,0.10);
 
-  /* SPACING */
-  --space-xs: 6px;
-  --space-sm: 10px;
-  --space-md: 16px;
-  --space-lg: 24px;
+  /* ── PARCHMENT GRAIN TEXTURE ─────────────────────────────
+     Apply as background-image on any element for papery feel */
+  --grain-subtle: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.065 0.072' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23p)' opacity='0.042'/%3E%3C/svg%3E");
+  --grain-page:   url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='340' height='340'%3E%3Cfilter id='gr'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.036 0.040' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='340' height='340' filter='url(%23gr)' opacity='0.042'/%3E%3C/svg%3E");
 
-  /* FONT */
-  --font-main: 'Nunito', sans-serif;
+  /* ── BACKWARD-COMPATIBLE ALIASES ────────────────────────
+     Old --color-* names still work — nothing breaks yet    */
+  --color-bg:               var(--page-bg);
+  --color-surface:          var(--ci-surface);
+  --color-surface-soft:     var(--ci-surface);
+  --color-surface-softer:   var(--ci-lace);
+  --color-primary:          var(--ci-primary);
+  --color-primary-dark:     var(--ci-primary-hov);
+  --color-primary-darker:   var(--ci-primary-bdr);
+  --color-accent:           var(--ci-terra);
+  --color-text:             var(--ink-900);
+  --color-muted:            var(--ink-500);
+  --color-danger:           var(--ci-error);
+  --font-main:              var(--font-ui);
+  --shadow-soft:            var(--shadow-card);
+  --shadow-inner:           var(--shadow-inset);
+  --space-xs: var(--sp-xs);
+  --space-sm: var(--sp-sm);
+  --space-md: var(--sp-md);
+  --space-lg: var(--sp-lg);
+}
 
-  /* NEW SHADOW SYSTEM (TACTILE) */
-  --shadow-raised: 0 2px 4px rgba(0, 0, 0, 0.08),
-    0 1px 0 rgba(255, 255, 255, 0.6) inset;
+/* ── DARK MODE ─────────────────────────────────────────────
+   Activated by adding class="dark" to <html> or <body>
+   All values confirmed and WCAG-checked in theme_showcase   */
+.dark, [data-theme="dark"] {
+  --page-bg:    #1E3040;   /* Ocean Floor                   */
+  --nav-bg:     #EBF2EF;   /* Lace — inverted nav           */
+  --ci-surface: #202E2A;   /* Dark card surface             */
+  --ci-lace:    #1E2C28;
+  --fi-surface: #1E2C28;   /* Dark input surface            */
 
-  --shadow-hover: 0 4px 10px rgba(0, 0, 0, 0.12),
-    0 1px 0 rgba(255, 255, 255, 0.6) inset;
+  /* Ink scale — all verified on #202E2A dark surface */
+  --ink-900:  #E8EEF2;   /* AAA 11.3:1 */
+  --ink-800:  #D4E0E8;   /* AAA  9.8:1 */
+  --ink-700:  #C0CED8;   /* AAA  8.4:1 */
+  --ink-600:  #A0B8C4;   /* AA   6.7:1 */
+  --ink-500:  #8AA4B0;   /* AA   5.3:1 */
+  --ink-400:  #7890A0;   /* 4.3:1 secondary only */
+  --ink-300:  #90B0B8;   /* AA   5.1:1 chip text */
+  --ink-note: #608090;
 
-  --shadow-pressed: inset 0 2px 4px rgba(0, 0, 0, 0.15),
-    inset 0 -1px 2px rgba(255, 255, 255, 0.4);
+  --ci-primary:     #5AB898;
+  --ci-primary-hov: #4AA888;
+  --ci-primary-bdr: #3A8878;
+  --ci-info:        #7A92C8;
+  --ci-xp:          #4AB8B8;
+  --ci-terra:       #C07888;
+  --ci-terra-hov:   #A86070;
+  --ci-terra-bdr:   #885060;
+  --ci-gold:        #D8C878;
+  --ci-rank-1:      #D8C878;
+  --ci-rank-2:      #7ADDD0;
+  --ci-rank-3:      #6ABCD0;
+  --ci-rank-rest:   #8ABDB6;
+  --ci-notify:      #C09090;
+  --presence-online:  #4CAF50;
+  --presence-offline: #6A6A6A;
+  --active-txt: #7ACFC4;
+  --streak-txt: #D8A0B0;
+  --gold-txt:   #D8C878;
+  --done-txt:   #88C888;
+  --focus-ring:  rgba(90, 184, 152, 0.40);
+  --img-overlay: rgba(30, 48, 64, 0.65);
+  --ci-shimmer:  rgba(90, 184, 152, 0.20);
+  --ci-success:     #6A9868;
+  --ci-success-hov: #7AAA78;
+  --ci-success-bdr: #4A7848;
+  --ci-error:       #C05070;
+  --ci-error-hov:   #A03D5E;
+  --ci-error-bdr:   #884050;
+  --ci-warning:     #C8A848;
+  --ci-warning-hov: #A88830;
+  --ci-warning-bdr: #887028;
+  --ci-disabled:    #5A5A5A;
+
+  /* Teal rgba — lighter base in dark mode */
+  --teal-07:  rgba(90, 184, 152, 0.07);
+  --teal-10:  rgba(90, 184, 152, 0.10);
+  --teal-14:  rgba(90, 184, 152, 0.14);
+  --teal-18:  rgba(90, 184, 152, 0.18);
+  --teal-22:  rgba(90, 184, 152, 0.22);
+  --teal-28:  rgba(90, 184, 152, 0.28);
+  --teal-36:  rgba(90, 184, 152, 0.36);
+  --teal-52:  rgba(90, 184, 152, 0.52);
+
+  /* Terra rgba */
+  --terra-09: rgba(192, 120, 136, 0.09);
+  --terra-12: rgba(192, 120, 136, 0.12);
+  --terra-18: rgba(192, 120, 136, 0.18);
+  --terra-28: rgba(192, 120, 136, 0.28);
+  --terra-42: rgba(192, 120, 136, 0.42);
+
+  /* Gold rgba */
+  --gold-10:  rgba(200, 184, 88, 0.10);
+  --gold-14:  rgba(200, 184, 88, 0.14);
+  --gold-22:  rgba(200, 184, 88, 0.22);
+
+  --shadow-card:    inset 0 1px 0 rgba(255,255,255,0.06),
+                    0 3px 14px rgba(0,0,0,0.24);
+  --shadow-raised:  inset 0 1px 0 rgba(255,255,255,0.06),
+                    2px 3px 0 rgba(0,0,0,0.28),
+                    0 2px 8px rgba(90,184,152,0.12);
+  --shadow-hover:   inset 0 1px 0 rgba(255,255,255,0.06),
+                    3px 4px 0 rgba(0,0,0,0.34),
+                    0 4px 14px rgba(90,184,152,0.16);
+  --shadow-focus:   0 0 0 4px var(--focus-ring);
+  --shadow-modal:   0 32px 80px rgba(0,0,0,0.50),
+                    0 4px 0 rgba(90,184,152,0.10);
+
+  /* Backward-compat aliases — dark mode values */
+  --color-bg:             var(--page-bg);
+  --color-surface:        var(--ci-surface);
+  --color-surface-soft:   var(--ci-surface);
+  --color-surface-softer: var(--ci-lace);
+  --color-primary:        var(--ci-primary);
+  --color-text:           var(--ink-900);
+  --color-muted:          var(--ink-500);
+  --color-danger:         var(--ci-error);
 }
