@@ -1,8 +1,3 @@
-/* ═══════════════════════════════════════════════════════════
-   UTILITIES — reusable single-purpose helpers
-   ═══════════════════════════════════════════════════════════ */
-
-/* Layout */
 .flex-center {
   display: flex;
   align-items: center;
@@ -20,7 +15,6 @@
   flex-direction: column;
 }
 
-/* Card surface — Winter Linen with parchment grain */
 .soft-card {
   background-color: var(--ci-surface);
   background-image: var(--grain-subtle);
@@ -32,7 +26,6 @@
   box-shadow: var(--shadow-card);
 }
 
-/* Text helpers */
 .text-display {
   font-family: var(--font-display);
 }
