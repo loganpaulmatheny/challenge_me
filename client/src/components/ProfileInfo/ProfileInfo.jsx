@@ -19,7 +19,7 @@ export default function ProfileInfo({ user, onUserUpdate }) {
           size={80}
         />
         <div className="profile-info-meta">
-          <h3 className="profile-info-username">{user.username}</h3>
+          <h2 className="profile-info-username">{user.username}</h2>
           <p className="profile-info-email">{user.email}</p>
         </div>
       </div>

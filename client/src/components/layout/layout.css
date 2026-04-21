@@ -10,6 +10,7 @@
   width: 100%;
   margin: 0 auto;
   padding: var(--sp-lg);
+  padding-top: calc(var(--sp-lg) + 24px);
 }
 
 .app-loading {

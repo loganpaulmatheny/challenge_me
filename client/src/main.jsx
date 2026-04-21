@@ -1,7 +1,8 @@
-import { StrictMode, useEffect, useState } from "react";
+import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { UserProvider } from "./context/UserContext";
+import { ToastProvider } from "./context/ToastContext";
 
 import Feed from "./pages/Feed/Feed.jsx";
 import Profile from "./pages/Profile/Profile.jsx";
@@ -11,10 +12,6 @@ import Index from "./pages/Index.jsx";
 import Dashboard from "./pages/Dashboard/Dashboard.jsx";
 import PublicLayout from "./components/layout/PublicLayout";
 import PrivateLayout from "./components/layout/PrivateLayout";
-
-import AppLayout from "./components/layout/AppLayout.jsx";
-
-import "bootstrap/dist/css/bootstrap.min.css";
 
 import "./index.css";
 import "./theme/tokens.css";
@@ -87,7 +84,9 @@ root.render(
   <StrictMode>
     <BrowserRouter>
       <UserProvider>
-        <AppRoutes />
+        <ToastProvider>
+          <AppRoutes />
+        </ToastProvider>
       </UserProvider>
     </BrowserRouter>
   </StrictMode>

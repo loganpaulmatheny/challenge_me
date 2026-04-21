@@ -43,4 +43,7 @@ Card.propTypes = {
   tint: PropTypes.oneOf(["teal", "terra", "gold", "mist", "sketch", "lace"]),
   onClick: PropTypes.func,
   className: PropTypes.string,
+  role: PropTypes.string,
+  "aria-labelledby": PropTypes.string,
+  "aria-label": PropTypes.string,
 };

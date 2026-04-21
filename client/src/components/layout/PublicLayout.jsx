@@ -8,8 +8,8 @@ export default function PublicLayout({ children }) {
 
   if (loading) {
     return (
-      <div className="app-loading">
-        <div className="app-loading-dots" aria-label="Loading">
+      <div className="app-loading" role="status" aria-label="Loading application">
+        <div className="app-loading-dots" aria-hidden="true">
           <span /><span /><span />
         </div>
         <p className="app-loading-text">Loading...</p>

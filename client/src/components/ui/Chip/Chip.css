@@ -2,35 +2,40 @@
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  padding: 5px 14px;
-  border-radius: var(--radius-pill);
-  border: 1.5px solid rgba(74, 142, 126, 0.32);
+  padding: 0 16px;
+  min-height: 36px;
+  border-radius: 16px 13px 15px 14px / 14px 15px 13px 16px;
+  border: 1.8px solid rgba(74, 142, 126, 0.32);
   background-color: var(--ci-surface);
   background-image: var(--grain-subtle);
   color: var(--ink-700);
-  font-family: var(--font-ui);
+  font-family: var(--font-display);
   font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.01em;
-  white-space: nowrap;
   cursor: pointer;
+  position: relative;
+  isolation: isolate;
+  white-space: nowrap;
   flex: 0 0 auto;
-  width: fit-content;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.50), 0 -1px 0 rgba(30, 46, 42, 0.08);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.52),
-              1px 2px 0 rgba(30, 46, 42, 0.08);
-  transition: transform 0.12s cubic-bezier(0.34, 1.4, 0.64, 1),
-              box-shadow 0.12s ease,
-              background-color 0.12s ease,
-              border-color 0.12s ease;
+  box-shadow: 1px 2px 0 rgba(30, 46, 42, 0.14);
+  transition: transform 0.15s ease, box-shadow 0.15s ease,
+              background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.chip::before {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border: 1px solid rgba(74, 142, 126, 0.18);
+  border-radius: 19px 15px 18px 17px / 17px 18px 15px 19px;
+  transform: rotate(0.5deg) translate(1px, 0.8px);
+  pointer-events: none;
+  transition: transform 0.15s ease;
 }
 
 .chip:hover:not(:disabled) {
   transform: translateY(-1px);
   border-color: rgba(74, 142, 126, 0.52);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.52),
-              2px 3px 0 rgba(30, 46, 42, 0.12),
-              0 2px 6px rgba(67, 129, 115, 0.12);
+  box-shadow: 2px 3px 0 rgba(30, 46, 42, 0.18);
 }
 
 .chip:active:not(:disabled) {
@@ -39,8 +44,13 @@
 }
 
 .chip:focus-visible {
-  box-shadow: var(--shadow-focus);
-  outline: none;
+  outline: 3px solid var(--ci-primary);
+  outline-offset: 2px;
+  border-radius: 14px;
+}
+
+.chip:focus-visible::before {
+  display: none;
 }
 
 .chip-active {
@@ -48,17 +58,17 @@
   background-image: var(--grain-subtle);
   color: #fff;
   border-color: var(--ci-primary-bdr);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.20),
-              2px 3px 0 rgba(30, 46, 42, 0.18),
-              0 2px 8px rgba(67, 129, 115, 0.22);
-  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.18), 0 -1px 0 rgba(255, 255, 255, 0.14);
+  box-shadow:
+    1px 2px 0 rgba(30, 46, 42, 0.32),
+    0 2px 10px rgba(67, 129, 115, 0.30);
+}
+
+.chip-active::before {
+  border-color: rgba(42, 90, 74, 0.30);
 }
 
 .chip-active:hover:not(:disabled) {
   background-color: var(--ci-primary-hov);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.20),
-              3px 4px 0 rgba(30, 46, 42, 0.22),
-              0 4px 10px rgba(67, 129, 115, 0.26);
 }
 
 .chip-disabled {
@@ -75,15 +85,16 @@
 
 .dark .chip {
   border-color: rgba(90, 184, 152, 0.28);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06),
-              1px 2px 0 rgba(0, 0, 0, 0.20);
+  box-shadow: 1px 2px 0 rgba(0, 0, 0, 0.22);
+}
+
+.dark .chip::before {
+  border-color: rgba(90, 184, 152, 0.14);
 }
 
 .dark .chip:hover:not(:disabled) {
   border-color: rgba(90, 184, 152, 0.44);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06),
-              2px 3px 0 rgba(0, 0, 0, 0.28),
-              0 2px 6px rgba(90, 184, 152, 0.12);
+  box-shadow: 2px 3px 0 rgba(0, 0, 0, 0.30);
 }
 
 .dark .chip-active {

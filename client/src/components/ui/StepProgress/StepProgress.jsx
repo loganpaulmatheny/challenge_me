@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useUser } from "../../../context/UserContext";
+import { useToast } from "../../../context/ToastContext";
 import Button from "../Button/Button";
 import Input from "../Input/Input";
 import "./StepProgress.css";
@@ -12,6 +13,7 @@ export default function StepProgress({ steps, challengeId, isEditable }) {
   const [animating, setAnimating] = useState(null);
   const [xpGain, setXpGain] = useState(null);
   const { refreshUser } = useUser();
+  const toast = useToast();
 
   useEffect(() => {
     const loadProfile = async () => {
@@ -50,6 +52,7 @@ export default function StepProgress({ steps, challengeId, isEditable }) {
     );
     setXpGain({ stepId, points: step.points });
     await refreshUser();
+    toast.xp(`+${step.points} XP added to your profile`, "Step Complete");
     setTimeout(() => setAnimating(null), 400);
     setTimeout(() => setXpGain(null), 1000);
   };
@@ -62,12 +65,17 @@ export default function StepProgress({ steps, challengeId, isEditable }) {
         </p>
       )}
 
+      <ol className="steps-list" aria-label="Challenge steps">
       {steps.map((step, i) => {
         const done = isCompleted(step.id);
         const isExpanded = expanded === step.id;
 
         return (
-          <div key={step.id} className="step-row">
+          <li
+            key={step.id}
+            className="step-row"
+            aria-label={`Step ${i + 1} of ${steps.length}${done ? ", completed" : ""}`}
+          >
             <div className="step-left" aria-hidden="true">
               <div
                 className={[
@@ -139,9 +147,10 @@ export default function StepProgress({ steps, challengeId, isEditable }) {
                 </div>
               )}
             </div>
-          </div>
+            </li>
         );
       })}
+      </ol>
     </div>
   );
 }

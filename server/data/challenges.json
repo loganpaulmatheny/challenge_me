@@ -6,9 +6,74 @@
     "neighborhood": "Back Bay",
     "timeWindow": "weekend",
     "steps": [
-      { "id": "s1", "title": "Try iced matcha", "points": 10 },
-      { "id": "s2", "title": "Take aesthetic photo", "points": 15 },
-      { "id": "s3", "title": "Rate vibe", "points": 10 }
+      { "id": "s1", "title": "Try iced matcha at first cafe", "points": 10 },
+      { "id": "s2", "title": "Take an aesthetic photo of the drink", "points": 15 },
+      { "id": "s3", "title": "Rate the vibe of each spot", "points": 10 }
+    ],
+    "createdBy": null,
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "stats": { "likes": 0, "saves": 0, "completions": 0 }
+  },
+  {
+    "title": "Beacon Hill Hidden Corners Walk",
+    "description": "Wander the gas-lit streets and find 3 spots most people walk right past",
+    "category": "spots",
+    "neighborhood": "Beacon Hill",
+    "timeWindow": "anytime",
+    "steps": [
+      { "id": "s1", "title": "Find a hidden alley or courtyard", "points": 15 },
+      { "id": "s2", "title": "Photograph something that surprises you", "points": 15 },
+      { "id": "s3", "title": "Look up one piece of history about what you found", "points": 10 }
+    ],
+    "createdBy": null,
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "stats": { "likes": 0, "saves": 0, "completions": 0 }
+  },
+  {
+    "title": "South End Open Mic Night",
+    "description": "Show up to a local open mic and actually talk to the person next to you",
+    "category": "social",
+    "neighborhood": "South End",
+    "timeWindow": "weekday",
+    "steps": [
+      { "id": "s1", "title": "Arrive before the first act", "points": 10 },
+      { "id": "s2", "title": "Introduce yourself to one stranger", "points": 20 },
+      { "id": "s3", "title": "Stay for at least 3 performances", "points": 15 }
+    ],
+    "createdBy": null,
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "stats": { "likes": 0, "saves": 0, "completions": 0 }
+  },
+  {
+    "title": "SoWa Gallery Hop",
+    "description": "Walk the SoWa Arts District and find a piece you'd actually hang on your wall",
+    "category": "arts",
+    "neighborhood": "South End",
+    "timeWindow": "weekend",
+    "steps": [
+      { "id": "s1", "title": "Visit at least 3 different galleries", "points": 10 },
+      { "id": "s2", "title": "Find a piece that genuinely stops you", "points": 20 },
+      { "id": "s3", "title": "Sketch or describe it in your notes", "points": 15 }
+    ],
+    "createdBy": null,
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "stats": { "likes": 0, "saves": 0, "completions": 0 }
+  },
+  {
+    "title": "SoWa Open Market Morning",
+    "description": "Support a local maker at the SoWa market — come with a $20 budget and leave with something handmade",
+    "category": "shop",
+    "neighborhood": "South End",
+    "timeWindow": "morning",
+    "venue": {
+      "name": "SoWa Open Market",
+      "type": "market",
+      "address": "460 Harrison Ave, South End, Boston"
+    },
+    "steps": [
+      { "id": "s1", "title": "Walk the full market before buying anything", "points": 10 },
+      { "id": "s2", "title": "Talk to a maker about their craft", "points": 20 },
+      { "id": "s3", "title": "Buy something handmade under $20", "points": 15 }
     ],
     "createdBy": null,
     "createdAt": "2026-01-01T00:00:00.000Z",

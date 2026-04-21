@@ -13,34 +13,37 @@ export default function Navbar({ user }) {
   };
 
   const linkClass = ({ isActive }) =>
-    `nav-link${isActive ? " nav-link-active" : ""}`;
+    `ci-nav-link${isActive ? " ci-nav-link-active" : ""}`;
 
   return (
-    <nav className="navbar" aria-label="Main navigation">
-      <NavLink className="nav-logo" to="/feed">
-        ChallengeMe
-      </NavLink>
+    <div className="ci-nav-wrap">
+      <nav className="ci-navbar" aria-label="Main navigation">
+        <NavLink className="ci-nav-logo" to="/feed">
+          Challenge Me
+        </NavLink>
 
-      <div className="nav-links">
-        <NavLink to="/feed" className={linkClass}>
-          Feed
-        </NavLink>
-        <NavLink to="/dashboard" className={linkClass}>
-          Dashboard
-        </NavLink>
-        <NavLink to="/profile" className={linkClass}>
-          Profile
-        </NavLink>
-        {user?.role === "admin" && (
-          <NavLink to="/admin" className={linkClass}>
-            Admin
+        <div className="ci-nav-links">
+          <NavLink to="/feed" className={linkClass}>
+            Feed
           </NavLink>
-        )}
-        <button className="nav-logout" onClick={handleLogout} type="button">
+          <NavLink to="/dashboard" className={linkClass}>
+            Dashboard
+          </NavLink>
+          <NavLink to="/profile" className={linkClass}>
+            Profile
+          </NavLink>
+          {user?.role === "admin" && (
+            <NavLink to="/admin" className={linkClass}>
+              Admin
+            </NavLink>
+          )}
+        </div>
+
+        <button className="ci-nav-logout" onClick={handleLogout} type="button">
           Logout
         </button>
-      </div>
-    </nav>
+      </nav>
+    </div>
   );
 }
 

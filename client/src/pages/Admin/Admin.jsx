@@ -1,8 +1,11 @@
+import { useEffect } from "react";
 import Button from "../../components/ui/Button/Button";
 import Card from "../../components/ui/Card/Card";
 import "./Admin.css";
 
 export default function Admin() {
+  useEffect(() => { document.title = "Admin — ChallengeMe"; }, []);
+
   const seedChallenges = async () => {
     const res = await fetch("/api/seed", {
       method: "POST",
@@ -24,7 +27,7 @@ export default function Admin() {
   return (
     <main className="admin-page">
       <Card>
-        <h2>Admin Panel</h2>
+        <h1>Admin Panel</h1>
         <div className="admin-actions">
           <Button variant="primary" onClick={seedChallenges}>
             Seed Challenges

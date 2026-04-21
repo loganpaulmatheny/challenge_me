@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../context/UserContext";
 import Input from "../components/ui/Input/Input";
@@ -22,6 +22,8 @@ export default function Index() {
     state: "",
   });
   const { refreshUser } = useUser();
+
+  useEffect(() => { document.title = "ChallengeMe — Sign in or create account"; }, []);
 
   const handleChange = (e) =>
     setRegisterUser({ ...registerUser, [e.target.name]: e.target.value });
@@ -75,20 +77,24 @@ export default function Index() {
         <h1 className="index-logo">ChallengeMe</h1>
         <p className="index-tagline">Discover and complete local challenges</p>
 
-        <div className="index-tabs" role="tablist">
+        <div className="index-tabs" role="tablist" aria-label="Authentication">
           <button
+            id="tab-login"
             role="tab"
             aria-selected={activeTab === "login"}
             aria-controls="panel-login"
+            tabIndex={activeTab === "login" ? 0 : -1}
             className={`index-tab${activeTab === "login" ? " index-tab-active" : ""}`}
             onClick={() => { setActiveTab("login"); setError(""); }}
           >
             Log in
           </button>
           <button
+            id="tab-register"
             role="tab"
             aria-selected={activeTab === "register"}
             aria-controls="panel-register"
+            tabIndex={activeTab === "register" ? 0 : -1}
             className={`index-tab${activeTab === "register" ? " index-tab-active" : ""}`}
             onClick={() => { setActiveTab("register"); setError(""); }}
           >
@@ -104,6 +110,7 @@ export default function Index() {
           <form
             id="panel-login"
             role="tabpanel"
+            aria-labelledby="tab-login"
             className="index-form"
             onSubmit={handleLogin}
           >
@@ -133,6 +140,7 @@ export default function Index() {
           <form
             id="panel-register"
             role="tabpanel"
+            aria-labelledby="tab-register"
             className="index-form"
             onSubmit={handleRegister}
           >

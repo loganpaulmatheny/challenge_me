@@ -9,8 +9,8 @@ export default function PrivateLayout({ children }) {
 
   if (loading) {
     return (
-      <div className="app-loading">
-        <div className="app-loading-dots" aria-label="Loading">
+      <div className="app-loading" role="status" aria-label="Loading application">
+        <div className="app-loading-dots" aria-hidden="true">
           <span /><span /><span />
         </div>
         <p className="app-loading-text">Loading...</p>
@@ -25,9 +25,9 @@ export default function PrivateLayout({ children }) {
   return (
     <div className="app-shell">
       <Navbar user={user} />
-      <main className="app-content">
+      <div className="app-content">
         {children}
-      </main>
+      </div>
     </div>
   );
 }
