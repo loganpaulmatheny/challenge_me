@@ -1,11 +1,58 @@
+/* ═══════════════════════════════════════════════════════════
+   UTILITIES — reusable single-purpose helpers
+   ═══════════════════════════════════════════════════════════ */
+
+/* Layout */
 .flex-center {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .soft-card {
-    background: var(--color-surface);
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-soft), var(--shadow-inner);
-  }
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Card surface — Winter Linen with parchment grain */
+.soft-card {
+  background-color: var(--ci-surface);
+  background-image: var(--grain-subtle);
+  border-radius: var(--radius-lg);
+  border-top: 1.5px solid rgba(30, 46, 42, 0.14);
+  border-left: 1.5px solid rgba(30, 46, 42, 0.08);
+  border-bottom: 1.5px solid rgba(74, 142, 126, 0.20);
+  border-right: 1.5px solid rgba(74, 142, 126, 0.16);
+  box-shadow: var(--shadow-card);
+}
+
+/* Text helpers */
+.text-display {
+  font-family: var(--font-display);
+}
+
+.text-flavor {
+  font-family: var(--font-flavor);
+}
+
+.text-creator {
+  font-family: var(--font-creator);
+}
+
+.text-muted {
+  color: var(--ink-500);
+}
+
+.text-primary {
+  color: var(--ci-primary);
+}
+
+.text-terra {
+  color: var(--ci-terra);
+}
