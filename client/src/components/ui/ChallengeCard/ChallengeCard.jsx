@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useState, useRef } from "react";
+import { useState } from "react";
 import PropTypes from "prop-types";
 
 import Card from "../Card/Card";
@@ -10,31 +10,66 @@ import { useUser } from "../../../context/UserContext";
 
 import "./ChallengeCard.css";
 
+const CATEGORY_TINT = {
+  "Food & Drink": "gold",
+  "Social": "teal",
+  "Solo Adventures": "terra",
+  "Outdoors": "terra",
+  "Creative": "gold",
+  "Cozy": "mist",
+  "Slow Living": "mist",
+  "Self Care": "mist",
+  "Romantic": "teal",
+  "City Exploration": "terra",
+  "Hidden Gems": "terra",
+  "Touristy (but fun)": "terra",
+  "Neighborhood Walks": "teal",
+  "Fitness": "terra",
+  "Wellness": "mist",
+  "Shopping": "gold",
+  "Nightlife": "terra",
+  "Books & Cafes": "gold",
+  "Art & Museums": "gold",
+  "Music & Events": "terra",
+  "Photography": "gold",
+  "Date Ideas": "teal",
+  "Friends Hangout": "teal",
+  "Group Activities": "teal",
+  "Introvert Friendly": "mist",
+  "Seasonal": "mist",
+  "Rainy Day": "mist",
+  "Winter": "mist",
+  "Summer": "teal",
+  "Challenges": "teal",
+  "Mini Quests": "teal",
+  "XP Boost": "teal",
+};
+
+const STATUS_VARIANT = {
+  "Not Started": "terra",
+  "In Progress": "warning",
+  "Completed": "complete",
+};
+
 export default function ChallengeCard({
   challenge,
   onImport,
   editableMode = false,
   onRemove,
-  onUnsave,
+  onDelete,
 }) {
   const navigate = useNavigate();
-
   const [liked, setLiked] = useState(challenge.liked || false);
   const [likesCount, setLikesCount] = useState(challenge.stats?.likes || 0);
   const { user } = useUser();
   const isOwner = user && challenge.createdBy === user._id;
-  const [status, setStatus] = useState(challenge.completed);
+
+  const tint = CATEGORY_TINT[challenge.category] || null;
 
   const goToDetail = () => {
     navigate(`/challenge/${challenge._id}`, {
       state: { editable: editableMode },
     });
-  };
-
-  const handleDelete = () => {
-    if (window.confirm("Are you sure you want to unsave challenge?")) {
-      onRemove && onRemove(challenge._id);
-    }
   };
 
   const handleLike = async (e) => {
@@ -52,59 +87,61 @@ export default function ChallengeCard({
     }
   };
 
+  const handleUnsave = (e) => {
+    e.stopPropagation();
+    onRemove && onRemove(challenge._id);
+  };
+
+  const handleSave = (e) => {
+    e.stopPropagation();
+    onImport && onImport(challenge._id);
+  };
+
   return (
-    <Card interactive tabIndex={0} className={"challenge-card-wrapper"}>
+    <Card tint={tint} className="challenge-card-wrapper">
       <div className="challenge-card">
-        <div className="challenge-header">
-          <h3 className="challenge-title">
-            <span
-              className="clickable-title"
-              title={challenge.title}
-              onClick={goToDetail}
-            >
-              {challenge.title?.length > 30
-                ? challenge.title.slice(0, 30) + "..."
-                : challenge.title}
-            </span>
+        <header className="challenge-header">
+          <h3 className="challenge-title" onClick={goToDetail}>
+            {challenge.title}
           </h3>
           {challenge.status && (
-            <span
-              className={`status-pill ${challenge.status.toLowerCase().replace(" ", "-")}`}
-            >
+            <Badge variant={STATUS_VARIANT[challenge.status] || "default"}>
               {challenge.status}
-            </span>
+            </Badge>
           )}
-
           <div className="challenge-creator">
             <Avatar
               src={challenge.creator?.profileImageURL}
               username={challenge.creator?.username || "??"}
-              size={28}
+              size={24}
             />
-            <span>{challenge.creator?.username || "Anonymous"}</span>
+            <span className="challenge-creator-name">
+              {challenge.creator?.username || "Anonymous"}
+            </span>
           </div>
-        </div>
+        </header>
 
-        <p className="challenge-desc" title={challenge.description}>
-          {challenge.description?.length > 40
-            ? challenge.description.slice(0, 40) + "..."
-            : challenge.description}
-        </p>
+        {challenge.description && (
+          <p className="challenge-desc">{challenge.description}</p>
+        )}
 
         <div className="challenge-tags">
           <Badge variant="primary">{challenge.category}</Badge>
-          <Badge variant="soft">{challenge.neighborhood}</Badge>
-          <Badge variant="soft">{challenge.timeWindow}</Badge>
+          <Badge variant="gold">{challenge.neighborhood}</Badge>
+          <Badge variant="default">{challenge.timeWindow}</Badge>
         </div>
 
-        <div className="challenge-footer">
-          <span>{likesCount} likes</span>
+        <div className="challenge-brushstroke" aria-hidden="true" />
 
+        <footer className="challenge-footer">
+          <span className="challenge-likes">{likesCount} likes</span>
           <div className="challenge-actions">
             <Button
               variant={liked ? "primary" : "soft"}
               size="sm"
               onClick={handleLike}
+              aria-label={liked ? "Unlike challenge" : "Like challenge"}
+              aria-pressed={liked}
             >
               {liked ? "Liked" : "Like"}
             </Button>
@@ -113,43 +150,55 @@ export default function ChallengeCard({
               <Button
                 variant={challenge?.saved ? "primary" : "secondary"}
                 size="sm"
-                onClick={(e) => {
-                  e.stopPropagation();
-
-                  if (challenge?.saved) {
-                    onRemove && onRemove(challenge._id);
-                  } else {
-                    onImport && onImport(challenge._id);
-                  }
-                }}
+                onClick={challenge?.saved ? handleUnsave : handleSave}
+                aria-label={challenge?.saved ? "Remove from saved" : "Save challenge"}
+                aria-pressed={!!challenge?.saved}
               >
                 {challenge?.saved ? "Saved" : "Save"}
               </Button>
             )}
 
-            {isOwner ||
-              (editableMode && (
-                <Button
-                  variant="danger"
-                  size="sm"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleDelete();
-                  }}
-                >
-                  Unsave
-                </Button>
-              ))}
+            {isOwner && editableMode && (
+              <Button
+                variant="terra"
+                size="sm"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onRemove && onRemove(challenge._id);
+                }}
+              >
+                Unsave
+              </Button>
+            )}
           </div>
-        </div>
+        </footer>
       </div>
     </Card>
   );
 }
 
 ChallengeCard.propTypes = {
-  challenge: PropTypes.obj,
+  challenge: PropTypes.shape({
+    _id: PropTypes.string,
+    title: PropTypes.string,
+    description: PropTypes.string,
+    category: PropTypes.string,
+    neighborhood: PropTypes.string,
+    timeWindow: PropTypes.string,
+    status: PropTypes.string,
+    liked: PropTypes.bool,
+    saved: PropTypes.bool,
+    createdBy: PropTypes.string,
+    creator: PropTypes.shape({
+      username: PropTypes.string,
+      profileImageURL: PropTypes.string,
+    }),
+    stats: PropTypes.shape({
+      likes: PropTypes.number,
+    }),
+  }).isRequired,
   onImport: PropTypes.func,
   onRemove: PropTypes.func,
+  onDelete: PropTypes.func,
   editableMode: PropTypes.bool,
 };

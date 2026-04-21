@@ -6,7 +6,9 @@ export default function Card({
   interactive = false,
   selected = false,
   variant = "default",
+  tint = null,
   onClick,
+  className = "",
   ...props
 }) {
   const Tag = interactive ? "button" : "div";
@@ -18,8 +20,10 @@ export default function Card({
       className={[
         "card",
         `card-${variant}`,
+        tint ? `card-tint-${tint}` : "",
         interactive ? "card-interactive" : "",
         selected ? "card-selected" : "",
+        className,
       ]
         .filter(Boolean)
         .join(" ")}
@@ -36,5 +40,7 @@ Card.propTypes = {
   interactive: PropTypes.bool,
   selected: PropTypes.bool,
   variant: PropTypes.oneOf(["default", "soft", "ghost", "raised"]),
+  tint: PropTypes.oneOf(["teal", "terra", "gold", "mist", "sketch", "lace"]),
   onClick: PropTypes.func,
+  className: PropTypes.string,
 };
