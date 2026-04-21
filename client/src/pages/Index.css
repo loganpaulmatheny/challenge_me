@@ -1,0 +1,111 @@
+.index-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--sp-lg);
+}
+
+.index-card {
+  width: 100%;
+  max-width: 420px;
+  background-color: var(--ci-surface);
+  background-image: var(--grain-subtle);
+  border-radius: var(--radius-xl);
+  border-top: 1.5px solid rgba(30, 46, 42, 0.14);
+  border-left: 1.5px solid rgba(30, 46, 42, 0.08);
+  border-bottom: 1.5px solid rgba(74, 142, 126, 0.20);
+  border-right: 1.5px solid rgba(74, 142, 126, 0.16);
+  box-shadow: var(--shadow-modal);
+  padding: var(--sp-xl) var(--sp-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-md);
+}
+
+.index-logo {
+  font-family: var(--font-display);
+  font-size: 32px;
+  color: var(--ink-900);
+  margin: 0;
+  text-align: center;
+  text-shadow: 0.5px 1px 0 rgba(30, 46, 42, 0.14);
+}
+
+.index-tagline {
+  font-family: var(--font-flavor);
+  font-size: 13px;
+  color: var(--ink-500);
+  text-align: center;
+  margin: 0;
+  letter-spacing: 0.02em;
+}
+
+.index-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-radius: var(--radius-md);
+  background-color: var(--fi-surface);
+  box-shadow: var(--shadow-inset);
+  padding: 3px;
+  gap: 3px;
+}
+
+.index-tab {
+  padding: 7px;
+  border-radius: calc(var(--radius-md) - 2px);
+  border: none;
+  background: transparent;
+  font-family: var(--font-ui);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-500);
+  cursor: pointer;
+  transition: background-color 0.12s ease, color 0.12s ease, box-shadow 0.12s ease;
+}
+
+.index-tab:hover {
+  color: var(--ink-800);
+}
+
+.index-tab-active {
+  background-color: var(--ci-surface);
+  background-image: var(--grain-subtle);
+  color: var(--ink-900);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.60),
+              0 1px 3px rgba(30, 46, 42, 0.12);
+}
+
+.index-tab:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-focus);
+}
+
+.index-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-md);
+}
+
+.index-row {
+  display: grid;
+  grid-template-columns: 1fr 80px;
+  gap: var(--sp-sm);
+}
+
+.index-submit {
+  width: 100%;
+  margin-top: var(--sp-xs);
+}
+
+.index-error {
+  font-family: var(--font-ui);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ci-error);
+  background-color: var(--terra-09);
+  border: 1px solid rgba(160, 48, 80, 0.24);
+  border-radius: var(--radius-md);
+  padding: var(--sp-sm) var(--sp-md);
+  margin: 0;
+}

@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
-import { useUser } from "../../../context/UserContext"
+import { useUser } from "../../../context/UserContext";
+import { useToast } from "../../../context/ToastContext";
 import Button from "../Button/Button";
+import Input from "../Input/Input";
 import "./StepProgress.css";
 import PropTypes from "prop-types";
 
@@ -10,32 +12,23 @@ export default function StepProgress({ steps, challengeId, isEditable }) {
   const [proof, setProof] = useState({});
   const [animating, setAnimating] = useState(null);
   const [xpGain, setXpGain] = useState(null);
-  // This is the key line that makes experience update in profile and dashboard
-  const { refreshUser } = useUser()
+  const { refreshUser } = useUser();
+  const toast = useToast();
 
   useEffect(() => {
     const loadProfile = async () => {
-      const res = await fetch("/api/profile", {
-        credentials: "include",
-      });
-
+      const res = await fetch("/api/profile", { credentials: "include" });
       const data = await res.json();
-
       const saved = data.savedChallenges?.find(
         (c) => c.challengeId.toString() === challengeId
       );
-
-      if (saved) {
-        setProgress(saved.progress);
-      }
+      if (saved) setProgress(saved.progress);
     };
-
     loadProfile();
   }, [challengeId]);
 
-  const isCompleted = (stepId) => {
-    return progress.find((p) => p.stepId === stepId)?.completed;
-  };
+  const isCompleted = (stepId) =>
+    progress.find((p) => p.stepId === stepId)?.completed;
 
   const toggle = (id) => {
     if (!isEditable) return;
@@ -44,29 +37,22 @@ export default function StepProgress({ steps, challengeId, isEditable }) {
 
   const completeStep = async (stepId) => {
     if (!isEditable) return;
-
     setAnimating(stepId);
-
     const step = steps.find((s) => s.id === stepId);
 
     await fetch(`/api/profile/complete-step/${challengeId}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
-      body: JSON.stringify({
-        stepId,
-        proofUrl: proof[stepId] || "",
-      }),
+      body: JSON.stringify({ stepId, proofUrl: proof[stepId] || "" }),
     });
 
     setProgress((prev) =>
       prev.map((p) => (p.stepId === stepId ? { ...p, completed: true } : p))
     );
-
     setXpGain({ stepId, points: step.points });
-    // Here the profile is updated with fresh data
-    await refreshUser()
-
+    await refreshUser();
+    toast.xp(`+${step.points} XP added to your profile`, "Step Complete");
     setTimeout(() => setAnimating(null), 400);
     setTimeout(() => setXpGain(null), 1000);
   };
@@ -74,66 +60,85 @@ export default function StepProgress({ steps, challengeId, isEditable }) {
   return (
     <div className="steps">
       {!isEditable && (
-        <div className="steps-locked">
+        <p className="steps-locked">
           Import this challenge to start tracking progress
-        </div>
+        </p>
       )}
 
+      <ol className="steps-list" aria-label="Challenge steps">
       {steps.map((step, i) => {
         const done = isCompleted(step.id);
+        const isExpanded = expanded === step.id;
 
         return (
-          <div key={step.id} className="step-row">
-            {/* LEFT TIMELINE */}
-            <div className="step-left">
+          <li
+            key={step.id}
+            className="step-row"
+            aria-label={`Step ${i + 1} of ${steps.length}${done ? ", completed" : ""}`}
+          >
+            <div className="step-left" aria-hidden="true">
               <div
-                className={`step-dot 
-                  ${done ? "done" : ""} 
-                  ${animating === step.id ? "pulse" : ""}`}
+                className={[
+                  "step-dot",
+                  done ? "done" : "",
+                  animating === step.id ? "pulse" : "",
+                ]
+                  .filter(Boolean)
+                  .join(" ")}
               >
                 {done ? "✓" : i + 1}
               </div>
-
               {xpGain?.stepId === step.id && (
-                <div className="xp-float">+{xpGain.points} XP</div>
+                <div className="xp-float" aria-live="polite">
+                  +{xpGain.points} XP
+                </div>
               )}
-
               {i < steps.length - 1 && (
-                <div
-                  className={`step-connector ${isCompleted(step.id) ? "done" : ""
-                    }`}
-                />
+                <div className={`step-connector${done ? " done" : ""}`} />
               )}
             </div>
 
-            {/* CONTENT */}
             <div className="step-content">
-              <div className={`step-title ${!isEditable ? "disabled" : ""}`}>
-                {step.title}
-                <span className="xp">+{step.points} XP</span>
-
-                <Button variant="primary" onClick={() => toggle(step.id)}>
-                  Expand to Update
-                </Button>
+              <div className="step-header">
+                <div className="step-title-row">
+                  <span className={`step-title${!isEditable ? " disabled" : ""}`}>
+                    {step.title}
+                  </span>
+                  <span className="xp-badge" aria-label={`${step.points} XP`}>
+                    +{step.points} XP
+                  </span>
+                </div>
+                {isEditable && (
+                  <Button
+                    variant="soft"
+                    size="sm"
+                    onClick={() => toggle(step.id)}
+                    aria-expanded={isExpanded}
+                    aria-controls={`step-expand-${step.id}`}
+                  >
+                    {isExpanded ? "Collapse" : "Expand"}
+                  </Button>
+                )}
               </div>
 
-              {expanded === step.id && isEditable && (
-                <div className="step-expand">
-                  <input
-                    placeholder="Add proof link (optional)"
+              {isExpanded && isEditable && (
+                <div
+                  className="step-expand"
+                  id={`step-expand-${step.id}`}
+                >
+                  <Input
+                    id={`proof-${step.id}`}
+                    label="Proof link (optional)"
+                    placeholder="https://..."
                     value={proof[step.id] || ""}
                     onChange={(e) =>
-                      setProof({
-                        ...proof,
-                        [step.id]: e.target.value,
-                      })
+                      setProof({ ...proof, [step.id]: e.target.value })
                     }
-                    className="input"
                   />
-
                   <div className="step-actions">
                     <Button
                       variant="primary"
+                      size="sm"
                       onClick={() => completeStep(step.id)}
                     >
                       Complete Step
@@ -142,15 +147,22 @@ export default function StepProgress({ steps, challengeId, isEditable }) {
                 </div>
               )}
             </div>
-          </div>
+            </li>
         );
       })}
+      </ol>
     </div>
   );
 }
 
 StepProgress.propTypes = {
-  steps: PropTypes.array.isRequired,
-  challengeId: PropTypes.any.isRequired,
+  steps: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      title: PropTypes.string.isRequired,
+      points: PropTypes.number,
+    })
+  ).isRequired,
+  challengeId: PropTypes.string.isRequired,
   isEditable: PropTypes.bool,
 };

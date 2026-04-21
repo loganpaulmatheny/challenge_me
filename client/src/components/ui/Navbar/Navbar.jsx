@@ -1,49 +1,54 @@
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useUser } from "../../../context/UserContext";
-import Button from "../Button/Button";
 import "./Navbar.css";
-import { Link } from 'react-router'
 import PropTypes from "prop-types";
 
 export default function Navbar({ user }) {
   const navigate = useNavigate();
   const { logout } = useUser();
 
+  const handleLogout = async () => {
+    await logout();
+    navigate("/");
+  };
+
+  const linkClass = ({ isActive }) =>
+    `ci-nav-link${isActive ? " ci-nav-link-active" : ""}`;
+
   return (
-    <nav className="local-navbar soft-card">
-      <Link className="nav-logo" onClick={() => navigate("/feed")}>
-        ChallengeMe
-      </Link>
+    <div className="ci-nav-wrap">
+      <nav className="ci-navbar" aria-label="Main navigation">
+        <NavLink className="ci-nav-logo" to="/feed">
+          Challenge Me
+        </NavLink>
 
-      <div className="nav-links">
-        <Button variant="ghost" onClick={() => navigate("/feed")}>
-          Feed
-        </Button>
+        <div className="ci-nav-links">
+          <NavLink to="/feed" className={linkClass}>
+            Feed
+          </NavLink>
+          <NavLink to="/dashboard" className={linkClass}>
+            Dashboard
+          </NavLink>
+          <NavLink to="/profile" className={linkClass}>
+            Profile
+          </NavLink>
+          {user?.role === "admin" && (
+            <NavLink to="/admin" className={linkClass}>
+              Admin
+            </NavLink>
+          )}
+        </div>
 
-        <Button variant="ghost" onClick={() => navigate("/dashboard")}>
-          Dashboard
-        </Button>
-
-        <Button variant="ghost" onClick={() => navigate("/profile")}>
-          Profile
-        </Button>
-
-        {/* {user?.role === "admin" && ( */}
-        <Button variant="ghost" onClick={() => navigate("/admin")}>
-          Admin
-        </Button>
-        {/* )} */}
-
-        <Button
-          variant="ghost"
-          onClick={async () => {
-            await logout();
-            navigate("/");
-          }}
-        >
+        <button className="ci-nav-logout" onClick={handleLogout} type="button">
           Logout
-        </Button>
-      </div>
-    </nav>
+        </button>
+      </nav>
+    </div>
   );
 }
+
+Navbar.propTypes = {
+  user: PropTypes.shape({
+    role: PropTypes.string,
+  }),
+};

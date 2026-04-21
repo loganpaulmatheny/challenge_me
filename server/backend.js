@@ -9,7 +9,6 @@ import seedUsersRouter from "./routes/seedUsers.js";
 
 // Routes
 import users from "./routes/users.js";
-import authRouter from "./routes/authentication.js";
 import createAuthRouter from "./routes/authentication.js";
 
 import challengesRouter from "./routes/challenges.js";
@@ -44,7 +43,7 @@ app.use(
       httpOnly: true,
       maxAge: 24 * 60 * 60 * 1000,
     },
-  })
+  }),
 );
 
 const client = new MongoClient(process.env.MONGODB_URI);
@@ -70,7 +69,6 @@ app.use("/api/challenges", challengesRouter);
 app.use("/api/profile", profileRouter);
 app.use("/api/seed", seedRouter);
 
-app.use("/api/auth", authRouter);
 app.use("/api/interactions", interactionsRouter);
 app.use("/api/seed-users", seedUsersRouter);
 app.get("/api/test", (req, res) => {
@@ -82,6 +80,9 @@ app.get("*splat", (req, res) => {
   res.sendFile("index.html", {
     root: join(__dirname, "./client/dist"),
   });
+});
+app.get("/api/test", (req, res) => {
+  res.json({ message: "Backend is working!" });
 });
 
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));

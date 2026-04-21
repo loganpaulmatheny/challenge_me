@@ -1,0 +1,107 @@
+.tog-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.tog-input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.tog {
+  position: relative;
+  width: 46px;
+  height: 26px;
+  flex-shrink: 0;
+  margin-top: 1px;
+  border-radius: 22px 18px 20px 16px / 16px 20px 18px 22px;
+  background-color: rgba(30, 46, 42, 0.13);
+  background-image: var(--grain-subtle);
+  border-top: 1.5px solid rgba(30, 46, 42, 0.22);
+  border-left: 1.5px solid rgba(30, 46, 42, 0.15);
+  border-bottom: 1.5px solid rgba(74, 142, 126, 0.20);
+  border-right: 1.5px solid rgba(74, 142, 126, 0.20);
+  box-shadow:
+    inset 0 2px 5px rgba(30, 46, 42, 0.14),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.48);
+  transition:
+    background-color 0.22s ease,
+    border-color 0.22s ease,
+    box-shadow 0.22s ease;
+}
+
+.tog-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50% 44% 50% 40% / 44% 50% 40% 50%;
+  background: #fafafa;
+  background-image: var(--grain-subtle);
+  box-shadow:
+    0 2px 5px rgba(30, 46, 42, 0.24),
+    0 0.5px 0 rgba(255, 255, 255, 0.72) inset;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  transition: transform 0.22s cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+
+.tog-input:checked + .tog {
+  background-color: var(--ci-primary);
+  border-top: 1.5px solid rgba(30, 46, 42, 0.30);
+  border-left: 1.5px solid rgba(30, 46, 42, 0.22);
+  border-bottom: 1.5px solid rgba(56, 152, 152, 0.35);
+  border-right: 1.5px solid rgba(56, 152, 152, 0.35);
+  box-shadow:
+    inset 0 2px 5px rgba(30, 46, 42, 0.18),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.14),
+    0 0 8px rgba(67, 129, 115, 0.24);
+}
+
+.tog-input:checked + .tog .tog-thumb {
+  transform: translateX(20px);
+  background: #eaecee;
+}
+
+.tog-input:focus-visible + .tog {
+  outline: 2px solid var(--ci-primary);
+  outline-offset: 2px;
+}
+
+/* Terra variant */
+.tog-terra .tog-input:checked + .tog {
+  background-color: var(--ci-terra);
+  border-bottom: 1.5px solid rgba(152, 80, 96, 0.35);
+  border-right: 1.5px solid rgba(152, 80, 96, 0.35);
+  box-shadow:
+    inset 0 2px 5px rgba(96, 44, 56, 0.18),
+    0 0 8px rgba(152, 80, 96, 0.22);
+}
+
+/* Small variant */
+.tog-sm .tog {
+  width: 36px;
+  height: 20px;
+  border-radius: 18px 14px 16px 12px / 12px 16px 14px 18px;
+}
+
+.tog-sm .tog-thumb {
+  width: 16px;
+  height: 16px;
+}
+
+.tog-sm .tog-input:checked + .tog .tog-thumb {
+  transform: translateX(16px);
+}
+
+.tog-label {
+  font-family: var(--font-ui);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-700);
+  user-select: none;
+}

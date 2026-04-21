@@ -1,21 +1,68 @@
-body {
-  background: var(--color-bg);
-  color: var(--color-text);
-  font-family: var(--font-main);
+*, *::before, *::after {
+  box-sizing: border-box;
 }
 
-h1,
-h2,
-h3 {
-  font-weight: 600;
+body {
+  background-color: var(--page-bg);
+  background-image: var(--grain-page);
+  background-attachment: fixed;
+  color: var(--ink-900);
+  font-family: var(--font-ui);
+  font-size: 14px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  color: var(--ink-900);
+  line-height: 1.2;
+}
+
+h4, h5, h6 {
+  font-family: var(--font-ui);
+  font-weight: 700;
+  color: var(--ink-900);
+}
+
+p {
+  color: var(--ink-700);
+}
+
+a {
+  color: var(--ci-primary);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--ci-primary-hov);
+  text-decoration: underline;
 }
 
 button {
   border: none;
   cursor: pointer;
-  font-family: inherit;
+  font-family: var(--font-ui);
+}
+
+input, textarea, select {
+  font-family: var(--font-ui);
+}
+
+:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-focus);
 }
 
 .container {
   max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 var(--sp-lg);
+}
+
+.dark body, body.dark {
+  background-color: var(--page-bg);
+  color: var(--ink-900);
 }

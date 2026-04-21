@@ -249,6 +249,35 @@ const titles = [
   "Boston Random Mode",
 ];
 
+const CATEGORIES = ["food", "spots", "social", "arts", "shop"];
+const TIME_WINDOWS = ["anytime", "weekend", "weekday", "morning"];
+
+// keyword sets used to assign a category to a title
+const CATEGORY_KEYWORDS = {
+  food: ["matcha","cannoli","pizza","bakery","cafe","coffee","dessert","ice cream","bubble tea","brunch","eats","food","dining","restaurant","bar hop","brewery","tea room","food truck","food hall","street food","night eats","late night"],
+  social: ["open mic","trivia","karaoke","make a new friend","talk to","social","friend","group","date night","board game","community","volunteer","give back","kindness","people","extrovert","introvert","meet"],
+  arts: ["art","gallery","museum","sketch","photo","mural","poetry","jazz","music","film","street portrait","street art","architecture","draw","paint","creative","content creation","vlog","instagram","reel","photo dump","street style","fashion"],
+  shop: ["shop","thrift","vintage","market","flea","treasure hunt","shopping","buying","maker","support small","budget eats","luxury dining","spend","local coffee"],
+};
+
+function categoriseTitle(title) {
+  const lower = title.toLowerCase();
+  for (const [cat, keywords] of Object.entries(CATEGORY_KEYWORDS)) {
+    if (keywords.some((kw) => lower.includes(kw))) return cat;
+  }
+  return "spots"; // default — exploration / discovery
+}
+
+const VENUE_NAMES = [
+  { name: "SoWa Open Market", type: "market", address: "460 Harrison Ave, South End" },
+  { name: "Faneuil Hall Marketplace", type: "market", address: "4 S Market St, Downtown" },
+  { name: "Somerville Flea", type: "flea market", address: "Union Square, Somerville" },
+  { name: "Cambridge Antique Market", type: "antique market", address: "201 Msgr O'Brien Hwy, Cambridge" },
+  { name: "Boston Public Market", type: "market", address: "100 Hanover St, Downtown" },
+  { name: "Newbury Street Shops", type: "shopping district", address: "Newbury St, Back Bay" },
+  { name: "Allston Thrift Shop Row", type: "thrift district", address: "Harvard Ave, Allston" },
+];
+
 const neighborhoods = [
   "Allston",
   "Back Bay",
@@ -278,15 +307,18 @@ const neighborhoods = [
 ];
 
 function generateChallenge(i) {
-  const title = titles[Math.floor(Math.random() * titles.length)];
+  const baseTitle = titles[Math.floor(Math.random() * titles.length)];
   const area = neighborhoods[Math.floor(Math.random() * neighborhoods.length)];
+  const title = `${area} ${baseTitle}`;
+  const category = categoriseTitle(title);
+  const timeWindow = TIME_WINDOWS[i % TIME_WINDOWS.length];
 
-  return {
-    title: `${area} ${title}`,
-    description: `Experience a cozy ${title.toLowerCase()} in ${area}`,
-    category: "explore",
+  const challenge = {
+    title,
+    description: `Experience a cozy ${baseTitle.toLowerCase()} in ${area}`,
+    category,
     neighborhood: area,
-    timeWindow: "weekend",
+    timeWindow,
     createdBy: null,
     createdAt: new Date(),
     stats: { likes: 0, saves: 0, completions: 0 },
@@ -296,6 +328,13 @@ function generateChallenge(i) {
       { id: crypto.randomUUID(), title: "Reflect or rate", points: 10 },
     ],
   };
+
+  if (category === "shop") {
+    const venue = VENUE_NAMES[i % VENUE_NAMES.length];
+    challenge.venue = { ...venue };
+  }
+
+  return challenge;
 }
 
 router.post("/", async (req, res) => {

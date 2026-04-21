@@ -3,16 +3,48 @@ import { ObjectId } from "mongodb";
 
 const router = express.Router();
 
-// GET all
+const VALID_CATEGORIES = [
+  // legacy seed slugs (kept for backward compat with existing DB docs)
+  "food", "spots", "social", "arts", "shop",
+  "explore", "outdoor", "fitness", "wellness", "creative", "cozy",
+  // current frontend display names
+  "Food & Drink", "Social", "Solo Adventures", "Outdoors", "Creative",
+  "Cozy", "Slow Living", "Self Care", "Romantic",
+  "City Exploration", "Hidden Gems", "Touristy (but fun)", "Neighborhood Walks",
+  "Fitness", "Wellness", "Shopping", "Nightlife",
+  "Books & Cafes", "Art & Museums", "Music & Events", "Photography",
+  "Date Ideas", "Friends Hangout", "Group Activities", "Introvert Friendly",
+  "Seasonal", "Rainy Day", "Winter", "Summer",
+  "Challenges", "Mini Quests", "XP Boost",
+];
+
+const VALID_TIME_WINDOWS = [
+  // legacy slugs
+  "anytime", "weekend", "weekday", "morning",
+  // current frontend display values
+  "Under 1 hr", "1-2 hrs", "2-4 hrs", "Half Day",
+  "Full Day", "Evening", "Night", "Weekend", "Multi-Day",
+];
+
+// GET all  —  optional filters: ?category=food&neighborhood=Back+Bay&timeWindow=weekend
 router.get("/", async (req, res) => {
   const db = req.app.locals.db;
+
+  const match = {};
+  if (req.query.category    && VALID_CATEGORIES.includes(req.query.category))
+    match.category = req.query.category;
+  if (req.query.neighborhood)
+    match.neighborhood = req.query.neighborhood;
+  if (req.query.timeWindow  && VALID_TIME_WINDOWS.includes(req.query.timeWindow))
+    match.timeWindow = req.query.timeWindow;
 
   const challenges = await db
     .collection("challenges")
     .aggregate([
+      { $match: match },
       {
         $lookup: {
-          from: "Users", // collection name
+          from: "Users",
           localField: "createdBy",
           foreignField: "_id",
           as: "creator",
@@ -31,11 +63,11 @@ router.get("/", async (req, res) => {
           category: 1,
           neighborhood: 1,
           timeWindow: 1,
+          venue: 1,
           steps: 1,
           stats: 1,
           createdAt: 1,
           createdBy: 1,
-
           creator: {
             _id: "$creator._id",
             username: "$creator.username",
@@ -73,9 +105,9 @@ router.get("/:id", async (req, res) => {
           category: 1,
           neighborhood: 1,
           timeWindow: 1,
+          venue: 1,
           steps: 1,
           stats: 1,
-
           creator: {
             username: "$creator.username",
             profileImageURL: "$creator.profileImageURL",
@@ -96,21 +128,37 @@ router.post("/", async (req, res) => {
     return res.status(401).json({ message: "Not logged in" });
   }
 
+  const { title, description, category, neighborhood, timeWindow, steps, venue } = req.body;
+
+  if (!title?.trim())
+    return res.status(400).json({ message: "Title is required" });
+  if (!VALID_CATEGORIES.includes(category))
+    return res.status(400).json({ message: `category must be one of: ${VALID_CATEGORIES.join(", ")}` });
+  if (!VALID_TIME_WINDOWS.includes(timeWindow))
+    return res.status(400).json({ message: `timeWindow must be one of: ${VALID_TIME_WINDOWS.join(", ")}` });
+  if (!Array.isArray(steps) || steps.length === 0)
+    return res.status(400).json({ message: "At least one step is required" });
+
   const challenge = {
-    title: req.body.title,
-    description: req.body.description,
-    category: req.body.category,
-    neighborhood: req.body.neighborhood,
-    timeWindow: req.body.timeWindow,
-    steps: req.body.steps,
+    title: title.trim(),
+    description: description?.trim() ?? "",
+    category,
+    neighborhood: neighborhood ?? "",
+    timeWindow,
+    steps,
     createdBy: req.user._id,
     createdAt: new Date(),
-    stats: {
-      saves: 0,
-      completions: 0,
-      likes: 0,
-    },
+    stats: { saves: 0, completions: 0, likes: 0 },
   };
+
+  // venue is optional — only attach for shop challenges or when explicitly provided
+  if (venue?.name) {
+    challenge.venue = {
+      name: venue.name.trim(),
+      type: venue.type?.trim() ?? "",
+      address: venue.address?.trim() ?? "",
+    };
+  }
 
   const result = await db.collection("challenges").insertOne(challenge);
   res.json(result);

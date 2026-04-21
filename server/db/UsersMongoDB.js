@@ -2,19 +2,16 @@ import { MongoClient, ObjectId } from "mongodb";
 
 function UsersMongoDB({
   // Change these back to challenge_me and Users resepectively
-  dbName = "challenge_me",
+  dbName = "challenge_me_dev",
   collectionName = "Users",
 } = {}) {
   const me = {};
-  const URI = process.env.MONGODB_URI;
-
-  const client = new MongoClient(URI);
+  let client = null;
   let collection = null;
 
-  // Change this to an async function to stop Mongo from creating a new client every function
-  // Long term this is a question of when / do you ever close the connection
   const connect = async () => {
     if (!collection) {
+      client = new MongoClient(process.env.MONGODB_URI);
       await client.connect();
       collection = client.db(dbName).collection(collectionName);
     }
@@ -25,7 +22,7 @@ function UsersMongoDB({
   me.findUserByEmail = async (email) => {
     const users = await connect();
     try {
-      const res = users.findOne({ email });
+      const res = await users.findOne({ email });
       return res;
     } catch (err) {
       console.error("Error searching for user by email", err);

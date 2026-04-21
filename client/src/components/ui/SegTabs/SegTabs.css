@@ -1,0 +1,65 @@
+.seg-tabs {
+  display: inline-flex;
+  background: var(--nav-bg);
+  border-radius: 24px;
+  padding: 3px;
+  gap: 2px;
+}
+
+.seg-tab {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  font-family: var(--font-ui);
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.52);
+  padding: 7px 18px;
+  border-radius: 20px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: background 0.16s ease, color 0.16s ease, box-shadow 0.16s ease;
+  white-space: nowrap;
+}
+
+.seg-tab:hover:not(.seg-tab-active) {
+  color: rgba(255, 255, 255, 0.82);
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.seg-tab-active {
+  background: var(--ci-surface);
+  color: var(--ink-900);
+  font-weight: 800;
+  box-shadow:
+    0 1px 4px rgba(30, 46, 42, 0.20),
+    0 0.5px 0 rgba(255, 255, 255, 0.55) inset;
+}
+
+.seg-tab:focus-visible {
+  outline: 2px solid var(--ci-primary);
+  outline-offset: 2px;
+  border-radius: 20px;
+}
+
+.seg-tab-count {
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 800;
+  background: rgba(255, 255, 255, 0.14);
+  border-radius: 9px;
+  padding: 1px 6px;
+  line-height: 1.4;
+}
+
+.seg-tab-active .seg-tab-count {
+  background: rgba(30, 46, 42, 0.10);
+}
+
+.seg-tabs-sm .seg-tab {
+  font-size: 12px;
+  padding: 5px 13px;
+  border-radius: 18px;
+}

@@ -17,7 +17,11 @@ export default function Button({
       type={type}
       disabled={disabled || loading}
     >
-      {loading ? "..." : children}
+      {loading ? (
+        <span className="btn-loading-dots" aria-label="Loading">
+          <span /><span /><span />
+        </span>
+      ) : children}
     </button>
   );
 }
