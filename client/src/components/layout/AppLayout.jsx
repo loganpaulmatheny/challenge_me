@@ -1,12 +1,15 @@
 import Navbar from "../ui/Navbar/Navbar";
+import "./layout.css";
 import PropTypes from "prop-types";
 
 export default function AppLayout({ children, user }) {
   return (
-    <>
+    <div className="app-shell">
       <Navbar user={user} />
-      <div className="container py-4">{children}</div>
-    </>
+      <main className="app-content">
+        {children}
+      </main>
+    </div>
   );
 }
 

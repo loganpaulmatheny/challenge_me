@@ -1,10 +1,11 @@
-import Button from "react-bootstrap/Button";
-import Modal from "react-bootstrap/Modal";
 import { useNavigate } from "react-router-dom";
+import Modal from "./ui/Modal/Modal";
+import Button from "./ui/Button/Button";
 import PropTypes from "prop-types";
 
 const DangerZoneModal = ({ user, onClose }) => {
   const navigate = useNavigate();
+
   const handleDelete = async () => {
     try {
       const res = await fetch(`/api/users/${user._id}`, {
@@ -15,41 +16,38 @@ const DangerZoneModal = ({ user, onClose }) => {
         const data = await res.json();
         throw new Error(data.message ?? "Failed to delete account");
       }
-
       navigate("/");
     } catch (err) {
       console.log(err);
     }
   };
 
-  return (
+  const footer = (
     <>
-      <Modal show onHide={onClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Are you absolutely sure?</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <p style={{ color: "red" }}>
-            This action cannot be undone. This will permanently delete your
-            account and remove your data from our servers.
-          </p>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={onClose}>
-            Cancel
-          </Button>
-          <Button variant="danger" onClick={handleDelete}>
-            Yes, Delete Account
-          </Button>
-        </Modal.Footer>
-      </Modal>
+      <Button variant="ghost" type="button" onClick={onClose}>
+        Cancel
+      </Button>
+      <Button variant="terra" type="button" onClick={handleDelete}>
+        Yes, delete my account
+      </Button>
     </>
+  );
+
+  return (
+    <Modal title="Are you absolutely sure?" onClose={onClose} footer={footer}>
+      <p className="danger-zone-body">
+        This action cannot be undone. Your account and all associated data will
+        be permanently removed from our servers.
+      </p>
+    </Modal>
   );
 };
 
 DangerZoneModal.propTypes = {
-  user: PropTypes.shape.any,
-  onClose: PropTypes.func,
+  user: PropTypes.shape({
+    _id: PropTypes.string.isRequired,
+  }).isRequired,
+  onClose: PropTypes.func.isRequired,
 };
 
 export default DangerZoneModal;
