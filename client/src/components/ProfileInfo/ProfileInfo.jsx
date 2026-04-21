@@ -1,4 +1,6 @@
 import { useState } from "react";
+import Avatar from "../ui/Avatar/Avatar";
+import Button from "../ui/Button/Button";
 import EditProfileModal from "../EditProfileModal";
 import "./ProfileInfo.css";
 import PropTypes from "prop-types";
@@ -6,43 +8,31 @@ import PropTypes from "prop-types";
 export default function ProfileInfo({ user, onUserUpdate }) {
   const [showModal, setShowModal] = useState(false);
 
-  if (!user) return <p>Loading...</p>;
-
-  const initials = user.username?.slice(0, 2).toUpperCase() ?? "??";
+  if (!user) return <p className="profile-info-loading">Loading...</p>;
 
   return (
-    <div className="profile-header">
-      <div className="d-flex flex-column align-items-center mb-4">
-        {user.profileImageURL ? (
-          <img
-            src={user.profileImageURL}
-            alt={user.username}
-            className="rounded-circle mb-2"
-            style={{ width: 80, height: 80, objectFit: "cover" }}
-          />
-        ) : (
-          <div
-            className="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center mb-2"
-            style={{ width: 80, height: 80, fontSize: 28, fontWeight: "bold" }}
-          >
-            {initials}
-          </div>
-        )}
-        <h5 className="mb-0">{user.username}</h5>
-        <p className="text-muted small">{user.email}</p>
-        <button
-          className="btn btn-sm btn-outline-secondary"
-          onClick={() => setShowModal(true)}
-        >
-          Edit Profile
-        </button>
+    <div className="profile-info">
+      <div className="profile-info-avatar-wrap">
+        <Avatar
+          src={user.profileImageURL}
+          username={user.username || "?"}
+          size={80}
+        />
+        <div className="profile-info-meta">
+          <h3 className="profile-info-username">{user.username}</h3>
+          <p className="profile-info-email">{user.email}</p>
+        </div>
       </div>
+
+      <Button variant="soft" size="sm" onClick={() => setShowModal(true)}>
+        Edit Profile
+      </Button>
 
       {showModal && (
         <EditProfileModal
           user={user}
           onClose={() => setShowModal(false)}
-          onUserUpdate={(updatedUser) => {
+          onUserUpdate={() => {
             onUserUpdate && onUserUpdate();
             setShowModal(false);
           }}
@@ -53,6 +43,11 @@ export default function ProfileInfo({ user, onUserUpdate }) {
 }
 
 ProfileInfo.propTypes = {
-  user: PropTypes.obj,
+  user: PropTypes.shape({
+    _id: PropTypes.string,
+    username: PropTypes.string,
+    email: PropTypes.string,
+    profileImageURL: PropTypes.string,
+  }),
   onUserUpdate: PropTypes.func,
 };

@@ -1,4 +1,7 @@
 import { useState } from "react";
+import Modal from "./ui/Modal/Modal";
+import Input from "./ui/Input/Input";
+import Button from "./ui/Button/Button";
 import DangerZoneModal from "./DeleteModal";
 import PropTypes from "prop-types";
 
@@ -6,7 +9,7 @@ const fields = [
   { name: "username", label: "Username", type: "text" },
   { name: "name", label: "Name", type: "text" },
   { name: "profileImageURL", label: "Profile Image URL", type: "url" },
-  { name: "bio", label: "Bio", type: "textarea" },
+  { name: "bio", label: "Bio", type: "text" },
   { name: "city", label: "City", type: "text" },
   { name: "state", label: "State", type: "text" },
 ];
@@ -32,7 +35,6 @@ export default function EditProfileModal({ user, onClose, onUserUpdate }) {
     setLoading(true);
     setError(null);
     try {
-      console.log({ form }, JSON.stringify(form));
       const res = await fetch(`/api/users/${user._id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
@@ -44,7 +46,7 @@ export default function EditProfileModal({ user, onClose, onUserUpdate }) {
         throw new Error(data.message ?? "Failed to update profile");
       }
       const updatedUser = await res.json();
-      onUserUpdate(updatedUser) && onUserUpdate();
+      onUserUpdate && onUserUpdate(updatedUser);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -52,98 +54,64 @@ export default function EditProfileModal({ user, onClose, onUserUpdate }) {
     }
   };
 
+  const footer = (
+    <>
+      <Button variant="ghost" type="button" onClick={onClose} disabled={loading}>
+        Cancel
+      </Button>
+      <Button variant="primary" type="submit" form="edit-profile-form" loading={loading}>
+        Save Changes
+      </Button>
+    </>
+  );
+
   return (
-    // Backdrop
-    <div
-      className="modal d-block"
-      style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
-      onClick={onClose}
-    >
-      <div
-        className="modal-dialog modal-dialog-centered"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <div className="modal-content">
-          <div className="modal-local-header">
-            <h5 className="modal-title">Edit Profile</h5>
-            <button className="btn-close" onClick={onClose} />
-          </div>
+    <>
+      <Modal title="Edit Profile" onClose={onClose} footer={footer}>
+        {error && (
+          <p className="edit-profile-error" role="alert">
+            {error}
+          </p>
+        )}
+        <form id="edit-profile-form" onSubmit={handleSubmit} className="edit-profile-form">
+          {fields.map(({ name, label, type }) => (
+            <Input
+              key={name}
+              id={name}
+              label={label}
+              type={type}
+              name={name}
+              value={form[name]}
+              onChange={handleChange}
+            />
+          ))}
+          <button
+            type="button"
+            className="edit-profile-danger-link"
+            onClick={() => setShowDangerZone(true)}
+          >
+            Delete account
+          </button>
+        </form>
+      </Modal>
 
-          <div className="modal-body">
-            {error && <div className="alert alert-danger">{error}</div>}
-
-            <form onSubmit={handleSubmit}>
-              {fields.map(({ name, label, type }) => (
-                <div className="mb-3" key={name}>
-                  <label htmlFor={name} className="form-label">
-                    {label}
-                  </label>
-                  {type === "textarea" ? (
-                    <textarea
-                      id={name}
-                      name={name}
-                      className="form-control"
-                      value={form[name]}
-                      onChange={handleChange}
-                      rows={3}
-                    />
-                  ) : (
-                    <input
-                      id={name}
-                      name={name}
-                      type={type}
-                      className="form-control"
-                      value={form[name]}
-                      onChange={handleChange}
-                    />
-                  )}
-                </div>
-              ))}
-
-              <div className="d-flex justify-content-between align-items-center mt-4">
-                <button
-                  type="button"
-                  className="btn btn-link text-danger p-0"
-                  onClick={() => {
-                    setShowDangerZone(true);
-                  }}
-                >
-                  Delete Account
-                </button>
-                <div className="d-flex gap-2">
-                  <button
-                    type="button"
-                    className="btn btn-secondary"
-                    onClick={() => {
-                      setShowDangerZone(true);
-                      onClose();
-                    }}
-                    disabled={loading}
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="submit"
-                    className="btn btn-primary"
-                    disabled={loading}
-                  >
-                    {loading ? "Saving..." : "Save Changes"}
-                  </button>
-                </div>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
       {showDangerZone && (
         <DangerZoneModal user={user} onClose={() => setShowDangerZone(false)} />
       )}
-    </div>
+    </>
   );
 }
 
 EditProfileModal.propTypes = {
-  user: PropTypes.any.isRequired,
+  user: PropTypes.shape({
+    _id: PropTypes.string,
+    username: PropTypes.string,
+    name: PropTypes.string,
+    profileImageURL: PropTypes.string,
+    bio: PropTypes.string,
+    city: PropTypes.string,
+    state: PropTypes.string,
+  }).isRequired,
   onClose: PropTypes.func.isRequired,
   onUserUpdate: PropTypes.func,
 };

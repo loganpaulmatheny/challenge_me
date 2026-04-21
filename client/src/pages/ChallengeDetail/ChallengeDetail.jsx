@@ -3,10 +3,9 @@ import { useParams, useLocation, useNavigate } from "react-router-dom";
 
 import Card from "../../components/ui/Card/Card";
 import Badge from "../../components/ui/Badge/Badge";
-import Button from "../../components/ui/Button/Button";
 import Avatar from "../../components/ui/Avatar/Avatar";
-
 import StepProgress from "../../components/ui/StepProgress/StepProgress";
+import "./ChallengeDetail.css";
 
 export default function ChallengeDetail() {
   const { id } = useParams();
@@ -21,39 +20,27 @@ export default function ChallengeDetail() {
         const res = await fetch(`/api/challenges/${id}`, {
           credentials: "include",
         });
-
-        if (!res.ok) {
-          setChallenge(null);
-          return;
-        }
-
-        const data = await res.json();
-        setChallenge(data);
+        if (!res.ok) { setChallenge(null); return; }
+        setChallenge(await res.json());
       } catch (err) {
         console.error(err);
       }
     };
-
     fetchChallenge();
   }, [id]);
 
-  // This handles going back using the escape key after clicking on one
-  // Can be used as an example for other portions of the app
   useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key === "Escape") navigate(-1);
-    };
+    const handleKeyDown = (e) => { if (e.key === "Escape") navigate(-1); };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [navigate]);
 
-
   if (!challenge) {
-    return <div style={{ padding: 20 }}>Loading challenge...</div>;
+    return <div className="challenge-loading">Loading challenge...</div>;
   }
 
   return (
-    <div className="challenge-detail">
+    <main className="challenge-detail">
       <Card>
         <div className="challenge-top">
           <h2>{challenge.title}</h2>
@@ -64,28 +51,31 @@ export default function ChallengeDetail() {
               username={challenge.creator?.username}
               size={40}
             />
-            <span>{challenge.creator?.username}</span>
+            <span className="challenge-creator-name">
+              {challenge.creator?.username}
+            </span>
           </div>
 
-          <p className="challenge-desc">{challenge.description}</p>
+          {challenge.description && (
+            <p className="challenge-desc">{challenge.description}</p>
+          )}
 
           <div className="challenge-tags">
             <Badge variant="primary">{challenge.category}</Badge>
-            <Badge variant="soft">{challenge.neighborhood}</Badge>
-            <Badge variant="soft">{challenge.timeWindow}</Badge>
+            <Badge variant="gold">{challenge.neighborhood}</Badge>
+            <Badge variant="default">{challenge.timeWindow}</Badge>
           </div>
         </div>
 
-        <div className="challenge-steps">
+        <section className="challenge-steps">
           <h4>Steps</h4>
-
           <StepProgress
             steps={challenge.steps || []}
             challengeId={id}
             isEditable={isEditable}
           />
-        </div>
+        </section>
       </Card>
-    </div>
+    </main>
   );
 }

@@ -1,5 +1,6 @@
 import Button from "../../components/ui/Button/Button";
 import Card from "../../components/ui/Card/Card";
+import "./Admin.css";
 
 export default function Admin() {
   const seedChallenges = async () => {
@@ -7,7 +8,6 @@ export default function Admin() {
       method: "POST",
       credentials: "include",
     });
-  
     const data = await res.json();
     alert(JSON.stringify(data, null, 2));
   };
@@ -17,26 +17,23 @@ export default function Admin() {
       method: "POST",
       credentials: "include",
     });
-
     const data = await res.json();
     alert(JSON.stringify(data, null, 2));
   };
 
   return (
-    <div style={{ maxWidth: 600, margin: "auto" }}>
+    <main className="admin-page">
       <Card>
         <h2>Admin Panel</h2>
-
-        <div style={{ display: "flex", gap: 10 }}>
-          <Button onClick={seedChallenges}>
+        <div className="admin-actions">
+          <Button variant="primary" onClick={seedChallenges}>
             Seed Challenges
           </Button>
-
           <Button variant="secondary" onClick={linkUsers}>
-            Link Users → Profiles + Interactions
+            Link Users to Profiles
           </Button>
         </div>
       </Card>
-    </div>
+    </main>
   );
 }

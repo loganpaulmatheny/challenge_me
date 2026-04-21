@@ -1,4 +1,45 @@
-.btn-outline-secondary {
-  --bs-btn-color: #555555 !important;
-  --bs-btn-border-color: #555555 !important;
+.profile-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-md);
+  padding: var(--sp-md) var(--sp-lg);
+  background-color: var(--ci-surface);
+  background-image: var(--grain-subtle);
+  border-radius: var(--radius-lg);
+  border-top: 1.5px solid rgba(30, 46, 42, 0.14);
+  border-left: 1.5px solid rgba(30, 46, 42, 0.08);
+  border-bottom: 1.5px solid rgba(74, 142, 126, 0.20);
+  border-right: 1.5px solid rgba(74, 142, 126, 0.16);
+  box-shadow: var(--shadow-card);
+}
+
+.profile-info-avatar-wrap {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-md);
+}
+
+.profile-info-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.profile-info-username {
+  margin: 0;
+  font-size: 18px;
+  color: var(--ink-900);
+}
+
+.profile-info-email {
+  margin: 0;
+  font-size: 13px;
+  color: var(--ink-500);
+}
+
+.profile-info-loading {
+  color: var(--ink-500);
+  font-family: var(--font-flavor);
+  font-size: 13px;
 }

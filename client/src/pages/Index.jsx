@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../context/UserContext";
+import Input from "../components/ui/Input/Input";
+import Button from "../components/ui/Button/Button";
+import "./Index.css";
 
 export default function Index() {
   const navigate = useNavigate();
@@ -8,6 +11,7 @@ export default function Index() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const [registerUser, setRegisterUser] = useState({
     username: "",
     name: "",
@@ -19,17 +23,17 @@ export default function Index() {
   });
   const { refreshUser } = useUser();
 
-  // Change the registered user data
-  const handleChange = (e) => {
+  const handleChange = (e) =>
     setRegisterUser({ ...registerUser, [e.target.name]: e.target.value });
-  };
 
-  const loginUser = async (email, password) => {
+  const loginUser = async (loginEmail, loginPassword) => {
+    setLoading(true);
+    setError("");
     const res = await fetch("/api/auth/login", {
       method: "POST",
       credentials: "include",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ email: loginEmail, password: loginPassword }),
     });
     if (res.ok) {
       await refreshUser();
@@ -38,17 +42,18 @@ export default function Index() {
       const { message } = await res.json();
       setError(message);
     }
+    setLoading(false);
   };
 
-  // LOGIN Event Handler
   const handleLogin = async (e) => {
     e.preventDefault();
     await loginUser(email, password);
   };
 
-  // REGISTER Event Handler
   const handleRegister = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setError("");
     const res = await fetch("/api/auth/register", {
       method: "POST",
       credentials: "include",
@@ -60,153 +65,92 @@ export default function Index() {
     } else {
       const { message } = await res.json();
       setError(message);
+      setLoading(false);
     }
   };
 
   return (
-    <div
-      className="container-fluid d-flex justify-content-center align-items-center vh-100"
-      style={{ width: "100%" }}
-    >
-      <div className="card shadow-sm" style={{ minWidth: "720px" }}>
-        <div className="card-body p-4">
-          <h2 className="text-center mb-4">Challenge Me</h2>
+    <main className="index-page" aria-label="Welcome to ChallengeMe">
+      <div className="index-card">
+        <h1 className="index-logo">ChallengeMe</h1>
+        <p className="index-tagline">Discover and complete local challenges</p>
 
-          <ul className="nav nav-tabs mb-4">
-            <li className="nav-item w-50 text-center">
-              <button
-                className={`nav-link w-100 ${activeTab === "login" ? "active" : ""}`}
-                onClick={() => setActiveTab("login")}
-              >
-                Log in
-              </button>
-            </li>
-            <li className="nav-item w-50 text-center">
-              <button
-                className={`nav-link w-100 ${activeTab === "register" ? "active" : ""}`}
-                onClick={() => setActiveTab("register")}
-              >
-                Sign up
-              </button>
-            </li>
-          </ul>
-
-          {activeTab === "login" ? (
-            <form id="login-form" onSubmit={handleLogin}>
-              <div className="mb-3">
-                <label className="form-label">Email</label>
-
-                <input
-                  type="email"
-                  className="form-control"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                />
-              </div>
-              <div className="mb-3">
-                <label className="form-label">Password</label>
-
-                <input
-                  type="password"
-                  className="form-control"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                />
-              </div>
-              {error && <div className="alert alert-danger">{error}</div>}
-              <button type="submit" className="btn btn-primary w-100">
-                Log in
-              </button>
-            </form>
-          ) : (
-            <form id="register-form" onSubmit={handleRegister}>
-              <div className="mb-3">
-                <label className="form-label">Username</label>
-                <input
-                  type="text"
-                  name="username"
-                  className="form-control"
-                  value={registerUser.username}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div className="mb-3">
-                <label className="form-label">Name</label>
-                <input
-                  type="text"
-                  name="name"
-                  className="form-control"
-                  value={registerUser.name}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div className="mb-3">
-                <label className="form-label">Profile Image URL</label>
-                <input
-                  type="text"
-                  name="profileImageUrl"
-                  className="form-control"
-                  value={registerUser.profileImageUrl}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="mb-3">
-                <label className="form-label">Email</label>
-                <input
-                  type="text"
-                  name="email"
-                  className="form-control"
-                  value={registerUser.email}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div className="mb-3">
-                <label className="form-label">Password</label>
-                <input
-                  type="password"
-                  name="password"
-                  className="form-control"
-                  value={registerUser.password}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div className="row mb-3">
-                <div className="col">
-                  <label className="form-label">City</label>
-                  <input
-                    type="text"
-                    name="city"
-                    className="form-control"
-                    value={registerUser.city}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div className="col">
-                  <label className="form-label">State</label>
-                  <input
-                    type="text"
-                    name="state"
-                    className="form-control"
-                    value={registerUser.state}
-                    onChange={handleChange}
-                    maxLength={2}
-                    placeholder="MA"
-                  />
-                </div>
-              </div>
-              <button type="submit" className="btn btn-primary w-100">
-                Create account
-              </button>
-            </form>
-          )}
+        <div className="index-tabs" role="tablist">
+          <button
+            role="tab"
+            aria-selected={activeTab === "login"}
+            aria-controls="panel-login"
+            className={`index-tab${activeTab === "login" ? " index-tab-active" : ""}`}
+            onClick={() => { setActiveTab("login"); setError(""); }}
+          >
+            Log in
+          </button>
+          <button
+            role="tab"
+            aria-selected={activeTab === "register"}
+            aria-controls="panel-register"
+            className={`index-tab${activeTab === "register" ? " index-tab-active" : ""}`}
+            onClick={() => { setActiveTab("register"); setError(""); }}
+          >
+            Sign up
+          </button>
         </div>
+
+        {error && (
+          <p className="index-error" role="alert">{error}</p>
+        )}
+
+        {activeTab === "login" ? (
+          <form
+            id="panel-login"
+            role="tabpanel"
+            className="index-form"
+            onSubmit={handleLogin}
+          >
+            <Input
+              id="login-email"
+              label="Email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              autoComplete="email"
+            />
+            <Input
+              id="login-password"
+              label="Password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              autoComplete="current-password"
+            />
+            <Button variant="primary" type="submit" loading={loading} className="index-submit">
+              Log in
+            </Button>
+          </form>
+        ) : (
+          <form
+            id="panel-register"
+            role="tabpanel"
+            className="index-form"
+            onSubmit={handleRegister}
+          >
+            <Input id="reg-username" label="Username" type="text" name="username" value={registerUser.username} onChange={handleChange} required autoComplete="username" />
+            <Input id="reg-name" label="Name" type="text" name="name" value={registerUser.name} onChange={handleChange} required autoComplete="name" />
+            <Input id="reg-email" label="Email" type="email" name="email" value={registerUser.email} onChange={handleChange} required autoComplete="email" />
+            <Input id="reg-password" label="Password" type="password" name="password" value={registerUser.password} onChange={handleChange} required autoComplete="new-password" />
+            <Input id="reg-image" label="Profile Image URL (optional)" type="url" name="profileImageUrl" value={registerUser.profileImageUrl} onChange={handleChange} />
+            <div className="index-row">
+              <Input id="reg-city" label="City" type="text" name="city" value={registerUser.city} onChange={handleChange} autoComplete="address-level2" />
+              <Input id="reg-state" label="State" type="text" name="state" value={registerUser.state} onChange={handleChange} maxLength={2} placeholder="MA" autoComplete="address-level1" />
+            </div>
+            <Button variant="primary" type="submit" loading={loading} className="index-submit">
+              Create account
+            </Button>
+          </form>
+        )}
       </div>
-    </div>
+    </main>
   );
 }

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Modal from "./ui/Modal/Modal";
 import Button from "./ui/Button/Button";
+import Input from "./ui/Input/Input";
 import ChallengeCard from "./ui/ChallengeCard/ChallengeCard";
 import PropTypes from "prop-types";
 
@@ -13,20 +14,14 @@ import {
 import "./CreateChallengeModal.css";
 
 export default function CreateChallengeModal({ onClose, onCreated }) {
-
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-
   const [category, setCategory] = useState(categories[0]);
   const [neighborhood, setNeighborhood] = useState(neighborhoods[0]);
   const [timeWindow, setTimeWindow] = useState(timeWindows[0]);
-
   const [steps, setSteps] = useState([{ title: "", points: 10 }]);
 
-
-  const addStep = () => {
-    setSteps([...steps, { title: "", points: 10 }]);
-  };
+  const addStep = () => setSteps([...steps, { title: "", points: 10 }]);
 
   const updateStep = (i, field, value) => {
     const copy = [...steps];
@@ -57,12 +52,16 @@ export default function CreateChallengeModal({ onClose, onCreated }) {
         })),
       }),
     });
-
     if (onCreated) onCreated();
     onClose();
   };
 
-  // preview object
+  useEffect(() => {
+    const handleKeyDown = (e) => { if (e.key === "Escape") onClose(); };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [onClose]);
+
   const preview = {
     _id: "preview",
     title: title || "Your challenge title",
@@ -72,111 +71,101 @@ export default function CreateChallengeModal({ onClose, onCreated }) {
     timeWindow,
     steps,
     stats: { likes: 0 },
-    creator: {
-      username: "You",
-    },
+    creator: { username: "You" },
   };
 
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key === "Escape") onClose();
-    };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [onClose]);
+  const footer = (
+    <Button variant="primary" onClick={submit}>
+      Create
+    </Button>
+  );
 
   return (
-    <Modal
-      title="Create Challenge"
-      onClose={onClose}
-      footer={<Button onClick={submit}>Create</Button>}
-    >
+    <Modal title="Create Challenge" onClose={onClose} footer={footer}>
       <div className="create-layout">
-        {/* LEFT BUILDER */}
-        <div className="builder">
-          <input
-            className="input"
-            placeholder="Title"
+        <div className="create-builder">
+          <Input
+            id="create-title"
+            label="Title"
+            placeholder="Name your challenge"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
 
-          <textarea
-            className="input"
-            placeholder="Description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          />
-
-          <div className="row">
-            <select
-              className="input"
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-            >
-              {categories.map((c) => (
-                <option key={c}>{c}</option>
-              ))}
-            </select>
-
-            <select
-              className="input"
-              value={neighborhood}
-              onChange={(e) => setNeighborhood(e.target.value)}
-            >
-              {neighborhoods.map((n) => (
-                <option key={n}>{n}</option>
-              ))}
-            </select>
-
-            <select
-              className="input"
-              value={timeWindow}
-              onChange={(e) => setTimeWindow(e.target.value)}
-            >
-              {timeWindows.map((t) => (
-                <option key={t}>{t}</option>
-              ))}
-            </select>
+          <div className="create-field-wrap">
+            <label className="create-label" htmlFor="create-desc">
+              Description
+            </label>
+            <textarea
+              id="create-desc"
+              className="create-textarea"
+              placeholder="Describe your challenge..."
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            />
           </div>
 
-          <div className="steps-builder">
-            <div className="d-flex justify-content-around">
-              <h4>Steps</h4>
-              <h4>Experience</h4>
+          <div className="create-selects">
+            <div className="create-field-wrap">
+              <label className="create-label" htmlFor="create-category">Category</label>
+              <select id="create-category" className="create-select" value={category} onChange={(e) => setCategory(e.target.value)}>
+                {categories.map((c) => <option key={c}>{c}</option>)}
+              </select>
             </div>
+            <div className="create-field-wrap">
+              <label className="create-label" htmlFor="create-neighborhood">Neighborhood</label>
+              <select id="create-neighborhood" className="create-select" value={neighborhood} onChange={(e) => setNeighborhood(e.target.value)}>
+                {neighborhoods.map((n) => <option key={n}>{n}</option>)}
+              </select>
+            </div>
+            <div className="create-field-wrap">
+              <label className="create-label" htmlFor="create-timewindow">Timeframe</label>
+              <select id="create-timewindow" className="create-select" value={timeWindow} onChange={(e) => setTimeWindow(e.target.value)}>
+                {timeWindows.map((t) => <option key={t}>{t}</option>)}
+              </select>
+            </div>
+          </div>
 
+          <div className="create-steps">
+            <div className="create-steps-header">
+              <span>Steps</span>
+              <span>XP</span>
+            </div>
             {steps.map((s, i) => (
-              <div key={i} className="step-row">
+              <div key={i} className="create-step-row">
                 <input
-                  className="input"
+                  className="create-step-input"
                   placeholder={`Step ${i + 1}`}
                   value={s.title}
+                  aria-label={`Step ${i + 1} title`}
                   onChange={(e) => updateStep(i, "title", e.target.value)}
                 />
-
                 <input
                   type="number"
-                  className="input xp"
+                  className="create-step-xp"
                   value={s.points}
+                  aria-label={`Step ${i + 1} XP`}
                   onChange={(e) => updateStep(i, "points", e.target.value)}
                 />
-
-                <Button variant="ghost" onClick={() => removeStep(i)}>
+                <Button
+                  variant="ghost-terra"
+                  size="sm"
+                  onClick={() => removeStep(i)}
+                  aria-label={`Remove step ${i + 1}`}
+                  disabled={steps.length === 1}
+                >
                   ×
                 </Button>
               </div>
             ))}
-
-            <Button variant="soft" onClick={addStep}>
+            <Button variant="soft" size="sm" onClick={addStep}>
               + Add Step
             </Button>
           </div>
         </div>
 
-        {/* RIGHT PREVIEW */}
-        <div className="preview">
-          <ChallengeCard challenge={preview} onImport={() => { }} />
+        <div className="create-preview">
+          <ChallengeCard challenge={preview} onImport={() => {}} />
         </div>
       </div>
     </Modal>

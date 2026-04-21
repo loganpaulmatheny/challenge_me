@@ -1,0 +1,11 @@
+.admin-page {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: var(--sp-md) var(--sp-lg);
+}
+
+.admin-actions {
+  display: flex;
+  gap: var(--sp-sm);
+  flex-wrap: wrap;
+}

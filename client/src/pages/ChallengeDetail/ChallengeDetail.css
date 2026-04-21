@@ -1,30 +1,60 @@
 .challenge-detail {
-    max-width: 800px;
-    margin: auto;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: var(--sp-md) var(--sp-lg);
+}
+
+.challenge-loading {
+  padding: var(--sp-xl);
+  text-align: center;
+  color: var(--ink-500);
+  font-family: var(--font-flavor);
 }
 
 .challenge-top {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-sm);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-sm);
+}
+
+.challenge-top h2 {
+  margin: 0;
 }
 
 .challenge-creator-row {
-    display: flex;
-    align-items: center;
-    gap: var(--space-sm);
+  display: flex;
+  align-items: center;
+  gap: var(--sp-sm);
+}
+
+.challenge-creator-name {
+  font-family: var(--font-creator);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--ink-400);
 }
 
 .challenge-desc {
-    color: var(--color-muted);
+  color: var(--ink-700);
+  font-size: 15px;
+  line-height: 1.65;
+  margin: 0;
 }
 
 .challenge-tags {
-    display: flex;
-    gap: var(--space-sm);
-    flex-wrap: wrap;
+  display: flex;
+  gap: var(--sp-xs);
+  flex-wrap: wrap;
 }
 
 .challenge-steps {
-    margin-top: var(--space-md);
+  margin-top: var(--sp-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-sm);
+}
+
+.challenge-steps h4 {
+  margin: 0;
+  color: var(--ink-700);
 }
