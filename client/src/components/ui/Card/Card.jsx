@@ -1,3 +1,4 @@
+import "./Card.css";
 import PropTypes from "prop-types";
 
 export default function Card({
@@ -8,19 +9,25 @@ export default function Card({
   onClick,
   ...props
 }) {
+  const Tag = interactive ? "button" : "div";
+
   return (
-    <div
+    <Tag
+      type={interactive ? "button" : undefined}
       onClick={onClick}
-      className={`
-        card 
-        card-${variant}
-        ${interactive ? "card-hover" : ""}
-        ${selected ? "card-selected" : ""}
-      `}
+      className={[
+        "card",
+        `card-${variant}`,
+        interactive ? "card-interactive" : "",
+        selected ? "card-selected" : "",
+      ]
+        .filter(Boolean)
+        .join(" ")}
+      aria-pressed={interactive && selected ? true : undefined}
       {...props}
     >
       {children}
-    </div>
+    </Tag>
   );
 }
 
@@ -28,6 +35,6 @@ Card.propTypes = {
   children: PropTypes.node,
   interactive: PropTypes.bool,
   selected: PropTypes.bool,
-  variant: PropTypes.string,
+  variant: PropTypes.oneOf(["default", "soft", "ghost", "raised"]),
   onClick: PropTypes.func,
 };
