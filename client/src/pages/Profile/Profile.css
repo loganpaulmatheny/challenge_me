@@ -1,28 +1,39 @@
 .profile-page {
   max-width: 800px;
-  margin: auto;
+  margin: 0 auto;
+  padding: var(--sp-md) var(--sp-lg);
   display: flex;
   flex-direction: column;
-  gap: var(--space-lg);
+  gap: var(--sp-lg);
+}
+
+.profile-header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-sm);
+}
+
+.profile-header h2 {
+  margin: 0;
 }
 
 .profile-badges {
   display: flex;
-  gap: var(--space-sm);
+  gap: var(--sp-sm);
   flex-wrap: wrap;
-  margin-top: var(--space-sm);
+  margin-top: var(--sp-sm);
 }
 
 .profile-section {
   display: flex;
   flex-direction: column;
-  gap: var(--space-sm);
+  gap: var(--sp-sm);
 }
 
 .profile-list {
   display: flex;
   flex-direction: column;
-  gap: var(--space-sm);
+  gap: var(--sp-sm);
 }
 
 .profile-row {

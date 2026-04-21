@@ -162,7 +162,7 @@ export default function Dashboard() {
             No challenges yet. Go explore the feed.
           </div>
         ) : (
-          <div className="feed-grid">
+          <div className="dashboard-challenges">
             {savedChallenges.map((c) => (
               <ChallengeCard
                 key={c._id}
