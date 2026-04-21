@@ -183,7 +183,7 @@ Each user has a profile that tracks their challenge history, wins, and standing 
 
 <h2 name="screenshots"> 📸 Screenshots
 
-| ![Dashboard](.assets/dashboard.png) | ![Profile](.homepage.png) |
+| ![Dashboard](./assets/dashboard.png) | ![Profile](./assets/homepage.png) |
 
 | ![Create Challenge Intro](./assets/profile.png) | ![Create Challenge Form](./assets/form.png) |
 
