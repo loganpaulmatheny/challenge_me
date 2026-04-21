@@ -178,24 +178,21 @@
 }
 
 .dashboard-challenges {
-  column-count: 3;
-  column-gap: var(--sp-md);
-}
-
-.dashboard-challenges > * {
-  break-inside: avoid;
-  margin-bottom: var(--sp-md);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--sp-md);
+  align-items: start;
 }
 
 @media (max-width: 900px) {
   .dashboard-challenges {
-    column-count: 2;
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
 @media (max-width: 500px) {
   .dashboard-challenges {
-    column-count: 1;
+    grid-template-columns: 1fr;
   }
 }
 
