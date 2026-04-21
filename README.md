@@ -22,6 +22,7 @@ A full-stack social web application that lets users challenge their friends, tra
 - [Tech Stack](#tech-stack)
 - [Installation](#installation)
 - [API Overview](#api-overview)
+- [Screenshots](#screenshots)
 - [Design, Mockups, and Demo](#design-mockups-and-demo)
 - [Attributions and AI](#attributions)
 - [Authors and Course Information](#authors-and-course-information)
@@ -180,6 +181,18 @@ Each user has a profile that tracks their challenge history, wins, and standing 
 
 ---
 
+<h2 name="screenshots"> 📸 Screenshots
+
+| Dashboard | Profile |
+|-----------|---------|
+| ![Dashboard](./assets/Screenshot%202026-04-21%20at%207.12.34%20PM.png) | ![Profile](./assets/Screenshot%202026-04-21%20at%207.12.42%20PM.png) |
+
+| Create Challenge — Intro | Create Challenge — Form Validation |
+|--------------------------|------------------------------------|
+| ![Create Challenge Intro](./assets/Screenshot%202026-04-21%20at%207.05.11%20PM.png) | ![Create Challenge Form](./assets/Screenshot%202026-04-21%20at%207.12.23%20PM.png) |
+
+---
+
 <h2 name="design-mockups-and-demo"> 🎨 Design, Mockups, and Demo
 
 #### [Design Document](https://docs.google.com/document/d/1gl6j5JnucDPkrzByfkcfNuCAizEFWbkN-eOAioEs_iA/edit?usp=sharing)
@@ -187,6 +200,62 @@ Each user has a profile that tracks their challenge history, wins, and standing 
 #### [Presentation](https://docs.google.com/presentation/d/1AM67vtAuLJtoZfiFd_NoQXPYV75k2VGY3fLCp5zUSgA/edit?usp=sharing)
 
 #### [Demo](https://drive.google.com/file/d/1MBGVpu46Opq3qm3dbDpSdtCC7UuOp7Pp/view?usp=sharing)
+
+---
+
+<h2 name="design-accessibility"> ♿ Design & Accessibility Improvements
+
+This iteration of the project focused on design quality, usability, and WCAG 2.1 AA compliance. Every component was audited with axe DevTools and Lighthouse.
+
+### Color & Contrast
+
+- Enforced a consistent design token system (`--ink-*`, `--ci-*`, `--fi-*`) across all components
+- Fixed all text that failed WCAG AA contrast ratios:
+  - Profile page stat labels, username, XP text: `--ink-400` → `--ink-500`/`--ink-600`
+  - Dashboard stat delta badges: replaced `--ci-success` (3.0:1) with `--done-txt` (7.4:1)
+  - Challenge card "Continue" CTA: `--ci-primary` → `--ci-primary-bdr` (3.4:1 → 5.9:1)
+  - Logout button: added explicit background so contrast tools compute correctly; text updated to 7.9:1
+- App uses a teal-primary palette (`#438173`) chosen for its calm, community-oriented feel; red/destructive actions use a distinct terracotta token
+
+### Typography
+
+- Enforced a 12px minimum across the entire app — every sub-12px instance was found and corrected (Badge, SegTabs, StepProgress, CreateChallengeModal, Dashboard stat cards)
+- Display headings: *IM Fell English* (editorial, humanist)
+- Body/prose: *Crimson Text* (legible serif)
+- UI labels: *DM Sans* (clean, functional)
+- Flavor/secondary: a handwritten-style font for ambient text
+
+### Semantic HTML & Heading Hierarchy
+
+- Fixed skipped heading levels (h1→h3 without h2) in Feed, Dashboard, and ProfileInfo
+- Challenge card titles rendered as `<button>` elements (not `<div>`) so they are keyboard-focusable and announced correctly by screen readers
+- In edit mode, card title renders as `<span>` to eliminate redundant interactive elements
+- All icon-only buttons have explicit `aria-label`
+
+### Keyboard Navigation
+
+- Full tab-order traversal: Navbar → Feed filters → challenge cards → pagination
+- All modals trap focus while open and restore focus on close
+- Pagination buttons follow the ARIA pattern with `aria-current="page"` on the active page
+- Dropdown filters are keyboard-operable with visible focus rings on all interactive elements
+
+### ARIA & Screen Reader
+
+- `sr-only` utility class used for page `<h1>` elements that are visually hidden but announced by screen readers
+- Sections use `aria-labelledby` pointing to their visible heading rather than a duplicate `aria-label`
+- Avatar fallback divs marked `aria-hidden="true"` — decorative, not announced
+- Fixed invalid HTML: inline `<span aria-hidden>` was wrapping block-level `<div>` (now handled via a `decorative` prop on the Avatar component)
+- Challenge card creator images: `alt=""` + `aria-hidden="true"` (decorative context)
+
+### Layout & Rendering Fixes
+
+- **Feed and Dashboard grids replaced `column-count` with CSS Grid** (`grid-template-columns: repeat(3, 1fr); align-items: start`). The `column-count` + CSS `transform` on hover combination caused cards to be clipped at column boundaries and visually disappear — a browser rendering bug that CSS Grid eliminates entirely.
+- Responsive breakpoints at 900px (2 columns) and 500px (1 column) on both Feed and Dashboard
+
+### Welcome & Onboarding
+
+- Added a dismissible welcome banner on the Feed page explaining XP, leveling, and how to create challenges
+- Banner state persisted in `localStorage` so it only shows once
 
 ---
 
@@ -245,4 +314,4 @@ Thanks to [Freekpik](https://www.flaticon.com/free-icons/goal) for allowing us t
 
 **Made with 🤝 by Logan Matheny & Pratyusha Jaitly**
 
-_Last Updated: March 2026_
+_Last Updated: April 2026_

@@ -120,17 +120,14 @@
 
 /* ── Feed grid ── */
 .feed-grid {
-  column-count: 3;
-  column-gap: var(--sp-md);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--sp-md);
+  align-items: start;
 }
 
-.feed-grid > * {
-  break-inside: avoid;
-  margin-bottom: var(--sp-md);
-}
-
-@media (max-width: 900px) { .feed-grid { column-count: 2; } }
-@media (max-width: 500px) { .feed-grid { column-count: 1; } }
+@media (max-width: 900px) { .feed-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 500px) { .feed-grid { grid-template-columns: 1fr; } }
 
 /* ── Empty state ── */
 .empty-state {
